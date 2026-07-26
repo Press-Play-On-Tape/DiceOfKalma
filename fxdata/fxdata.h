@@ -6,31 +6,57 @@ using uint24_t = __uint24;
 
 // Initialize FX hardware using  FX::begin(FX_DATA_PAGE); in the setup() function.
 
-constexpr uint16_t FX_DATA_PAGE  = 0xffe6;
-constexpr uint24_t FX_DATA_BYTES = 2352;
+constexpr uint16_t FX_DATA_PAGE  = 0xffdb;
+constexpr uint24_t FX_DATA_BYTES = 5128;
 
 constexpr uint16_t FX_SAVE_PAGE  = 0xfff0;
 constexpr uint24_t FX_SAVE_BYTES = 2;
 
 namespace Images
 {
-  constexpr uint24_t Title = 0x000000;
-  constexpr uint16_t TitleWidth  = 128;
-  constexpr uint16_t TitleHeight = 64;
+  constexpr uint24_t Title_Skull = 0x000000;
+  constexpr uint16_t Title_Skull_width  = 52;
+  constexpr uint16_t Title_Skull_height = 64;
 
-  constexpr uint24_t LevelEntry = 0x000404;
-  constexpr uint16_t LevelEntryWidth  = 128;
+  constexpr uint24_t Title_Text = 0x0001A4;
+  constexpr uint16_t Title_Text_width  = 55;
+  constexpr uint16_t Title_Text_height = 64;
+
+  constexpr uint24_t Title_Options = 0x000518;
+  constexpr uint16_t Title_Options_width  = 16;
+  constexpr uint16_t Title_Options_height = 64;
+
+  constexpr uint24_t LevelEntry = 0x00059C;
+  constexpr uint16_t LevelEntryWidth  = 70;
   constexpr uint16_t LevelEntryHeight = 64;
 
-  constexpr uint24_t Dice_Normal = 0x000808;
+  constexpr uint24_t Dice_Normal = 0x0007D0;
   constexpr uint16_t Dice_Normal_width  = 12;
   constexpr uint16_t Dice_Normal_height = 16;
   constexpr uint8_t  Dice_Normal_frames = 6;
 
-  constexpr uint24_t Dice_Reverse = 0x00089C;
+  constexpr uint24_t Dice_Reverse = 0x000864;
   constexpr uint16_t Dice_Reverse_width  = 12;
   constexpr uint16_t Dice_Reverse_height = 16;
   constexpr uint8_t  Dice_Reverse_frames = 6;
+
+  constexpr uint24_t Background_00 = 0x0008F8;
+  constexpr uint16_t Background_00_width  = 57;
+  constexpr uint16_t Background_00_height = 64;
+
+  constexpr uint24_t Background_01 = 0x000AC4;
+  constexpr uint16_t Background_01_width  = 15;
+  constexpr uint16_t Background_01_height = 64;
+
+  constexpr uint24_t Speech = 0x000B40;
+  constexpr uint16_t SpeechWidth  = 8;
+  constexpr uint16_t SpeechHeight = 64;
+  constexpr uint8_t  SpeechFrames = 11;
+
+  constexpr uint24_t SelectHand = 0x000E04;
+  constexpr uint16_t SelectHandWidth  = 24;
+  constexpr uint16_t SelectHandHeight = 64;
+  constexpr uint8_t  SelectHandFrames = 8;
 
 }
 

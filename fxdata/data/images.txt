@@ -1,9 +1,15 @@
 namespace Images {
 
-    image_t Title                   = "../Assets/Title.png"
+    image_t Title_Skull             = "../Assets/LargeSkull/Skull.png"
+    image_t Title_Text              = "../Assets/Title/Title_Text.png"
+    image_t Title_Options           = "../Assets/Title/Title_Options.png"
     image_t LevelEntry              = "../Assets/LevelEntry.png"
     image_t Dice_Normal             = "../Assets/Dice/Dice_Normal_12x16.png"
     image_t Dice_Reverse            = "../Assets/Dice/Dice_Reverse_12x16.png"
+    image_t Background_00           = "../Assets/Background_00.png"
+    image_t Background_01           = "../Assets/Background_01.png"
+    image_t Speech                  = "../Assets/Speech_8x64.png"
+    image_t SelectHand              = "../Assets/SelectHand_24x64.png"
 
 }
 
