@@ -1,0 +1,10 @@
+namespace Images {
+
+    image_t Title                   = "../Assets/Title.png"
+    image_t LevelEntry              = "../Assets/LevelEntry.png"
+    image_t Dice_Normal             = "../Assets/Dice/Dice_Normal_12x16.png"
+    image_t Dice_Reverse            = "../Assets/Dice/Dice_Reverse_12x16.png"
+
+}
+
+namespace_end
