@@ -219,10 +219,12 @@ class Hand {
 
             uint16_t handBones = 0;
             uint16_t skullBones = 0;
+            uint16_t upgradeBones = 0;
             uint8_t handMultiplier = 0;
             uint8_t skullMultiplier = 0;
             uint8_t upgradeMultiplier = 0;
             uint8_t handCategory; // 0=high,1=pair-ish,2=big,3=kind
+            
             HandType handType = HandType::None; 
 
             if (maxCount == 5) {
@@ -299,15 +301,20 @@ class Hand {
             skullBones += this->countSkull(SkullType::Ace_Bonus) * 3 * aceCount;
             if (!this->rerollUsedThisHand) skullBones += this->countSkull(SkullType::No_Reroll_Bonus) * 15;
 
-// skullMultiplier = 5;
+skullMultiplier = 5;
 skullBones = 20;
+
+upgradeMultiplier = 5;
+upgradeBones = 20;
 
             this->lastHandScore.baseBones = this->diceSum();
             this->lastHandScore.handBones = handBones;
             this->lastHandScore.handMultiplier = handMultiplier;
             this->lastHandScore.skullBones = skullBones;
             this->lastHandScore.skullMultiplier = skullMultiplier;
-            this->lastHandScore.totalBones = this->lastHandScore.baseBones + this->lastHandScore.handBones + this->lastHandScore.skullBones;
+            this->lastHandScore.upgradeBones = upgradeBones;
+            this->lastHandScore.upgradeMultiplier = upgradeMultiplier;
+            this->lastHandScore.totalBones = this->lastHandScore.baseBones + this->lastHandScore.handBones + this->lastHandScore.skullBones + this->lastHandScore.upgradeBones;
             this->lastHandScore.totalMultiplier = this->lastHandScore.handMultiplier + this->lastHandScore.skullMultiplier + this->lastHandScore.upgradeMultiplier;
             this->lastHandScore.handType = handType;
 

@@ -24,7 +24,10 @@
 namespace Constants {
 
     // constexpr uint16_t EEPROM_Start         = EEPROM_STORAGE_SPACE_START + 143;
-    constexpr uint8_t ParticlesMax = 40;
+    constexpr uint8_t ParticlesMax = 25;
+    constexpr uint8_t EEPROM_Addr = 16;
+    constexpr uint8_t EEPROM_Magic  = 0xA5;   
+
 }
 
 // ---------------------------------------------------------------------
@@ -79,6 +82,7 @@ enum class GameState : uint8_t {
     Game_Hand_Result_Hand,
     Game_Hand_Result_Skulls_Played,
     Game_Hand_Result_Upgrades_Played,
+    Game_Hand_Result_Countdown,
     Game_Skull_Choice,
     Game_Deck_Full_Swap,
     Game_Deck_View,

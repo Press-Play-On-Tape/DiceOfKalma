@@ -11,6 +11,40 @@ namespace Images {
     image_t Speech                  = "../Assets/Speech_8x64.png"
     image_t SelectHand              = "../Assets/SelectHand_24x64.png"
 
+    image_t Skull_00                = "../Assets/Skulls/Skull_00.png"
+    image_t Skull_01                = "../Assets/Skulls/Skull_01.png"
+    image_t Skull_02                = "../Assets/Skulls/Skull_02.png"
+    image_t Skull_03                = "../Assets/Skulls/Skull_03.png"
+    image_t Skull_04                = "../Assets/Skulls/Skull_04.png"
+    image_t Skull_05                = "../Assets/Skulls/Skull_05.png"
+    image_t Skull_06                = "../Assets/Skulls/Skull_06.png"
+    image_t Skull_07                = "../Assets/Skulls/Skull_07.png"
+    image_t Skull_08                = "../Assets/Skulls/Skull_08.png"
+    image_t Skull_09                = "../Assets/Skulls/Skull_09.png"
+    image_t Skull_10                = "../Assets/Skulls/Skull_10.png"
+    image_t Skull_11                = "../Assets/Skulls/Skull_11.png"
+    image_t Skull_12                = "../Assets/Skulls/Skull_12.png"
+    image_t Skull_13                = "../Assets/Skulls/Skull_13.png"
+
+    image_t SkullSelect             = "../Assets/SkullSelect.png"
+
+    uint24_t Skulls[] = {
+        Skull_00,
+        Skull_01,
+        Skull_02,
+        Skull_03,
+        Skull_04,
+        Skull_05,
+        Skull_06,
+        Skull_07,
+        Skull_08,
+        Skull_09,
+        Skull_10,
+        Skull_11,
+        Skull_12,
+        Skull_13,
+    };
+
 }
 
 namespace_end

@@ -6,8 +6,8 @@ using uint24_t = __uint24;
 
 // Initialize FX hardware using  FX::begin(FX_DATA_PAGE); in the setup() function.
 
-constexpr uint16_t FX_DATA_PAGE  = 0xffdb;
-constexpr uint24_t FX_DATA_BYTES = 5128;
+constexpr uint16_t FX_DATA_PAGE  = 0xffc2;
+constexpr uint24_t FX_DATA_BYTES = 11694;
 
 constexpr uint16_t FX_SAVE_PAGE  = 0xfff0;
 constexpr uint24_t FX_SAVE_BYTES = 2;
@@ -51,12 +51,77 @@ namespace Images
   constexpr uint24_t Speech = 0x000B40;
   constexpr uint16_t SpeechWidth  = 8;
   constexpr uint16_t SpeechHeight = 64;
-  constexpr uint8_t  SpeechFrames = 11;
+  constexpr uint8_t  SpeechFrames = 12;
 
-  constexpr uint24_t SelectHand = 0x000E04;
+  constexpr uint24_t SelectHand = 0x000E44;
   constexpr uint16_t SelectHandWidth  = 24;
   constexpr uint16_t SelectHandHeight = 64;
   constexpr uint8_t  SelectHandFrames = 8;
 
+  constexpr uint24_t Skull_00 = 0x001448;
+  constexpr uint16_t Skull_00_width  = 48;
+  constexpr uint16_t Skull_00_height = 64;
+
+  constexpr uint24_t Skull_01 = 0x0015CC;
+  constexpr uint16_t Skull_01_width  = 48;
+  constexpr uint16_t Skull_01_height = 64;
+
+  constexpr uint24_t Skull_02 = 0x001750;
+  constexpr uint16_t Skull_02_width  = 48;
+  constexpr uint16_t Skull_02_height = 64;
+
+  constexpr uint24_t Skull_03 = 0x0018D4;
+  constexpr uint16_t Skull_03_width  = 48;
+  constexpr uint16_t Skull_03_height = 64;
+
+  constexpr uint24_t Skull_04 = 0x001A58;
+  constexpr uint16_t Skull_04_width  = 48;
+  constexpr uint16_t Skull_04_height = 64;
+
+  constexpr uint24_t Skull_05 = 0x001BDC;
+  constexpr uint16_t Skull_05_width  = 48;
+  constexpr uint16_t Skull_05_height = 64;
+
+  constexpr uint24_t Skull_06 = 0x001D60;
+  constexpr uint16_t Skull_06_width  = 48;
+  constexpr uint16_t Skull_06_height = 64;
+
+  constexpr uint24_t Skull_07 = 0x001EE4;
+  constexpr uint16_t Skull_07_width  = 48;
+  constexpr uint16_t Skull_07_height = 64;
+
+  constexpr uint24_t Skull_08 = 0x002068;
+  constexpr uint16_t Skull_08_width  = 48;
+  constexpr uint16_t Skull_08_height = 64;
+
+  constexpr uint24_t Skull_09 = 0x0021EC;
+  constexpr uint16_t Skull_09_width  = 48;
+  constexpr uint16_t Skull_09_height = 64;
+
+  constexpr uint24_t Skull_10 = 0x002370;
+  constexpr uint16_t Skull_10_width  = 48;
+  constexpr uint16_t Skull_10_height = 64;
+
+  constexpr uint24_t Skull_11 = 0x0024F4;
+  constexpr uint16_t Skull_11_width  = 48;
+  constexpr uint16_t Skull_11_height = 64;
+
+  constexpr uint24_t Skull_12 = 0x002678;
+  constexpr uint16_t Skull_12_width  = 48;
+  constexpr uint16_t Skull_12_height = 64;
+
+  constexpr uint24_t Skull_13 = 0x0027FC;
+  constexpr uint16_t Skull_13_width  = 48;
+  constexpr uint16_t Skull_13_height = 64;
+
+  constexpr uint24_t SkullSelect = 0x002980;
+  constexpr uint16_t SkullSelectWidth  = 128;
+  constexpr uint16_t SkullSelectHeight = 64;
+
+  constexpr uint24_t Skulls = 0x002D84;
+}
+
+namespace Images
+{
 }
 

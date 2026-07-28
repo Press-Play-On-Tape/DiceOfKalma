@@ -46,8 +46,7 @@ Arduboy2Ext arduboy;
 // EEPROM (Arduboy2 system area occupies the first 16 bytes, so we start
 // safely after that)
 // ---------------------------------------------------------------------
-#define EEPROM_ADDR   16
-#define EEPROM_MAGIC  0xA5
+
 
 uint8_t renderHandResult_Counter = 0;
 
@@ -85,29 +84,12 @@ uint8_t swapCursor = 0;
 uint8_t deckViewCursor = 0;
 
 
-const __FlashStringHelper* skullName(SkullType s) {
-  switch (s) {
-    case SkullType::Pair_Multiplier:      return F("PAIR MULT +1");
-    case SkullType::Big_Multiplier:       return F("3K/STR/FH MULT+1");
-    case SkullType::Kind_3or4_Multiplier:      return F("4-5 KIND MULT+1");
-    case SkullType::Flat_Bones:     return F("+10 CHIPS/HAND");
-    case SkullType::Extra_Reroll:   return F("+1 REROLL/HAND");
-    case SkullType::Extra_Hand:     return F("+1 HAND/LEVEL");
-    case SkullType::Six_Bonus:      return F("+3 CHIPS PER 6");
-    case SkullType::Ace_Bonus:      return F("+3 CHIPS PER 1");
-    case SkullType::Even_Mulitplier:      return F("ALL EVEN MULT+1");
-    case SkullType::Odd_Mulitplier:       return F("ALL ODD MULT+1");
-    case SkullType::No_Reroll_Bonus:return F("NO REROLL:+15");
-    case SkullType::High_Roll_Save: return F("HIGH ROLL SAVE");
-    case SkullType::Threshold_Discount:return F("THRESHOLD -5%");
-    case SkullType::Double_First:   return F("1ST HAND x2");
-  }
-  return F("");
-}
 
-
+/*
 
 uint16_t computeThreshold() {
+
+    return 450;//SJH
 
     uint32_t base = 150 + (uint32_t)(level - 1) * 60 + (uint32_t)(level - 1) * (level - 1) * 20;
     uint8_t discountPct = hand.countSkull(SkullType::Threshold_Discount) * 5;
@@ -147,34 +129,7 @@ void offerSkulls() {
     state = GameState::Game_Skull_Choice;
 }
 
-void saveHighScore() {
-  if (level > bestLevel) {
-    bestLevel = level;
-    EEPROM.update(EEPROM_ADDR, EEPROM_MAGIC);
-    EEPROM.update(EEPROM_ADDR + 1, bestLevel);
-  }
-}
 
-void loadHighScore() {
-  if (EEPROM.read(EEPROM_ADDR) == EEPROM_MAGIC) {
-    bestLevel = EEPROM.read(EEPROM_ADDR + 1);
-    if (bestLevel == 0) bestLevel = 1;
-  } else {
-    bestLevel = 1;
-  }
-}
-
-
-// ---------------------------------------------------------------------
-// State updates
-// ---------------------------------------------------------------------
-void updateTitle() {
-  if (arduboy.justPressed(A_BUTTON)) {
-    level = 1;
-    hand.deckCount = 0;
-    startLevel();
-  }
-}
 
 void updateLevelIntro() {
   stateTimer++;
@@ -241,6 +196,7 @@ void updateHandResult() {
   if (stateTimer > 70 || arduboy.justPressed(A_BUTTON)) {
     if (runScore >= threshold) {
       saveHighScore();
+      Serial.println("OfferSkulls");
       offerSkulls();
     } else if (handsLeft == 0) {
       saveHighScore();
@@ -253,7 +209,7 @@ void updateHandResult() {
 }
 
 void updateSkullChoice() {
-  if (arduboy.justPressed(UP_BUTTON) || arduboy.justPressed(DOWN_BUTTON)) {
+  if (arduboy.justPressed(LEFT_BUTTON) || arduboy.justPressed(RIGHT_BUTTON)) {
     skullCursor = 1 - skullCursor;
   }
   if (arduboy.justPressed(A_BUTTON)) {
@@ -328,26 +284,46 @@ void drawRoll() {
 }
 
 void drawSkullChoice() {
-  arduboy.setCursor(14, 0);
-  arduboy.print(F("CHOOSE A SKULL"));
-  arduboy.drawLine(0, 10, 127, 10, WHITE);
 
-  uint8_t boxY = 18, boxH = 30, boxW = 60;
-  int16_t xA = 2, xB = 66;
+    FX::drawBitmap(0, 0, Images::SkullSelect, 0, dbmNormal);
 
-  arduboy.drawRect(xA, boxY, boxW, boxH, WHITE);
-  arduboy.drawRect(xB, boxY, boxW, boxH, WHITE);
+//   arduboy.setCursor(14, 0);
+//   arduboy.print(F("CHOOSE A SKULL"));
+//   arduboy.drawLine(0, 10, 127, 10, WHITE);
 
-  if (skullCursor == 0) arduboy.fillRect(xA, boxY - 4, boxW, 3, WHITE);
-  else arduboy.fillRect(xB, boxY - 4, boxW, 3, WHITE);
+//   uint8_t boxY = 18, boxH = 30, boxW = 60;
+//   int16_t xA = 2, xB = 66;
 
-  arduboy.setCursor(xA + 3, boxY + 10);
-  arduboy.print(skullName(skullChoiceA));
-  arduboy.setCursor(xB + 3, boxY + 10);
-  arduboy.print(skullName(skullChoiceB));
+//   arduboy.drawRect(xA, boxY, boxW, boxH, WHITE);
+//   arduboy.drawRect(xB, boxY, boxW, boxH, WHITE);
 
-  arduboy.setCursor(10, 54);
-  arduboy.print(F("<- ->  A TO PICK"));
+//   if (skullCursor == 0) arduboy.fillRect(xA, boxY - 4, boxW, 3, WHITE);
+//   else arduboy.fillRect(xB, boxY - 4, boxW, 3, WHITE);
+
+//   arduboy.setCursor(xA + 3, boxY + 10);
+//   arduboy.print(skullName(skullChoiceA));
+//   arduboy.setCursor(xB + 3, boxY + 10);
+//   arduboy.print(skullName(skullChoiceB));
+Serial.print((uint8_t)skullChoiceA);
+Serial.print(" ");
+Serial.println((uint8_t)skullChoiceB);
+    uint24_t aIcon = FX::readIndexedUInt24(Images::Skulls, static_cast<uint8_t>(skullChoiceA));
+    FX::drawBitmap(64, 0, aIcon, 0, dbmNormal);
+
+    uint24_t bIcon = FX::readIndexedUInt24(Images::Skulls, static_cast<uint8_t>(skullChoiceB));
+    FX::drawBitmap(16, 0, bIcon, 0, dbmNormal);
+
+    if (skullCursor == 0 && arduboy.frameCount % 16 < 8) {
+        arduboy.drawRect(64, 0, 48, 64);
+    }
+    if (skullCursor == 1 && arduboy.frameCount % 16 < 8) {
+        arduboy.drawRect(16, 0, 48, 64);
+    }
+
+    
+
+//   arduboy.setCursor(10, 54);
+//   arduboy.print(F("<- ->  A TO PICK"));
 }
 
 void drawDeckFullSwap() {
@@ -422,7 +398,7 @@ void drawWin() {
   arduboy.setCursor(18, 56);
   arduboy.print(F("PRESS A TO PLAY"));
 }
-
+*/
 // ---------------------------------------------------------------------
 // Arduino entry points
 // ---------------------------------------------------------------------
@@ -488,6 +464,10 @@ void loop() {
             renderHandResult_UpgradesPlayed();           
             break;
 
+        case GameState::Game_Hand_Result_Countdown:
+            renderHandResult_Countdown();
+            break;
+
         case GameState::Game_Skull_Choice:  
             updateSkullChoice();   
             drawSkullChoice();   
@@ -518,278 +498,5 @@ void loop() {
 
     updateAndRenderParticles();
     FX::display(CLEAR_BUFFER);
-
-}
-
-void renderHandResult_Base() {
-
-    Serial.print("renderHandResult_Base ");
-    Serial.println(renderHandResult_Counter);
-
-    switch (renderHandResult_Counter) {
-    
-        case 0:
-            for (uint8_t i = 0; i < 5; i++) hand.marked[i] = false;
-            renderHandResult_Counter++;
-            launchParticles();
-            [[fallthrough]]
-
-        case 1 ... 5:
-            {
-                drawSkull();
-                drawBonesMultTotal(tempHandScore);
-                drawDice();
-                drawFooterRoll();
-                renderHandResult_Counter++;
-            }
-            break;
-
-        case 6:
-            for (uint8_t i = 0; i < 5; i++) hand.marked[i] = true;
-
-            if (arduboy.isFrameCount(2)) {
-                tempHandScore.totalBones++;
-                tempHandScore.totalMultiplier = 0;
-                tempHandScore.score++;
-            }
-            
-            drawSkull();
-            drawBonesMultTotal(tempHandScore);
-            drawDice();
-            drawFooterRoll();
-            Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
-            FX::drawBitmap(59, 0, Images::Speech, 9, dbmWhite);
-
-            if (tempHandScore.totalBones == hand.lastHandScore.baseBones) {
-                renderHandResult_Counter++;
-            }
-            break;
-
-        case 7 ... 10:
-            for (uint8_t i = 0; i < 5; i++) hand.marked[i] = false;
-            renderHandResult_Counter++;
-            drawSkull();
-            drawBonesMultTotal(tempHandScore);
-            drawDice();
-            drawFooterRoll();
-
-            if (renderHandResult_Counter == 10) {
-                renderHandResult_Counter = 0;
-                state = GameState::Game_Hand_Result_Hand;
-            }
-
-            break;
-
-        // case 11 ... 14:
-        //     for (uint8_t i = 0; i < 5; i++) hand.marked[i] = true;
-        //     renderHandResult_Counter++;
-        //     drawSkull();
-        //     drawBonesMultTotal(tempHandScore);
-        //     drawDice();
-        //     drawFooterRoll();
-
-        //     if (renderHandResult_Counter == 14) {
-        //         renderHandResult_Counter = 0;
-        //         state = GameState::Game_Hand_Result_Hand;
-        //     }
-        //     break;
-
-    }
-
-
-}
-
-
-void renderHandResult_Hand() {
-    Serial.print("renderHandResult_Hand ");
-    Serial.println(renderHandResult_Counter);
-
-    switch (renderHandResult_Counter) {
-    
-        case 0:
-            for (uint8_t i = 0; i < 5; i++) hand.marked[i] = false;
-            renderHandResult_Counter++;
-            [[fallthrough]]
-
-        case 1 ... 5:
-            {
-                drawSkull();
-                drawBonesMultTotal(tempHandScore);
-                drawDice();
-                drawFooterRoll();
-                renderHandResult_Counter++;
-
-                if (renderHandResult_Counter == 6) {
-                
-                    if (hand.lastHandScore.handMultiplier > 0) {
-
-                        tempHandScore.totalMultiplier++;
-                    
-                    }
-
-                }
-            }
-            break;
-
-        case 6:
-
-            hand.markWiningHand(hand.lastHandScore);
-
-            if (hand.lastHandScore.handBones > 10 || (hand.lastHandScore.handBones <= 10 && arduboy.isFrameCount(4))) {
-
-                tempHandScore.totalBones++;
-                if ((tempHandScore.totalBones - hand.lastHandScore.baseBones) % hand.lastHandScore.handMultiplier == 0 &&
-                    tempHandScore.totalMultiplier < hand.lastHandScore.handMultiplier) {
-                    tempHandScore.totalMultiplier++;
-                    
-                }
-
-            }
-
-            if (tempHandScore.totalMultiplier > 0) {
-                tempHandScore.score = tempHandScore.totalBones * tempHandScore.totalMultiplier;
-            }
-            else {
-                tempHandScore.score = tempHandScore.totalBones;
-            }
-            
-            drawSkull();
-            drawBonesMultTotal(tempHandScore);
-            drawDice();
-            drawFooterRoll();
-            Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
-            FX::drawBitmap(59, 0, Images::Speech, static_cast<uint8_t>(hand.lastHandScore.handType), dbmWhite);
-            
-            if (tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones) {
-                renderHandResult_Counter++;
-            }
-            break;
-
-        case 7 ... 10:
-
-            for (uint8_t i = 0; i < 5; i++) hand.marked[i] = false;
-            renderHandResult_Counter++;
-            drawSkull();
-            drawBonesMultTotal(tempHandScore);
-            drawDice();
-            drawFooterRoll();
-
-            if (renderHandResult_Counter == 10) {
-                renderHandResult_Counter = 0;
-                
-                if (hand.lastHandScore.skullBones > 0 || hand.lastHandScore.skullMultiplier > 0) {
-                    state = GameState::Game_Hand_Result_Skulls_Played;
-                }
-                else {
-                    state = GameState::Game_Hand_Result_Upgrades_Played;
-                }
-
-            }
-
-            break;
-
-    }
-
-}
-
-void renderHandResult_SkullsPlayed() {
-
-   Serial.print("renderHandResult_SkullsPlayed ");
-    Serial.println(renderHandResult_Counter);
-
-    switch (renderHandResult_Counter) {
-    
-        case 0:
-            for (uint8_t i = 0; i < 5; i++) hand.marked[i] = false;
-            renderHandResult_Counter++;
-            [[fallthrough]]
-
-        case 1 ... 5:
-            {
-                drawSkull();
-                drawBonesMultTotal(tempHandScore);
-                drawDice();
-                drawFooterRoll();
-                renderHandResult_Counter++;
-
-                if (renderHandResult_Counter == 6) {
-                
-                    if (hand.lastHandScore.skullMultiplier > 0) {
-
-                        tempHandScore.totalMultiplier++;
-                    
-                    }
-
-                }
-            }
-            break;
-
-        case 6:
-
-            // hand.markWiningHand(hand.lastHandScore);
-
-            if (hand.lastHandScore.skullBones >= 10 || (hand.lastHandScore.skullBones < 10 && arduboy.isFrameCount(4))) {
-
-                tempHandScore.totalBones++;
-                if ((tempHandScore.totalBones - hand.lastHandScore.baseBones - hand.lastHandScore.handBones) % hand.lastHandScore.skullMultiplier == 0 &&
-                    tempHandScore.totalMultiplier < hand.lastHandScore.handMultiplier + hand.lastHandScore.skullMultiplier) {
-                    tempHandScore.totalMultiplier++;
-                    
-                }
-
-            }
-
-            if (tempHandScore.totalMultiplier > 0) {
-                tempHandScore.score = tempHandScore.totalBones * tempHandScore.totalMultiplier;
-            }
-            else {
-                tempHandScore.score = tempHandScore.totalBones;
-            }
-            
-            drawSkull();
-            drawBonesMultTotal(tempHandScore);
-            drawDice();
-            drawFooterRoll();
-            Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
-            FX::drawBitmap(59, 0, Images::Speech, 10, dbmWhite);
-            
-            if (tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones) {
-                renderHandResult_Counter++;
-            }
-            break;
-
-        case 7 ... 10:
-            for (uint8_t i = 0; i < 5; i++) hand.marked[i] = false;
-            renderHandResult_Counter++;
-            drawSkull();
-            drawBonesMultTotal(tempHandScore);
-            drawDice();
-            drawFooterRoll();
-
-            if (renderHandResult_Counter == 10) {
-                renderHandResult_Counter = 0;
-                state = GameState::Game_Hand_Result_Upgrades_Played;
-            }
-
-            break;
-
-    }
-                
-
-
-}
-
-void renderHandResult_UpgradesPlayed() {
-
-    Serial.print("renderHandResult_UpgradesPlayed ");
-    Serial.println(renderHandResult_Counter);
-
-
-                drawSkull();
-                drawBonesMultTotal(tempHandScore);
-                drawDice();
-                drawFooterRoll();
-                
-
 
 }

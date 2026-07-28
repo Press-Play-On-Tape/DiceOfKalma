@@ -176,7 +176,7 @@ void drawSkull() {
 
 }
 
-void drawLevelAndTarget(HandScore hand, uint8_t levelNumber, uint8_t target) {
+void drawLevelAndTarget(HandScore hand, uint8_t levelNumber, uint16_t target) {
 
     FX::drawBitmap(60, 0, Images::Background_01, 0, dbmNormal);
 

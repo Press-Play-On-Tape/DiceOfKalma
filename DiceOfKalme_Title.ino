@@ -10,3 +10,15 @@ void drawTitle() {
     drawNumber(11, 46, bestLevel);
 
 }
+
+
+// ---------------------------------------------------------------------
+// State updates
+// ---------------------------------------------------------------------
+void updateTitle() {
+  if (arduboy.justPressed(A_BUTTON)) {
+    level = 1;
+    hand.deckCount = 0;
+    startLevel();
+  }
+}

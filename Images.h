@@ -47,4 +47,27 @@ namespace Images {
     0x7f, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x7f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
     };
 
+// 4x8, 1 frame(s), Image: 6 bytes, Mask: 4 bytes
+// Example: Sprites::drawExternalMask(x, y, _222, _222Mask, frame, 0);
+// const uint8_t PROGMEM Particle_Lrg[] = {
+//   4, 8,
+//   0x00, 0x06, 0x06, 0x00,
+// };
+
+// const uint8_t PROGMEM Particle_Lrg_Mask[] = {
+//   0x0f, 0x0f, 0x0f, 0x0f,
+// };
+
+// // 3x8, 1 frame(s), Image: 5 bytes, Mask: 3 bytes
+// // Example: Sprites::drawExternalMask(x, y, dsdsd, dsdsdMask, frame, 0);
+const uint8_t PROGMEM Particle_Sml[] = {
+  3, 8,
+  0x00, 0x02, 0x00,
+};
+
+const uint8_t PROGMEM Particle_Sml_Mask[] = {
+  0x07, 0x07, 0x07,
+};
+
+
 }
