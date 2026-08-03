@@ -212,6 +212,47 @@ void drawDeckView() {
 
 
 
+void renderRollDice() {
+
+    if (rollDice_Counter == 6) {
+// DEBUG_BREAK
+
+        for (uint8_t i = 0; i < 5; i++) {
+            
+            if (hand.marked[i] == Marked::True || hand.marked[i] == Marked::True_NoHighlight) {
+        
+                hand.rerollDice(i);
+                hand.marked[i] = Marked::True_NoHighlight;
+            }
+
+        }
+
+    }
+
+    rollDice_Counter++;
+
+    drawSkull();
+    drawLevelAndTarget(hand.lastHandScore, level, threshold);
+    drawBonesMultTotal(tempHandScore);
+    drawDice();
+    drawFooterRoll();
+
+    if (rollDice_Counter == 11) {
+
+        gameState = returnState;
+        rollDice_Counter = 0;
+
+        for (uint8_t i = 0; i < 5; i++) {
+            hand.marked[i] = Marked::False;
+        }
+      Serial.println("b");
+
+        hand.rerollHighlight = Constants::RerollHighlight_None;
+
+    }
+
+}
+
 void renderHandResult_Base() {
 
     // Serial.print("renderHandResult_Base ");
@@ -249,7 +290,7 @@ void renderHandResult_Base() {
             drawDice();
             drawFooterRoll();
             Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
-            FX::drawBitmap(59, 0, Images::Speech, 9, dbmWhite);
+            FX::drawBitmap(59, 0, Images::Speech_Sml, 9, dbmWhite);
 
             if (tempHandScore.totalBones == hand.lastHandScore.baseBones) {
                 renderHandResult_Counter++;
@@ -378,7 +419,7 @@ void renderHandResult_Hand() {
             drawDice();
             drawFooterRoll();
             Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
-            FX::drawBitmap(59, 0, Images::Speech, static_cast<uint8_t>(hand.lastHandScore.handType), dbmWhite);
+            FX::drawBitmap(59, 0, Images::Speech_Sml, static_cast<uint8_t>(hand.lastHandScore.handType), dbmWhite);
             
             if (renderHandResult_Timer > 32 && tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones) {
                 renderHandResult_Counter++;
@@ -488,7 +529,7 @@ void renderHandResult_SkullsPlayed() {
             drawDice();
             drawFooterRoll();
             Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
-            FX::drawBitmap(59, 0, Images::Speech, 10, dbmWhite);
+            FX::drawBitmap(59, 0, Images::Speech_Sml, 10, dbmWhite);
             
             if (renderHandResult_Timer > 32 && tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones) {
                 renderHandResult_Counter++;
@@ -592,7 +633,7 @@ void renderHandResult_UpgradesPlayed() {
             drawDice();
             drawFooterRoll();
             Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
-            FX::drawBitmap(59, 0, Images::Speech, 11, dbmWhite);
+            FX::drawBitmap(59, 0, Images::Speech_Sml, 11, dbmWhite);
             
             if (renderHandResult_Timer > 32 && (tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones + hand.lastHandScore.upgradeBones)) {
                 renderHandResult_Counter++;
@@ -710,12 +751,7 @@ void renderHandResult_Countdown() {
                 }
                 else {
                 
-                    if (arduboy.justPressed(A_BUTTON)) {
-                        renderHandResult_Counter = 0;
-                        newHand();
-                        gameState = GameState::Game_Roll_Dice;
-                        returnState = GameState::Game_Roll;
-                    }
+                    renderHandResult_Counter++;
 
                 }
 
@@ -723,50 +759,24 @@ void renderHandResult_Countdown() {
 
             break;
 
-    }
+        case 11:
 
+            drawSkull();
+            drawBonesMultTotal(tempHandScore);
+            drawDice();
+            FX::drawBitmap(42, 0, Images::Speech_Lrg, 0, dbmNormal);
+            drawFooterRoll();
 
-}
-
-
-
-void renderRollDice() {
-
-    if (rollDice_Counter == 6) {
-// DEBUG_BREAK
-
-        for (uint8_t i = 0; i < 5; i++) {
-            
-            if (hand.marked[i] == Marked::True || hand.marked[i] == Marked::True_NoHighlight) {
-        
-                hand.rerollDice(i);
-                hand.marked[i] = Marked::True_NoHighlight;
+            if (arduboy.justPressed(A_BUTTON)) {
+                renderHandResult_Counter = 0;
+                newHand();
+                gameState = GameState::Game_Roll_Dice;
+                returnState = GameState::Game_Roll;
             }
 
-        }
-
+            break;
     }
 
-    rollDice_Counter++;
-
-    drawSkull();
-    drawLevelAndTarget(hand.lastHandScore, level, threshold);
-    drawBonesMultTotal(tempHandScore);
-    drawDice();
-    drawFooterRoll();
-
-    if (rollDice_Counter == 11) {
-
-        gameState = returnState;
-        rollDice_Counter = 0;
-
-        for (uint8_t i = 0; i < 5; i++) {
-            hand.marked[i] = Marked::False;
-        }
-      Serial.println("b");
-
-        hand.rerollHighlight = Constants::RerollHighlight_None;
-
-    }
 
 }
+

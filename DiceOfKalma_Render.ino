@@ -25,6 +25,10 @@ void drawDice() {
                 break;
 
             case Marked::False:
+            Serial.print(hand.dice[i]);
+            Serial.print(" ");
+            Serial.print(((hand.dice[i] - 1) * 11));
+            Serial.print(" ");
                 FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.dice[i] - 1) * 11), dbmNormal);
                 break;
                 
@@ -35,7 +39,7 @@ void drawDice() {
         }
 
     }
-// Serial.println("");
+Serial.println("");
 }
 
 
