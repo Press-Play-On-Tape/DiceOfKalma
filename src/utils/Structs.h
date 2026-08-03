@@ -13,7 +13,7 @@ struct HandScore {
     uint8_t  skullMultiplier = 0;
     uint8_t  upgradeMultiplier = 0;
     uint8_t  totalMultiplier = 0;
-    uint16_t score = 0;
+    int16_t score = 0;
 
     HandType  handType = HandType::None;
 

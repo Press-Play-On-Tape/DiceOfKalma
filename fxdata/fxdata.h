@@ -6,8 +6,8 @@ using uint24_t = __uint24;
 
 // Initialize FX hardware using  FX::begin(FX_DATA_PAGE); in the setup() function.
 
-constexpr uint16_t FX_DATA_PAGE  = 0xffc2;
-constexpr uint24_t FX_DATA_BYTES = 11694;
+constexpr uint16_t FX_DATA_PAGE  = 0xffa9;
+constexpr uint24_t FX_DATA_BYTES = 18160;
 
 constexpr uint16_t FX_SAVE_PAGE  = 0xfff0;
 constexpr uint24_t FX_SAVE_BYTES = 2;
@@ -33,92 +33,165 @@ namespace Images
   constexpr uint24_t Dice_Normal = 0x0007D0;
   constexpr uint16_t Dice_Normal_width  = 12;
   constexpr uint16_t Dice_Normal_height = 16;
-  constexpr uint8_t  Dice_Normal_frames = 6;
+  constexpr uint8_t  Dice_Normal_frames = 77;
 
-  constexpr uint24_t Dice_Reverse = 0x000864;
+  constexpr uint24_t Dice_Reverse = 0x000F0C;
   constexpr uint16_t Dice_Reverse_width  = 12;
   constexpr uint16_t Dice_Reverse_height = 16;
-  constexpr uint8_t  Dice_Reverse_frames = 6;
+  constexpr uint8_t  Dice_Reverse_frames = 36;
 
-  constexpr uint24_t Background_00 = 0x0008F8;
+  constexpr uint24_t Background_00 = 0x001270;
   constexpr uint16_t Background_00_width  = 57;
   constexpr uint16_t Background_00_height = 64;
 
-  constexpr uint24_t Background_01 = 0x000AC4;
-  constexpr uint16_t Background_01_width  = 15;
-  constexpr uint16_t Background_01_height = 64;
+  constexpr uint24_t Background_02 = 0x00143C;
+  constexpr uint16_t Background_02_width  = 15;
+  constexpr uint16_t Background_02_height = 64;
 
-  constexpr uint24_t Speech = 0x000B40;
+  constexpr uint24_t Speech = 0x0014B8;
   constexpr uint16_t SpeechWidth  = 8;
   constexpr uint16_t SpeechHeight = 64;
   constexpr uint8_t  SpeechFrames = 12;
 
-  constexpr uint24_t SelectHand = 0x000E44;
+  constexpr uint24_t SelectHand = 0x0017BC;
   constexpr uint16_t SelectHandWidth  = 24;
   constexpr uint16_t SelectHandHeight = 64;
   constexpr uint8_t  SelectHandFrames = 8;
 
-  constexpr uint24_t Skull_00 = 0x001448;
+  constexpr uint24_t SkullInfo = 0x001DC0;
+  constexpr uint16_t SkullInfoWidth  = 128;
+  constexpr uint16_t SkullInfoHeight = 64;
+
+  constexpr uint24_t Button_PlayHand = 0x0021C4;
+  constexpr uint16_t Button_PlayHand_width  = 24;
+  constexpr uint16_t Button_PlayHand_height = 24;
+
+  constexpr uint24_t Button_Reroll = 0x002210;
+  constexpr uint16_t Button_Reroll_width  = 24;
+  constexpr uint16_t Button_Reroll_height = 24;
+
+  constexpr uint24_t Skull_00 = 0x00225C;
   constexpr uint16_t Skull_00_width  = 48;
   constexpr uint16_t Skull_00_height = 64;
 
-  constexpr uint24_t Skull_01 = 0x0015CC;
+  constexpr uint24_t Skull_01 = 0x0023E0;
   constexpr uint16_t Skull_01_width  = 48;
   constexpr uint16_t Skull_01_height = 64;
 
-  constexpr uint24_t Skull_02 = 0x001750;
+  constexpr uint24_t Skull_02 = 0x002564;
   constexpr uint16_t Skull_02_width  = 48;
   constexpr uint16_t Skull_02_height = 64;
 
-  constexpr uint24_t Skull_03 = 0x0018D4;
+  constexpr uint24_t Skull_03 = 0x0026E8;
   constexpr uint16_t Skull_03_width  = 48;
   constexpr uint16_t Skull_03_height = 64;
 
-  constexpr uint24_t Skull_04 = 0x001A58;
+  constexpr uint24_t Skull_04 = 0x00286C;
   constexpr uint16_t Skull_04_width  = 48;
   constexpr uint16_t Skull_04_height = 64;
 
-  constexpr uint24_t Skull_05 = 0x001BDC;
+  constexpr uint24_t Skull_05 = 0x0029F0;
   constexpr uint16_t Skull_05_width  = 48;
   constexpr uint16_t Skull_05_height = 64;
 
-  constexpr uint24_t Skull_06 = 0x001D60;
+  constexpr uint24_t Skull_06 = 0x002B74;
   constexpr uint16_t Skull_06_width  = 48;
   constexpr uint16_t Skull_06_height = 64;
 
-  constexpr uint24_t Skull_07 = 0x001EE4;
+  constexpr uint24_t Skull_07 = 0x002CF8;
   constexpr uint16_t Skull_07_width  = 48;
   constexpr uint16_t Skull_07_height = 64;
 
-  constexpr uint24_t Skull_08 = 0x002068;
+  constexpr uint24_t Skull_08 = 0x002E7C;
   constexpr uint16_t Skull_08_width  = 48;
   constexpr uint16_t Skull_08_height = 64;
 
-  constexpr uint24_t Skull_09 = 0x0021EC;
+  constexpr uint24_t Skull_09 = 0x003000;
   constexpr uint16_t Skull_09_width  = 48;
   constexpr uint16_t Skull_09_height = 64;
 
-  constexpr uint24_t Skull_10 = 0x002370;
+  constexpr uint24_t Skull_10 = 0x003184;
   constexpr uint16_t Skull_10_width  = 48;
   constexpr uint16_t Skull_10_height = 64;
 
-  constexpr uint24_t Skull_11 = 0x0024F4;
+  constexpr uint24_t Skull_11 = 0x003308;
   constexpr uint16_t Skull_11_width  = 48;
   constexpr uint16_t Skull_11_height = 64;
 
-  constexpr uint24_t Skull_12 = 0x002678;
+  constexpr uint24_t Skull_12 = 0x00348C;
   constexpr uint16_t Skull_12_width  = 48;
   constexpr uint16_t Skull_12_height = 64;
 
-  constexpr uint24_t Skull_13 = 0x0027FC;
+  constexpr uint24_t Skull_13 = 0x003610;
   constexpr uint16_t Skull_13_width  = 48;
   constexpr uint16_t Skull_13_height = 64;
 
-  constexpr uint24_t SkullSelect = 0x002980;
+  constexpr uint24_t Skull_Thumb_00 = 0x003794;
+  constexpr uint16_t Skull_Thumb_00_width  = 23;
+  constexpr uint16_t Skull_Thumb_00_height = 64;
+
+  constexpr uint24_t Skull_Thumb_01 = 0x003850;
+  constexpr uint16_t Skull_Thumb_01_width  = 23;
+  constexpr uint16_t Skull_Thumb_01_height = 64;
+
+  constexpr uint24_t Skull_Thumb_02 = 0x00390C;
+  constexpr uint16_t Skull_Thumb_02_width  = 23;
+  constexpr uint16_t Skull_Thumb_02_height = 64;
+
+  constexpr uint24_t Skull_Thumb_03 = 0x0039C8;
+  constexpr uint16_t Skull_Thumb_03_width  = 23;
+  constexpr uint16_t Skull_Thumb_03_height = 64;
+
+  constexpr uint24_t Skull_Thumb_04 = 0x003A84;
+  constexpr uint16_t Skull_Thumb_04_width  = 23;
+  constexpr uint16_t Skull_Thumb_04_height = 64;
+
+  constexpr uint24_t Skull_Thumb_05 = 0x003B40;
+  constexpr uint16_t Skull_Thumb_05_width  = 23;
+  constexpr uint16_t Skull_Thumb_05_height = 64;
+
+  constexpr uint24_t Skull_Thumb_06 = 0x003BFC;
+  constexpr uint16_t Skull_Thumb_06_width  = 23;
+  constexpr uint16_t Skull_Thumb_06_height = 64;
+
+  constexpr uint24_t Skull_Thumb_07 = 0x003CB8;
+  constexpr uint16_t Skull_Thumb_07_width  = 23;
+  constexpr uint16_t Skull_Thumb_07_height = 64;
+
+  constexpr uint24_t Skull_Thumb_08 = 0x003D74;
+  constexpr uint16_t Skull_Thumb_08_width  = 23;
+  constexpr uint16_t Skull_Thumb_08_height = 64;
+
+  constexpr uint24_t Skull_Thumb_09 = 0x003E30;
+  constexpr uint16_t Skull_Thumb_09_width  = 23;
+  constexpr uint16_t Skull_Thumb_09_height = 64;
+
+  constexpr uint24_t Skull_Thumb_10 = 0x003EEC;
+  constexpr uint16_t Skull_Thumb_10_width  = 23;
+  constexpr uint16_t Skull_Thumb_10_height = 64;
+
+  constexpr uint24_t Skull_Thumb_11 = 0x003FA8;
+  constexpr uint16_t Skull_Thumb_11_width  = 23;
+  constexpr uint16_t Skull_Thumb_11_height = 64;
+
+  constexpr uint24_t Skull_Thumb_12 = 0x004064;
+  constexpr uint16_t Skull_Thumb_12_width  = 23;
+  constexpr uint16_t Skull_Thumb_12_height = 64;
+
+  constexpr uint24_t Skull_Thumb_13 = 0x004120;
+  constexpr uint16_t Skull_Thumb_13_width  = 23;
+  constexpr uint16_t Skull_Thumb_13_height = 64;
+
+  constexpr uint24_t Skull_Thumb_Cursor = 0x0041DC;
+  constexpr uint16_t Skull_Thumb_Cursor_width  = 23;
+  constexpr uint16_t Skull_Thumb_Cursor_height = 64;
+
+  constexpr uint24_t SkullSelect = 0x004298;
   constexpr uint16_t SkullSelectWidth  = 128;
   constexpr uint16_t SkullSelectHeight = 64;
 
-  constexpr uint24_t Skulls = 0x002D84;
+  constexpr uint24_t Skulls = 0x00469C;
+  constexpr uint24_t Skulls_Thumb = 0x0046C6;
 }
 
 namespace Images

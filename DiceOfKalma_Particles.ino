@@ -12,12 +12,14 @@ void launchParticles(int16_t x, int16_t y) {
 
     for (uint8_t i = 0; i < Constants::ParticlesMax; i++) {
 
-        particles[i].setX(x);
-        particles[i].setY(y);
-        particles[i].setVelX(random(-5, 6));
-        particles[i].setVelY(random(-4, 7));
-        particles[i].setCounter(random(20, 46));
-        // particles[i].setSize(random(1, 3));
+        if (!particles[i].render() ) {
+            particles[i].setX(x);
+            particles[i].setY(y);
+            particles[i].setVelX(random(-4, 5));
+            particles[i].setVelY(random(-4, 4));
+            particles[i].setCounter(random(20, 56));
+                // particles[i].setSize(random(1, 3));
+        }
     
     }
 

@@ -1,7 +1,5 @@
+#include <ArduboyFX.h>  
 
-// ---------------------------------------------------------------------
-// State draws
-// ---------------------------------------------------------------------
 void drawTitle() {
 
     FX::drawBitmap(0, 0, Images::Title_Options, 0, dbmNormal);
@@ -12,13 +10,12 @@ void drawTitle() {
 }
 
 
-// ---------------------------------------------------------------------
-// State updates
-// ---------------------------------------------------------------------
 void updateTitle() {
-  if (arduboy.justPressed(A_BUTTON)) {
-    level = 1;
-    hand.deckCount = 0;
-    startLevel();
-  }
+
+    if (arduboy.justPressed(A_BUTTON)) {
+        level = 1;
+        hand.deckCount = 0;
+        startLevel();
+    }
+
 }

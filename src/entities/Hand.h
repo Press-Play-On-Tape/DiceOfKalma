@@ -10,12 +10,14 @@ class Hand {
     public:
 
         uint8_t dice[5];
-        bool    marked[5];
+        Marked marked[5];
         SkullType deck[MAX_DECK];
         uint8_t deckCount = 0;
         
         bool    rerollUsedThisHand = false;
         bool    firstHandOfLevel = true;
+        uint8_t    rerollHighlight = Constants::RerollHighlight_None;
+        uint8_t    playHandHighlight = Constants::PlayHandHighlight_None;
 
         HandScore lastHandScore;
 
@@ -46,7 +48,7 @@ class Hand {
                 case HandType::Straight:
                 
                     for (uint8_t i = 0; i < 5; i++) {
-                        this->marked[i] = true;
+                        this->marked[i] = Marked::True;
                     }
                     break;
             
@@ -55,7 +57,7 @@ class Hand {
                         uint8_t diceValue = this->getDice_OfaKind(4, 0);
                         for (uint8_t i = 0; i < 5; i++) {
                             if (this->dice[i] == diceValue) {
-                                this->marked[i] = true;
+                                this->marked[i] = Marked::True;
                             }
                         }
                     }
@@ -66,7 +68,7 @@ class Hand {
                         uint8_t diceValue = this->getDice_OfaKind(3, 0);
                         for (uint8_t i = 0; i < 5; i++) {
                             if (this->dice[i] == diceValue) {
-                                this->marked[i] = true;
+                                this->marked[i] = Marked::True;
                             }
                         }
 
@@ -78,14 +80,14 @@ class Hand {
                         uint8_t diceValue = this->getDice_OfaKind(2, 0);
                         for (uint8_t i = 0; i < 5; i++) {
                             if (this->dice[i] == diceValue) {
-                                this->marked[i] = true;
+                                this->marked[i] = Marked::True;
                             }
                         }
 
                         diceValue = this->getDice_OfaKind(2, diceValue);
                         for (uint8_t i = 0; i < 5; i++) {
                             if (this->dice[i] == diceValue) {
-                                this->marked[i] = true;
+                                this->marked[i] = Marked::True;
                             }
                         }
 
@@ -97,7 +99,7 @@ class Hand {
                         uint8_t diceValue = this->getDice_OfaKind(2, 0);
                         for (uint8_t i = 0; i < 5; i++) {
                             if (this->dice[i] == diceValue) {
-                                this->marked[i] = true;
+                                this->marked[i] = Marked::True;
                             }
                         }
 
@@ -109,14 +111,14 @@ class Hand {
                         uint8_t diceValue = this->getDice_OfaKind(1, 0);
                         for (uint8_t i = 0; i < 5; i++) {
                             if (this->dice[i] == diceValue) {
-                                this->marked[i] = true;
+                                this->marked[i] = Marked::True;
                             }
                         }
 
                         diceValue = this->getDice_OfaKind(6, diceValue);
                         for (uint8_t i = 0; i < 5; i++) {
                             if (this->dice[i] == diceValue) {
-                                this->marked[i] = true;
+                                this->marked[i] = Marked::True;
                             }
                         }
 
@@ -150,25 +152,51 @@ class Hand {
 
         }
 
-        void rollAllDice() {
+        void resetDice() {
 
             for (uint8_t i = 0; i < 5; i++) {
-                this->dice[i] = random(1, 7);
-                this->marked[i] = false;
+                this->dice[i] = 7;
+                this->marked[i] = Marked::False;
             }
 
         }
+
+        // void rollAllDice() {
+
+        //     for (uint8_t i = 0; i < 5; i++) {
+        //         this->dice[i] = random(1, 7);
+        //         this->marked[i] = Marked::False;
+        //     }
+
+        // }
 
         void rerollMarked() {
 
             for (uint8_t i = 0; i < 5; i++) {
 
-                if (this->marked[i]) {
+                if (this->marked[i] == Marked::True) {
                     this->dice[i] = random(1, 7);
-                    this->marked[i] = false;
+                    this->marked[i] = Marked::False;
                 }
 
             }
+
+        }
+
+        void rollAll() {
+        
+            for (uint8_t i = 0; i < 5; i++) {
+
+                this->marked[i] = Marked::True_NoHighlight;
+
+            }
+        
+        }
+
+
+        void rerollDice(uint8_t i) {
+
+            this->dice[i] = random(1, 7);
 
         }
 
@@ -301,11 +329,11 @@ class Hand {
             skullBones += this->countSkull(SkullType::Ace_Bonus) * 3 * aceCount;
             if (!this->rerollUsedThisHand) skullBones += this->countSkull(SkullType::No_Reroll_Bonus) * 15;
 
-skullMultiplier = 5;
-skullBones = 20;
+// skullMultiplier = 5;
+// skullBones = 20;
 
-upgradeMultiplier = 5;
-upgradeBones = 20;
+// upgradeMultiplier = 5;
+// upgradeBones = 20;
 
             this->lastHandScore.baseBones = this->diceSum();
             this->lastHandScore.handBones = handBones;

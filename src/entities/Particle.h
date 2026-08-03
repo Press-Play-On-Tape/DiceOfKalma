@@ -57,7 +57,7 @@ struct Particle {
             //     this->x = boundR - this->pSize ;
             //     this->velx = -this->velx;
             // }
-            this->vely -= gravity * -1;
+            this->vely -= gravity * -2;
             this->velx *= cF;
 
             if (this->x > boundR - 1 ){
@@ -90,8 +90,12 @@ struct Particle {
             this->x += static_cast<int8_t>(this->velx);
             this->y -= static_cast<int8_t>(this->vely);
 
+// Serial.print("x ");
+// Serial.print(x);
+// Serial.print(",");
+// Serial.println(y);
 
-
+            if (this->y < 0) this->counter = 0;
             // // shift size
 
             // if (this->counter < counterInit * 0.5) {

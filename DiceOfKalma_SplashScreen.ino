@@ -2,17 +2,6 @@
 
 static constexpr uint8_t ppotFrames = (1.6 * 30); // 1.6s animation loop
 
-
-// ----------------------------------------------------------------------------
-//  Initialise state ..
-//
-// void splashScreen_Init() {
-
-//     state = GameState::Splash;
-
-// }
-
-
 // ----------------------------------------------------------------------------
 //  Handle state updates .. 
 //
@@ -22,7 +11,7 @@ void splashScreen() {
 
     if (justPressed > 0) {
 
-        state = GameState::Title;
+        gameState = GameState::Title;
 
     }
 

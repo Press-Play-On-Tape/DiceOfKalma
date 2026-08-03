@@ -10,7 +10,7 @@
 #define _DEBUG_PRINTLN  Serial.println
 #define DEBUG_PRINT    void
 #define DEBUG_PRINTLN  void
-
+#define DEBUG_BREAK    asm volatile("break\n");
 
 // ---------------------------------------
 
@@ -24,9 +24,15 @@
 namespace Constants {
 
     // constexpr uint16_t EEPROM_Start         = EEPROM_STORAGE_SPACE_START + 143;
-    constexpr uint8_t ParticlesMax = 25;
+    constexpr uint8_t ParticlesMax = 30;
     constexpr uint8_t EEPROM_Addr = 16;
     constexpr uint8_t EEPROM_Magic  = 0xA5;   
+
+    constexpr uint8_t RerollHighlight_Minimum = 8;
+    constexpr uint8_t RerollHighlight_None = 0;
+
+    constexpr uint8_t PlayHandlHighlight_Minimum = 8;
+    constexpr uint8_t PlayHandHighlight_None = 0;
 
 }
 
@@ -70,12 +76,22 @@ enum class HandType : uint8_t {
 
 };
 
+
+enum class Marked : uint8_t {
+
+    False,
+    True,
+    True_NoHighlight,
+
+};
+
 enum class GameState : uint8_t {
 
     Splash,
     Title,
     Game_Init,
     Game_Level_Intro,
+    Game_Roll_Dice,
     Game_Roll,
     Game_Hand_Result_Init,
     Game_Hand_Result_Base,
@@ -83,7 +99,9 @@ enum class GameState : uint8_t {
     Game_Hand_Result_Skulls_Played,
     Game_Hand_Result_Upgrades_Played,
     Game_Hand_Result_Countdown,
+    Game_Skull_Choice_Init,
     Game_Skull_Choice,
+    Game_Skull_Info,
     Game_Deck_Full_Swap,
     Game_Deck_View,
     Game_Win,

@@ -12,21 +12,30 @@ void drawDice() {
 
     for (uint8_t i = 0; i < 5; i++) {
 
-        bool isMarked = hand.marked[i];
+        bool isMarked = (hand.marked[i] == Marked::True || hand.marked[i] == Marked::True_NoHighlight);
 
-        if (isMarked) {
-            FX::drawBitmap(27, i * 13, Images::Dice_Reverse, hand.dice[i] - 1, dbmNormal);
-        }
-        else {
-            FX::drawBitmap(27, i * 13, Images::Dice_Normal, hand.dice[i] - 1, dbmNormal);
+        switch (hand.marked[i]) {
+
+            case Marked::True:
+                FX::drawBitmap(27, i * 13, Images::Dice_Reverse,((hand.dice[i] - 1) * 6) + (rollDice_Counter == 0 ? 0 : rollDice_Counter - 1), dbmNormal);
+                break;
+
+            case Marked::True_NoHighlight:
+                FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.dice[i] - 1) * 11) + (rollDice_Counter == 0 ? 0 : rollDice_Counter - 1), dbmNormal);
+                break;
+
+            case Marked::False:
+                FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.dice[i] - 1) * 11), dbmNormal);
+                break;
+                
         }
 
-        if (i == cursor && arduboy.frameCount % 16 < 4) {
+        if (i == cursor && rollDice_Counter == 0 && hand.dice[i] != 7 && arduboy.frameCount % 16 < 4) {
             arduboy.drawRect(27, i * 13, 12, 12, BLACK);
         }
 
     }
-
+// Serial.println("");
 }
 
 
@@ -38,15 +47,15 @@ void drawNumber_Padded(uint8_t x, int8_t y, uint16_t number, uint8_t digits) {
     
         case 1:
             {
-                Sprites::drawSelfMasked(x, y, Images::Numbers, number);
+                Sprites::drawSelfMasked(x, y, Images::Numbers_WB, number);
 
             }
             break;
 
         case 2:
             {
-                Sprites::drawSelfMasked(x, y, Images::Numbers, number / 10);
-                Sprites::drawSelfMasked(x, y + 4, Images::Numbers, number % 10);
+                Sprites::drawSelfMasked(x, y, Images::Numbers_WB, number / 10);
+                Sprites::drawSelfMasked(x, y + 4, Images::Numbers_WB, number % 10);
 
             }
             break;
@@ -54,22 +63,22 @@ void drawNumber_Padded(uint8_t x, int8_t y, uint16_t number, uint8_t digits) {
         case 3:
             {
                 uint16_t thresh = threshold;
-                Sprites::drawSelfMasked(x, y, Images::Numbers, number / 100);
+                Sprites::drawSelfMasked(x, y, Images::Numbers_WB, number / 100);
                 number = number - ((number / 100) * 100);
-                Sprites::drawSelfMasked(x, y + 4, Images::Numbers, number / 10);
-                Sprites::drawSelfMasked(x, y + 8, Images::Numbers, number % 10);
+                Sprites::drawSelfMasked(x, y + 4, Images::Numbers_WB, number / 10);
+                Sprites::drawSelfMasked(x, y + 8, Images::Numbers_WB, number % 10);
 
             }
             break;
 
         case 4:
             {
-                Sprites::drawSelfMasked(x, y, Images::Numbers, number / 1000);
+                Sprites::drawSelfMasked(x, y, Images::Numbers_WB, number / 1000);
                 number = number - ((number / 1000) * 1000);
-                Sprites::drawSelfMasked(x, y + 4, Images::Numbers, number / 100);
+                Sprites::drawSelfMasked(x, y + 4, Images::Numbers_WB, number / 100);
                 number = number - ((number / 100) * 100);
-                Sprites::drawSelfMasked(x, y + 8, Images::Numbers, number / 10);
-                Sprites::drawSelfMasked(x, y + 12, Images::Numbers, number % 10);
+                Sprites::drawSelfMasked(x, y + 8, Images::Numbers_WB, number / 10);
+                Sprites::drawSelfMasked(x, y + 12, Images::Numbers_WB, number % 10);
 
             }
             break;
@@ -84,15 +93,15 @@ void drawNumber_Right(uint8_t x, int8_t y, uint16_t number) {
     
         case 0 ... 9:
             {
-                Sprites::drawSelfMasked(x, y + 12, Images::Numbers, number);
+                Sprites::drawSelfMasked(x, y + 12, Images::Numbers_WB, number);
 
             }
             break;
 
         case 10 ... 99:
             {
-                Sprites::drawSelfMasked(x, y + 8, Images::Numbers, number / 10);
-                Sprites::drawSelfMasked(x, y + 12, Images::Numbers, number % 10);
+                Sprites::drawSelfMasked(x, y + 8, Images::Numbers_WB, number / 10);
+                Sprites::drawSelfMasked(x, y + 12, Images::Numbers_WB, number % 10);
 
             }
             break;
@@ -100,22 +109,22 @@ void drawNumber_Right(uint8_t x, int8_t y, uint16_t number) {
         case 100 ... 999:
             {
                 uint16_t thresh = threshold;
-                Sprites::drawSelfMasked(x, y + 4, Images::Numbers, number / 100);
+                Sprites::drawSelfMasked(x, y + 4, Images::Numbers_WB, number / 100);
                 number = number - ((number / 100) * 100);
-                Sprites::drawSelfMasked(x, y + 8, Images::Numbers, number / 10);
-                Sprites::drawSelfMasked(x, y + 12, Images::Numbers, number % 10);
+                Sprites::drawSelfMasked(x, y + 8, Images::Numbers_WB, number / 10);
+                Sprites::drawSelfMasked(x, y + 12, Images::Numbers_WB, number % 10);
 
             }
             break;
 
         case 1000 ... 9999:
             {
-                Sprites::drawSelfMasked(x, y, Images::Numbers, number / 1000);
+                Sprites::drawSelfMasked(x, y, Images::Numbers_WB, number / 1000);
                 number = number - ((number / 1000) * 1000);
-                Sprites::drawSelfMasked(x, y + 4, Images::Numbers, number / 100);
+                Sprites::drawSelfMasked(x, y + 4, Images::Numbers_WB, number / 100);
                 number = number - ((number / 100) * 100);
-                Sprites::drawSelfMasked(x, y + 8, Images::Numbers, number / 10);
-                Sprites::drawSelfMasked(x, y + 12, Images::Numbers, number % 10);
+                Sprites::drawSelfMasked(x, y + 8, Images::Numbers_WB, number / 10);
+                Sprites::drawSelfMasked(x, y + 12, Images::Numbers_WB, number % 10);
 
             }
             break;
@@ -130,15 +139,15 @@ void drawNumber(uint8_t x, int8_t y, uint16_t number) {
     
         case 0 ... 9:
             {
-                Sprites::drawSelfMasked(x, y + 6, Images::Numbers, number);
+                Sprites::drawSelfMasked(x, y + 6, Images::Numbers_WB, number);
 
             }
             break;
 
         case 10 ... 99:
             {
-                Sprites::drawSelfMasked(x, y + 4, Images::Numbers, number / 10);
-                Sprites::drawSelfMasked(x, y + 8, Images::Numbers, number % 10);
+                Sprites::drawSelfMasked(x, y + 4, Images::Numbers_WB, number / 10);
+                Sprites::drawSelfMasked(x, y + 8, Images::Numbers_WB, number % 10);
 
             }
             break;
@@ -146,22 +155,22 @@ void drawNumber(uint8_t x, int8_t y, uint16_t number) {
         case 100 ... 999:
             {
                 uint16_t thresh = threshold;
-                Sprites::drawSelfMasked(x, y + 2, Images::Numbers, number / 100);
+                Sprites::drawSelfMasked(x, y + 2, Images::Numbers_WB, number / 100);
                 number = number - ((number / 100) * 100);
-                Sprites::drawSelfMasked(x, y + 6, Images::Numbers, number / 10);
-                Sprites::drawSelfMasked(x, y + 10, Images::Numbers, number % 10);
+                Sprites::drawSelfMasked(x, y + 6, Images::Numbers_WB, number / 10);
+                Sprites::drawSelfMasked(x, y + 10, Images::Numbers_WB, number % 10);
 
             }
             break;
 
         case 1000 ... 9999:
             {
-                Sprites::drawSelfMasked(x, y, Images::Numbers, number / 1000);
+                Sprites::drawSelfMasked(x, y, Images::Numbers_WB, number / 1000);
                 number = number - ((number / 1000) * 1000);
-                Sprites::drawSelfMasked(x, y + 4, Images::Numbers, number / 100);
+                Sprites::drawSelfMasked(x, y + 4, Images::Numbers_WB, number / 100);
                 number = number - ((number / 100) * 100);
-                Sprites::drawSelfMasked(x, y + 8, Images::Numbers, number / 10);
-                Sprites::drawSelfMasked(x, y + 12, Images::Numbers, number % 10);
+                Sprites::drawSelfMasked(x, y + 8, Images::Numbers_WB, number / 10);
+                Sprites::drawSelfMasked(x, y + 12, Images::Numbers_WB, number % 10);
 
             }
             break;
@@ -178,7 +187,7 @@ void drawSkull() {
 
 void drawLevelAndTarget(HandScore hand, uint8_t levelNumber, uint16_t target) {
 
-    FX::drawBitmap(60, 0, Images::Background_01, 0, dbmNormal);
+    FX::drawBitmap(60, 0, Images::Background_02, 0, dbmNormal);
 
     drawNumber_Right(62, -2, levelNumber);
     drawNumber(62, 14, 25);
@@ -186,13 +195,14 @@ void drawLevelAndTarget(HandScore hand, uint8_t levelNumber, uint16_t target) {
 
 }
 
-void drawBonesMultTotal(HandScore hand) {
+void drawBonesMultTotal(HandScore handScore) {
 
     FX::drawBitmap(0, 0, Images::Background_00, 0, dbmNormal);
 
-    if (hand.totalBones > 0) drawNumber(44, 3, hand.totalBones);
-    if (hand.totalMultiplier > 0) drawNumber(44, 24, hand.totalMultiplier);
-    if (hand.score > 0) drawNumber(44, 46, hand.score);
+
+    if (handScore.totalBones > 0) drawNumber(44, 3, handScore.totalBones);
+    if (handScore.totalMultiplier > 0) drawNumber(44, 24, handScore.totalMultiplier);
+    if (handScore.score > 0) drawNumber(44, 46, handScore.score);
 
 }
 
@@ -218,16 +228,43 @@ void drawFooterRoll() {
 //   arduboy.print(handsMax);
 
 
-    Sprites::drawSelfMasked(3, 6, Images::Numbers, handsMax - handsLeft + 1);
-    Sprites::drawSelfMasked(3, 16, Images::Numbers, handsMax);
-    Sprites::drawSelfMasked(3, 50, Images::Numbers, rerollsLeft);
+    if (hand.playHandHighlight > Constants::PlayHandHighlight_None) {
 
-    if (state == GameState::Game_Roll && arduboy.frameCount % 16 < 4) {
+        FX::drawBitmap(0, 0, Images::Button_PlayHand, 0, dbmNormal);
+        Sprites::drawSelfMasked(3, 6, Images::Numbers_BW, handsLeft);
+        Sprites::drawSelfMasked(3, 16, Images::Numbers_BW, handsMax);
+
+    }
+    else {
+    
+        Sprites::drawSelfMasked(3, 6, Images::Numbers_WB, handsLeft);
+        Sprites::drawSelfMasked(3, 16, Images::Numbers_WB, handsMax);
+
+    }
+
+
+    if (hand.rerollHighlight > Constants::RerollHighlight_None) {
+
+        FX::drawBitmap(0, 39, Images::Button_Reroll, 0, dbmNormal);
+        Sprites::drawSelfMasked(3, 45, Images::Numbers_BW, rerollsLeft);
+        Sprites::drawSelfMasked(3, 55, Images::Numbers_BW, rerollsMax);
+
+    }
+    else {
+
+        Sprites::drawSelfMasked(3, 45, Images::Numbers_WB, rerollsLeft);
+        Sprites::drawSelfMasked(3, 55, Images::Numbers_WB, rerollsMax);
+
+    }
+
+    if (gameState == GameState::Game_Roll && arduboy.frameCount % 16 < 4) {
 
         switch (cursor) {
 
             case CURSOR_PLAY:
-                arduboy.drawRect(0, 0, 24, 25, BLACK);
+                if (hand.playHandHighlight == Constants::RerollHighlight_None) {
+                    arduboy.drawRect(0, 0, 24, 25, BLACK);
+                }
                 break;
 
             case CURSOR_DECK:
@@ -235,7 +272,9 @@ void drawFooterRoll() {
                 break;
 
             case CURSOR_REROLL:
-                arduboy.drawRect(0, 39, 24, 25, BLACK);
+                if (hand.rerollHighlight == Constants::RerollHighlight_None) {
+                    arduboy.drawRect(0, 39, 24, 25, BLACK);
+                }
                 break;
 
         }

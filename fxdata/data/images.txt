@@ -4,12 +4,15 @@ namespace Images {
     image_t Title_Text              = "../Assets/Title/Title_Text.png"
     image_t Title_Options           = "../Assets/Title/Title_Options.png"
     image_t LevelEntry              = "../Assets/LevelEntry.png"
-    image_t Dice_Normal             = "../Assets/Dice/Dice_Normal_12x16.png"
-    image_t Dice_Reverse            = "../Assets/Dice/Dice_Reverse_12x16.png"
+    image_t Dice_Normal             = "../Assets/Dice/Dice_Animated_12x16.png"
+    image_t Dice_Reverse            = "../Assets/Dice/Dice_Animated_2_12x16.png"
     image_t Background_00           = "../Assets/Background_00.png"
-    image_t Background_01           = "../Assets/Background_01.png"
+    image_t Background_02           = "../Assets/Background_02.png"
     image_t Speech                  = "../Assets/Speech_8x64.png"
     image_t SelectHand              = "../Assets/SelectHand_24x64.png"
+    image_t SkullInfo               = "../Assets/SkullInfo.png"
+    image_t Button_PlayHand         = "../Assets/Button_Play.png"
+    image_t Button_Reroll           = "../Assets/Button_Reroll.png"
 
     image_t Skull_00                = "../Assets/Skulls/Skull_00.png"
     image_t Skull_01                = "../Assets/Skulls/Skull_01.png"
@@ -25,6 +28,22 @@ namespace Images {
     image_t Skull_11                = "../Assets/Skulls/Skull_11.png"
     image_t Skull_12                = "../Assets/Skulls/Skull_12.png"
     image_t Skull_13                = "../Assets/Skulls/Skull_13.png"
+
+    image_t Skull_Thumb_00          = "../Assets/Skulls/Skull_Thumb_00.png"
+    image_t Skull_Thumb_01          = "../Assets/Skulls/Skull_Thumb_01.png"
+    image_t Skull_Thumb_02          = "../Assets/Skulls/Skull_Thumb_02.png"
+    image_t Skull_Thumb_03          = "../Assets/Skulls/Skull_Thumb_03.png"
+    image_t Skull_Thumb_04          = "../Assets/Skulls/Skull_Thumb_04.png"
+    image_t Skull_Thumb_05          = "../Assets/Skulls/Skull_Thumb_05.png"
+    image_t Skull_Thumb_06          = "../Assets/Skulls/Skull_Thumb_06.png"
+    image_t Skull_Thumb_07          = "../Assets/Skulls/Skull_Thumb_07.png"
+    image_t Skull_Thumb_08          = "../Assets/Skulls/Skull_Thumb_08.png"
+    image_t Skull_Thumb_09          = "../Assets/Skulls/Skull_Thumb_09.png"
+    image_t Skull_Thumb_10          = "../Assets/Skulls/Skull_Thumb_10.png"
+    image_t Skull_Thumb_11          = "../Assets/Skulls/Skull_Thumb_11.png"
+    image_t Skull_Thumb_12          = "../Assets/Skulls/Skull_Thumb_12.png"
+    image_t Skull_Thumb_13          = "../Assets/Skulls/Skull_Thumb_13.png"
+    image_t Skull_Thumb_Cursor      = "../Assets/Skulls/Skull_Thumb_Cursor.png"
 
     image_t SkullSelect             = "../Assets/SkullSelect.png"
 
@@ -45,6 +64,22 @@ namespace Images {
         Skull_13,
     };
 
+    uint24_t Skulls_Thumb[] = {
+        Skull_Thumb_00,
+        Skull_Thumb_01,
+        Skull_Thumb_02,
+        Skull_Thumb_03,
+        Skull_Thumb_04,
+        Skull_Thumb_05,
+        Skull_Thumb_06,
+        Skull_Thumb_07,
+        Skull_Thumb_08,
+        Skull_Thumb_09,
+        Skull_Thumb_10,
+        Skull_Thumb_11,
+        Skull_Thumb_12,
+        Skull_Thumb_13,
+    };
 }
 
 namespace_end
