@@ -10,10 +10,19 @@ namespace Images {
     image_t Background_02           = "../Assets/Background_02.png"
     image_t Speech_Sml              = "../Assets/Speech_8x64.png"
     image_t Speech_Lrg              = "../Assets/Speech_33x64.png"
-    image_t SelectHand              = "../Assets/SelectHand_24x64.png"
     image_t SkullInfo               = "../Assets/SkullInfo.png"
     image_t Button_PlayHand         = "../Assets/Button_Play.png"
     image_t Button_Reroll           = "../Assets/Button_Reroll.png"
+    image_t GameOver                = "../Assets/GameOver.png"
+    image_t GameWin                 = "../Assets/GameWin.png"
+    image_t Inventory_Top           = "../Assets/Inventory_Top.png"
+    image_t Inventory_Bot           = "../Assets/Inventory_Bottom_13x64.png"
+
+    image_t UpgradeHand_Top         = "../Assets/UpgradeHand/UpgradeHand_Top.png"
+    image_t UpgradeHand_Bot         = "../Assets/UpgradeHand/UpgradeHand_Bot_15x64.png"
+    image_t UpgradeHands            = "../Assets/UpgradeHand/UpgradeHand_24x64.png"
+    image_t UpgradeHand_Cursor      = "../Assets/UpgradeHand/UpgradeHand_Cursor.png"
+
 
     image_t Skull_00                = "../Assets/Skulls/Skull_00.png"
     image_t Skull_01                = "../Assets/Skulls/Skull_01.png"

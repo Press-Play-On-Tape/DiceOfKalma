@@ -50,9 +50,13 @@ Particle particles[Constants::ParticlesMax];
 
 SkullType skullChoiceA, skullChoiceB;
 SkullType pendingSkull = SkullType::None;   // skull waiting for a deck slot when deck is full
+
 uint8_t skullCursor = 0;
+uint8_t upgradeCursor = 0;
+uint8_t upgradeTop = 0;
 uint8_t swapCursor = 0;
 uint8_t deckViewCursor = 0;
+uint8_t deckViewTop = 0;
 
 
 
@@ -60,11 +64,12 @@ void setup() {
     
     arduboy.boot();
     arduboy.setFrameRate(30);
-    arduboy.initRandomSeed();
+    // arduboy.initRandomSeed(12);
     loadHighScore();
 
     FX::display(CLEAR_BUFFER);
     FX::begin(FX_DATA_PAGE, FX_SAVE_PAGE);
+
 
 }
 
@@ -101,14 +106,6 @@ void loop() {
             drawBonesMultTotal(hand.lastHandScore);
             drawDice();
             drawFooterRoll();    
-            
-  if (gameState == GameState::Game_Roll && hand.rerollHighlight > Constants::RerollHighlight_None) {
-        Serial.print("d ");
-
-  Serial.println(hand.rerollHighlight);
-            hand.rerollHighlight--;
-
-  }     
             break;
 
         case GameState::Game_Hand_Result_Init:   
@@ -138,13 +135,21 @@ void loop() {
             break;
 
         case GameState::Game_Skull_Choice_Init:  
-            updateHandResult_Init();   
+            skullChoice_Init();   
             [[fallthrough]]
 
         case GameState::Game_Skull_Choice:  
-            updateHandResult(); 
+            // skullChoice(); 
             updateSkullChoice();   
             drawSkullChoice();   
+            break;
+
+        case GameState::Game_Upgrade_Choice_Init:  
+            upgradeHand_Init();   
+            [[fallthrough]]
+
+        case GameState::Game_Upgrade_Choice:  
+            upgradeHand();   
             break;
 
         case GameState::Game_Skull_Info:  
@@ -161,7 +166,7 @@ void loop() {
             drawDeckView();      
             break;
 
-        case GameState::GameOver:      
+        case GameState::Game_Over:      
             updateGameOver();      
             drawGameOver();      
             break;

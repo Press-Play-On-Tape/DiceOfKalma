@@ -90,21 +90,7 @@ struct Particle {
             this->x += static_cast<int8_t>(this->velx);
             this->y -= static_cast<int8_t>(this->vely);
 
-// Serial.print("x ");
-// Serial.print(x);
-// Serial.print(",");
-// Serial.println(y);
-
             if (this->y < 0) this->counter = 0;
-            // // shift size
-
-            // if (this->counter < counterInit * 0.5) {
-            //     if (this->pSize > 2) this->pSize = 2;
-            // }
-            // if (this->counter <  counterInit * 0.2) {
-            //     if (this->pSize > 1) this->pSize = 1;
-            // }
-
             if (this->counter > 0) this->counter--;
 
         }

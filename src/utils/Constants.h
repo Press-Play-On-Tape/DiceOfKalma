@@ -6,10 +6,11 @@
 
 #define _DEBUG
 
-#define _DEBUG_PRINT    Serial.print
-#define _DEBUG_PRINTLN  Serial.println
-#define DEBUG_PRINT    void
-#define DEBUG_PRINTLN  void
+#define DEBUG_HAND
+#define DEBUG_PRINT    Serial.print
+#define DEBUG_PRINTLN  Serial.println
+#define _DEBUG_PRINT    void
+#define _DEBUG_PRINTLN  void
 #define DEBUG_BREAK    asm volatile("break\n");
 
 // ---------------------------------------
@@ -33,6 +34,8 @@ namespace Constants {
 
     constexpr uint8_t PlayHandlHighlight_Minimum = 8;
     constexpr uint8_t PlayHandHighlight_None = 0;
+
+    constexpr uint8_t UpgradeHand_Count = 8;
 
 }
 
@@ -85,6 +88,24 @@ enum class Marked : uint8_t {
 
 };
 
+enum class Inventory_BottomOptions : uint8_t {
+
+    NoSkulls,
+    NoScrolling,
+    DownOnly,
+    UpOnly,
+    Both
+
+};
+
+enum class UpgradeHand_BottomOptions : uint8_t {
+
+    DownOnly,
+    UpOnly,
+    Both
+
+};
+
 enum class GameState : uint8_t {
 
     Splash,
@@ -101,11 +122,13 @@ enum class GameState : uint8_t {
     Game_Hand_Result_Countdown,
     Game_Skull_Choice_Init,
     Game_Skull_Choice,
+    Game_Upgrade_Choice_Init,
+    Game_Upgrade_Choice,
     Game_Skull_Info,
     Game_Deck_Full_Swap,
     Game_Deck_View,
     Game_Win,
-    GameOver,
+    Game_Over,
 
 };
 

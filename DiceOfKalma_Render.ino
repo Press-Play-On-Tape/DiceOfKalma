@@ -25,10 +25,6 @@ void drawDice() {
                 break;
 
             case Marked::False:
-            Serial.print(hand.dice[i]);
-            Serial.print(" ");
-            Serial.print(((hand.dice[i] - 1) * 11));
-            Serial.print(" ");
                 FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.dice[i] - 1) * 11), dbmNormal);
                 break;
                 
@@ -39,10 +35,8 @@ void drawDice() {
         }
 
     }
-Serial.println("");
+
 }
-
-
 
 
 void drawNumber_Padded(uint8_t x, int8_t y, uint16_t number, uint8_t digits) {
@@ -213,25 +207,6 @@ void drawBonesMultTotal(HandScore handScore) {
 
 void drawFooterRoll() {
 
-//   arduboy.setCursor(0, 25);
-//   arduboy.print(lastHandName);
-
-//   arduboy.setCursor(0, 34);
-//   arduboy.print(lastChips);
-//   arduboy.print(F("x"));
-//   arduboy.print(lastMult);
-//   arduboy.print(F("="));
-//   arduboy.print(lastScore);
-
-//   arduboy.setCursor(64, 34);
-//   arduboy.print(F("RR:"));
-//   arduboy.print(rerollsLeft);
-//   arduboy.print(F(" H:"));
-//   arduboy.print(handsMax - handsLeft + 1);
-//   arduboy.print(F("/"));
-//   arduboy.print(handsMax);
-
-
     if (hand.playHandHighlight > Constants::PlayHandHighlight_None) {
 
         FX::drawBitmap(0, 0, Images::Button_PlayHand, 0, dbmNormal);
@@ -296,10 +271,4 @@ void drawLevelIntro() {
     drawNumber_Padded(21, 40, handsMax, 2);
     drawNumber_Padded(10, 43, rerollsMax, 2);
 
-//   arduboy.setCursor(4, 52);
-//   arduboy.print(F("DECK: "));
-//   arduboy.print(deckCount);
-//   arduboy.print(F("/"));
-//   arduboy.print(MAX_DECK);
-//   arduboy.print(F(" SKULLS"));
 }

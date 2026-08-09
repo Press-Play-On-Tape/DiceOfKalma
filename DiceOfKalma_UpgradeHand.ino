@@ -1,0 +1,100 @@
+#include <ArduboyFX.h>  
+#include "src/utils/Constants.h" 
+
+void setUpgradeTop() {
+
+    switch (upgradeCursor) {
+
+        case 0 ... 1:
+            upgradeTop = 0;
+            break;
+
+        case 2:
+            upgradeTop = 1;
+            break;
+
+        case 3:
+            upgradeTop = 2;
+            break;
+
+        case 4:
+            upgradeTop = 3;
+            break;
+
+        case 5:
+            upgradeTop = 4;
+            break;
+
+        default:
+            upgradeTop = 5;
+            break;
+
+    }
+
+
+}
+
+void upgradeHand_Init() {
+  
+    gameState = GameState::Game_Upgrade_Choice;
+
+}
+
+void upgradeHand() {
+
+  if (arduboy.justPressed(RIGHT_BUTTON) && upgradeCursor > 0) {
+    upgradeCursor = upgradeCursor - 1;
+    setUpgradeTop();
+  }
+  else if (arduboy.justPressed(LEFT_BUTTON) && upgradeCursor < Constants::UpgradeHand_Count - 1) {
+    upgradeCursor = upgradeCursor + 1;
+    setUpgradeTop();
+  }
+   if (arduboy.justPressed(A_BUTTON)) {
+        hand.upgradeHand = static_cast<HandType>(Constants::UpgradeHand_Count - upgradeCursor);
+            startLevel();
+    }
+
+
+
+
+    uint8_t x = 86;
+    UpgradeHand_BottomOptions botImage = UpgradeHand_BottomOptions::Both;
+
+
+    if (upgradeCursor > 0) { 
+
+        if (upgradeCursor == Constants::UpgradeHand_Count - 1) {
+            botImage = UpgradeHand_BottomOptions::UpOnly;
+        }
+        else {
+            botImage = UpgradeHand_BottomOptions::Both;
+        }
+    }
+    else { //Do not show up
+        if (upgradeCursor == Constants::UpgradeHand_Count - 1) {
+            botImage = UpgradeHand_BottomOptions::Both;
+
+        }
+        else {
+            botImage = UpgradeHand_BottomOptions::DownOnly;
+        }
+    }
+    
+    for (uint8_t i = upgradeTop; i < upgradeTop + 4; i++) {
+
+        if (i < Constants::UpgradeHand_Count) {
+            FX::drawBitmap(x, 0, Images::UpgradeHands, i, dbmWhite);
+            x = x - 28;
+        }
+
+    }
+
+    FX::drawBitmap(0, 0, Images::UpgradeHand_Bot, static_cast<uint8_t>(botImage), dbmNormal);
+    FX::drawBitmap(115, 0, Images::UpgradeHand_Top, 0, dbmNormal);
+
+    if (arduboy.frameCount % 24 < 12) {
+        FX::drawBitmap(84 - ((upgradeCursor - upgradeTop) * 28), 0, Images::UpgradeHand_Cursor, 0, dbmWhite);
+    }
+    
+}
