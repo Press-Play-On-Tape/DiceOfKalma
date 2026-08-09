@@ -48,7 +48,7 @@ Hand hand;
 HandScore tempHandScore;
 Particle particles[Constants::ParticlesMax];
 
-SkullType skullChoiceA, skullChoiceB;
+SkullType skullChoiceA, skullChoiceB, skullChoiceC;
 SkullType pendingSkull = SkullType::None;   // skull waiting for a deck slot when deck is full
 
 uint8_t skullCursor = 0;
@@ -139,9 +139,7 @@ void loop() {
             [[fallthrough]]
 
         case GameState::Game_Skull_Choice:  
-            // skullChoice(); 
-            updateSkullChoice();   
-            drawSkullChoice();   
+            skullChoice(); 
             break;
 
         case GameState::Game_Upgrade_Choice_Init:  
@@ -154,6 +152,14 @@ void loop() {
 
         case GameState::Game_Skull_Info:  
             drawSkullInfo();   
+            break;
+
+        case GameState::Game_Hand_Info_Init:  
+            handInfo_Init();   
+            [[fallthrough]]
+
+        case GameState::Game_Hand_Info:  
+            handInfo();   
             break;
 
         case GameState::Game_Deck_Full_Swap:

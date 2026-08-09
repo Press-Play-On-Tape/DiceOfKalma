@@ -13,20 +13,21 @@ void drawTitle() {
 void updateTitle() {
 
     if (arduboy.justPressed(A_BUTTON)) {
+
         level = 1;
         hand.deckCount = 0;
 
-    hand.addSkullToDeck(SkullType::Pair_Multiplier);
-    hand.addSkullToDeck(SkullType::Big_Multiplier);
-    // hand.addSkullToDeck(SkullType::Kind_3or4_Multiplier);
-    // hand.addSkullToDeck(SkullType::Flat_Bones);
-    // hand.addSkullToDeck(SkullType::Extra_Reroll);
-    // hand.addSkullToDeck(SkullType::Extra_Hand);
-    hand.deckCount = 2;
-
+        hand.addSkullToDeck(SkullType::Pair_Multiplier);
+        hand.addSkullToDeck(SkullType::Big_Multiplier);
+        hand.addSkullToDeck(SkullType::No_Reroll_Bonus);
+        hand.addSkullToDeck(SkullType::Six_Bonus);
+        hand.addSkullToDeck(SkullType::Six_Bonus);
+        // hand.addSkullToDeck(SkullType::Extra_Hand);
+        hand.deckCount = 5;
 
         startLevel();
-        gameState = GameState::Game_Upgrade_Choice_Init;
+        // gameState = GameState::Game_Upgrade_Choice_Init;
+
     }
 
 }

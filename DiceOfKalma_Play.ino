@@ -80,6 +80,10 @@ void updateRoll() {
     cursor = (cursor == CURSOR_REROLL) ? 0 : cursor + 1;
   }
 
+  if (arduboy.justPressed(B_BUTTON)) {
+    gameState = GameState::Game_Hand_Info_Init;
+  }
+
   if (arduboy.justPressed(A_BUTTON)) {
     if (cursor < 5) {
         if (hand.marked[cursor] == Marked::True) {
@@ -129,7 +133,7 @@ void updateDeckFullSwap() {
     swapCursor = (swapCursor == MAX_DECK - 1) ? 0 : swapCursor + 1;
   }
   if (arduboy.justPressed(A_BUTTON)) {
-    hand.deck[swapCursor] = pendingSkull;
+    hand.deck[swapCursor].skullType = pendingSkull;
     level++;
     if (level > 25) gameState = GameState::Game_Win; else startLevel();
   }
@@ -154,9 +158,6 @@ void updateWin() {
 
 
 
-
-
-
 void drawDeckFullSwap() {
   arduboy.setCursor(2, 0);
   arduboy.print(F("DECK FULL - SWAP?"));
@@ -168,7 +169,7 @@ void drawDeckFullSwap() {
     uint8_t col = (i == swapCursor) ? BLACK : WHITE;
     arduboy.setCursor(2, y);
     arduboy.setTextColor(col);
-    arduboy.print(skullName(hand.deck[i]));
+    arduboy.print(skullName(hand.deck[i].skullType));
   }
   arduboy.setTextColor(WHITE);
 }
@@ -186,9 +187,15 @@ void renderRollDice() {
         
                 hand.rerollDice(i);
                 hand.marked[i] = Marked::True_NoHighlight;
+
             }
 
         }
+
+        // // SJH .. Fix hands
+        // for (uint8_t i = 0; i < 5; i++) {
+        //     hand.dice[i] = 5;
+        // }
 
     }
 

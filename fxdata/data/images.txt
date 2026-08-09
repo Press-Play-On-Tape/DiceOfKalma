@@ -15,6 +15,15 @@ namespace Images {
     image_t Button_Reroll           = "../Assets/Button_Reroll.png"
     image_t GameOver                = "../Assets/GameOver.png"
     image_t GameWin                 = "../Assets/GameWin.png"
+    image_t Bones_Heading           = "../Assets/Bones_Heading.png"
+    image_t Hand_Names              = "../Assets/Hand_Names_6x36.png"
+    image_t Upgrade                 = "../Assets/Upgrade.png"
+    image_t Total                   = "../Assets/Total.png"
+    image_t Multiplier              = "../Assets/Multiplier.png"
+
+    image_t HandScore_Top           = "../Assets/HandScore/HandScore_Top.png"
+    image_t HandScore_Bot           = "../Assets/HandScore/HandScore_Bot_15x64.png"
+
     image_t Inventory_Top           = "../Assets/Inventory_Top.png"
     image_t Inventory_Bot           = "../Assets/Inventory_Bottom_13x64.png"
 
@@ -23,7 +32,10 @@ namespace Images {
     image_t UpgradeHands            = "../Assets/UpgradeHand/UpgradeHand_24x64.png"
     image_t UpgradeHand_Cursor      = "../Assets/UpgradeHand/UpgradeHand_Cursor.png"
 
+    image_t SkullSelect_Top         = "../Assets/SkullSelect/SkullSelect_Top.png"
+    image_t SkullSelect_Bot         = "../Assets/SkullSelect/SkullSelect_Bot.png"
 
+    image_t Skull_Names             = "../Assets/Skulls/Skull_Names_6x41.png"
     image_t Skull_00                = "../Assets/Skulls/Skull_00.png"
     image_t Skull_01                = "../Assets/Skulls/Skull_01.png"
     image_t Skull_02                = "../Assets/Skulls/Skull_02.png"
@@ -54,8 +66,6 @@ namespace Images {
     image_t Skull_Thumb_12          = "../Assets/Skulls/Skull_Thumb_12.png"
     image_t Skull_Thumb_13          = "../Assets/Skulls/Skull_Thumb_13.png"
     image_t Skull_Thumb_Cursor      = "../Assets/Skulls/Skull_Thumb_Cursor.png"
-
-    image_t SkullSelect             = "../Assets/SkullSelect.png"
 
     uint24_t Skulls[] = {
         Skull_00,

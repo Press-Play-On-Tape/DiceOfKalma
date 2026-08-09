@@ -112,7 +112,7 @@ void drawDeckView() {
 
     for (uint8_t i = deckViewTop; i < hand.deckCount; i++) {
 
-        uint24_t aIcon = FX::readIndexedUInt24(Images::Skulls_Thumb, static_cast<uint8_t>(hand.deck[i]));
+        uint24_t aIcon = FX::readIndexedUInt24(Images::Skulls_Thumb, static_cast<uint8_t>(hand.deck[i].skullType));
         FX::drawBitmap(x, 0, aIcon, 0, dbmNormal);
 
       x= x - 24;

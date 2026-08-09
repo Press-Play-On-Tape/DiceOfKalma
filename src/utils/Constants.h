@@ -37,6 +37,8 @@ namespace Constants {
 
     constexpr uint8_t UpgradeHand_Count = 8;
 
+    constexpr uint8_t HandScore_StartingPos = 128 - 64;
+    constexpr uint8_t HandScore_LineSpacing = 7;
 }
 
 // ---------------------------------------------------------------------
@@ -47,21 +49,21 @@ namespace Constants {
 // ---------------------------------------------------------------------
 
 enum class SkullType : uint8_t {
-    Pair_Multiplier = 0,        // +1 mult on PAIR / TWO PAIR
-    Big_Multiplier,             // +1 mult on 3 KIND / STRAIGHT / FULL HOUSE
-    Kind_3or4_Multiplier,       // +1 mult on 4 / 5 OF A KIND
-    Flat_Bones,                 // +10 chips every hand
-    Extra_Reroll,               // +1 reroll per hand
-    Extra_Hand,                 // +1 hand per level
-    Six_Bonus,                  // +3 chips per die showing a 6
-    Ace_Bonus,                  // +3 chips per die showing a 1
-    Even_Mulitplier,            // +1 mult if all 5 dice are even
-    Odd_Mulitplier,             // +1 mult if all 5 dice are odd
-    No_Reroll_Bonus,            // +15 chips if hand played with 0 rerolls used
-    High_Roll_Save,             // HIGH ROLL hands score as if base 15 chips
-    Threshold_Discount,         // threshold -5% (stacks, capped)
-    Double_First,               // first hand played each level scores x2
-    Skull_Count,
+    Pair_Multiplier = 0,            // +1 mult on PAIR / TWO PAIR
+    Big_Multiplier = 1,             // +1 mult on 3 KIND / STRAIGHT / FULL HOUSE
+    Kind_3or4_Multiplier = 2,       // +1 mult on 4 / 5 OF A KIND
+    Flat_Bones = 3,                 // +10 chips every hand
+    Extra_Reroll = 4,               // +1 reroll per hand
+    Extra_Hand = 5,                 // +1 hand per level
+    Six_Bonus = 6,                  // +3 chips per die showing a 6
+    Ace_Bonus = 7,                  // +3 chips per die showing a 1
+    Even_Mulitplier = 8,            // +1 mult if all 5 dice are even
+    Odd_Mulitplier = 9,             // +1 mult if all 5 dice are odd
+    No_Reroll_Bonus = 10,           // +15 chips if hand played with 0 rerolls used
+    High_Roll_Save = 11,            // HIGH ROLL hands score as if base 15 chips
+    Threshold_Discount = 12,        // threshold -5% (stacks, capped)
+    Double_First = 13,              // first hand played each level scores x2
+    Skull_Count = 14,
     None
 };
 
@@ -106,6 +108,16 @@ enum class UpgradeHand_BottomOptions : uint8_t {
 
 };
 
+
+enum class HandScore_BottomOptions : uint8_t {
+
+    DownOnly,
+    UpOnly,
+    Both,
+    None
+
+};
+
 enum class GameState : uint8_t {
 
     Splash,
@@ -125,6 +137,8 @@ enum class GameState : uint8_t {
     Game_Upgrade_Choice_Init,
     Game_Upgrade_Choice,
     Game_Skull_Info,
+    Game_Hand_Info_Init,
+    Game_Hand_Info,
     Game_Deck_Full_Swap,
     Game_Deck_View,
     Game_Win,

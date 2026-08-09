@@ -42,25 +42,27 @@ void upgradeHand_Init() {
 
 void upgradeHand() {
 
-  if (arduboy.justPressed(RIGHT_BUTTON) && upgradeCursor > 0) {
-    upgradeCursor = upgradeCursor - 1;
-    setUpgradeTop();
-  }
-  else if (arduboy.justPressed(LEFT_BUTTON) && upgradeCursor < Constants::UpgradeHand_Count - 1) {
-    upgradeCursor = upgradeCursor + 1;
-    setUpgradeTop();
-  }
-   if (arduboy.justPressed(A_BUTTON)) {
-        hand.upgradeHand = static_cast<HandType>(Constants::UpgradeHand_Count - upgradeCursor);
-            startLevel();
-    }
-
-
-
-
     uint8_t x = 86;
     UpgradeHand_BottomOptions botImage = UpgradeHand_BottomOptions::Both;
 
+
+    // Handle input ..
+
+    if (arduboy.justPressed(RIGHT_BUTTON) && upgradeCursor > 0) {
+        upgradeCursor = upgradeCursor - 1;
+        setUpgradeTop();
+    }
+    else if (arduboy.justPressed(LEFT_BUTTON) && upgradeCursor < Constants::UpgradeHand_Count - 1) {
+        upgradeCursor = upgradeCursor + 1;
+        setUpgradeTop();
+    }
+    else if (arduboy.justPressed(A_BUTTON)) {
+        hand.upgradeHand = static_cast<HandType>(Constants::UpgradeHand_Count - upgradeCursor);
+        startLevel();
+    }
+
+
+    // Render screen ..
 
     if (upgradeCursor > 0) { 
 
@@ -70,8 +72,10 @@ void upgradeHand() {
         else {
             botImage = UpgradeHand_BottomOptions::Both;
         }
+
     }
     else { //Do not show up
+
         if (upgradeCursor == Constants::UpgradeHand_Count - 1) {
             botImage = UpgradeHand_BottomOptions::Both;
 
@@ -79,6 +83,7 @@ void upgradeHand() {
         else {
             botImage = UpgradeHand_BottomOptions::DownOnly;
         }
+
     }
     
     for (uint8_t i = upgradeTop; i < upgradeTop + 4; i++) {
@@ -94,7 +99,9 @@ void upgradeHand() {
     FX::drawBitmap(115, 0, Images::UpgradeHand_Top, 0, dbmNormal);
 
     if (arduboy.frameCount % 24 < 12) {
+
         FX::drawBitmap(84 - ((upgradeCursor - upgradeTop) * 28), 0, Images::UpgradeHand_Cursor, 0, dbmWhite);
+        
     }
     
 }
