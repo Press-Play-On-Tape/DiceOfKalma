@@ -61,7 +61,7 @@ uint8_t swapCursor = 0;
 uint8_t deckViewCursor = 0;
 uint8_t deckViewTop = 0;
 
-Stack <uint16_t, 30> skullStack;
+Stack <uint16_t, 60> skullStack;
 SkullData skullData;
 
 void setup() {
@@ -73,23 +73,6 @@ void setup() {
 
     FX::display(CLEAR_BUFFER);
     FX::begin(FX_DATA_PAGE, FX_SAVE_PAGE);
-
-    skullStack.push(0x0105);
-    skullStack.push(0x0004);
-    skullStack.push(0x0003);
-    skullStack.push(0x0002);
-    skullStack.push(0x0001);
-    skullStack.push(0x0205);
-    skullStack.push(0x0004);
-    skullStack.push(0x0003);
-    skullStack.push(0x0002);
-    skullStack.push(0x0001);
-    skullStack.push(0x0005);
-    skullStack.push(0x0004);
-    skullStack.push(0x0003);
-    skullStack.push(0x0002);
-    skullStack.push(0x0101);
-
 
 }
 
@@ -208,12 +191,13 @@ void loop() {
     FX::display(CLEAR_BUFFER);
 
     if (!skullStack.isEmpty() && arduboy.isFrameCount(2)) {
-    
-        skullData.setData(skullStack.pop());
-        Serial.print(skullData.getData());
-        Serial.print(" ");
+        uint16_t data = skullStack.pop();
+        skullData.setData(data);
+        Serial.print("Data: ");
+        Serial.print(data);
+        Serial.print(" E: ");
         Serial.print(skullData.getEyes());
-        Serial.print(" ");
+        Serial.print(", M: ");
         Serial.println(skullData.getMouth());
 
     }

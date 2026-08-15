@@ -207,6 +207,7 @@ void renderHandResult_Base() {
         case 0:
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
+            addLookLeftThenRight();
 
             [[fallthrough]]
 
@@ -291,6 +292,7 @@ void renderHandResult_Hand() {
         case 0:
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
+            addLookDownThenUp();            
             [[fallthrough]]
 
         case 1 ... 5:
@@ -399,6 +401,7 @@ void renderHandResult_SkullsPlayed() {
         case 0:
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
+            addLookLeftThenRight();
             [[fallthrough]]
 
         case 1 ... 5:
@@ -499,6 +502,7 @@ void renderHandResult_UpgradesPlayed() {
         case 0:
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
+            addLookLeftThenRight();
             [[fallthrough]]
 
         case 1 ... 5:
@@ -724,8 +728,8 @@ void renderHandResult_Countdown() {
             }
 
             break;
-    }
 
+    }
 
 }
 

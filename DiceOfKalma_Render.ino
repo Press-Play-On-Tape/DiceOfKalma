@@ -179,7 +179,9 @@ void drawNumber(uint8_t x, int8_t y, uint16_t number) {
 
 void drawSkull() {
 
-    FX::drawBitmap(76, 12, Images::Skull_Large, 0, dbmNormal);
+    // FX::drawBitmap(76, 12, Images::Skull_Large, 0, dbmNormal);
+    FX::drawBitmap(76, 12, Images::Skull_Large, skullData.getMouth(), dbmNormal);
+    FX::drawBitmap(99, 21, Images::Skull_Eyes, skullData.getEyes(), dbmWhite);
 
 }
 

@@ -149,9 +149,7 @@ void drawDeckView() {
 
     }
     
-
     FX::drawBitmap(0, 0, Images::Inventory_Bot, static_cast<uint8_t>(botImage), dbmNormal);
-
 
     if (hand.deckCount != 0) {
 
@@ -164,11 +162,10 @@ void drawDeckView() {
 
         }
 
-    }
+        if (arduboy.frameCount % 24 < 12) {
+            FX::drawBitmap(90 - ((deckViewCursor - deckViewTop) * 24), 0, Images::Skull_Thumb_Cursor, 0, dbmWhite);
+        }
 
-
-    if (arduboy.frameCount % 24 < 12) {
-        FX::drawBitmap(90 - ((deckViewCursor - deckViewTop) * 24), 0, Images::Skull_Thumb_Cursor, 0, dbmWhite);
     }
 
 }

@@ -4,7 +4,7 @@ const __FlashStringHelper* skullName(SkullType s) {
 
     switch (s) {
         case SkullType::Pair_Multiplier:      return F("PAIR MULT +1");
-        case SkullType::Big_Multiplier:       return F("3K/STR/FH MULT+1");
+        case SkullType::Big_Multiplier:       return F("STR/FH MULT+1");
         case SkullType::Kind_3or4_Multiplier:      return F("4-5 KIND MULT+1");
         case SkullType::Flat_Bones:     return F("+10 CHIPS/HAND");
         case SkullType::Extra_Reroll:   return F("+1 REROLL/HAND");
@@ -41,3 +41,57 @@ void loadHighScore() {
   }
 }
 
+
+
+
+    void addLookLeftThenRight() {
+    
+        skullStack.push(0x0205);
+        skullStack.push(0x0005);
+        skullStack.push(0x0005);
+        skullStack.push(0x0005);
+        skullStack.push(0x0004);
+        skullStack.push(0x0004);
+        skullStack.push(0x0003);
+        skullStack.push(0x0003);
+        skullStack.push(0x0002);
+        skullStack.push(0x0002);
+        skullStack.push(0x0001);
+        skullStack.push(0x0101);
+    
+    }
+
+    void addLookDownThenUp() {
+    
+        skullStack.push(0x020B);
+        skullStack.push(0x000B);
+        skullStack.push(0x000A);
+        skullStack.push(0x000A);
+        skullStack.push(0x0009);
+        skullStack.push(0x0009);
+        skullStack.push(0x0008);
+        skullStack.push(0x0008);
+        skullStack.push(0x0007);
+        skullStack.push(0x0007);
+        skullStack.push(0x0006);
+        skullStack.push(0x0106);
+    
+    }
+
+
+    void addLongTalk() {
+    
+        skullStack.push(0x0201);
+        skullStack.push(0x0001);
+        skullStack.push(0x0001);
+        skullStack.push(0x0001);
+        skullStack.push(0x0001);
+        skullStack.push(0x0001);
+        skullStack.push(0x0001);
+        skullStack.push(0x0001);
+        skullStack.push(0x0001);
+        skullStack.push(0x0001);
+        skullStack.push(0x0001);
+        skullStack.push(0x0101);
+    
+    }

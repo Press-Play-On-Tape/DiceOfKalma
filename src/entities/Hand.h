@@ -315,7 +315,7 @@ class Hand {
                 handCategory = 2;
                 handType = HandType::Straight;
 
-                if (this->upgradeHand == HandType::Five_of_a_Kind) {
+                if (this->upgradeHand == HandType::Straight) {
                 
                     upgradeBones = 15;
                     upgradeMultiplier = 0;
@@ -368,7 +368,7 @@ class Hand {
 
                 handBones = 15; 
                 handMultiplier = 4; 
-                handCategory = 2;
+                handCategory = 3;
                 handType = HandType::Three_of_a_Kind;
                 
                 if (this->upgradeHand == HandType::Three_of_a_Kind) {
@@ -508,7 +508,7 @@ class Hand {
                 updateDeckEntry_Multiplier(SkullType::Even_Mulitplier, 1);
 
                 #ifdef DEBUG_HAND
-                    DEBUG_PRINTLN("Sk Kind_3or4_Multiplier: B 0, M 1");
+                    DEBUG_PRINTLN("Sk Even_Multiplier: B 0, M 1");
                 #endif
 
             }
@@ -519,7 +519,7 @@ class Hand {
                 updateDeckEntry_Multiplier(SkullType::Odd_Mulitplier, 1);
 
                 #ifdef DEBUG_HAND
-                    DEBUG_PRINTLN("Sk Kind_3or4_Multiplier: B 0, M 1");
+                    DEBUG_PRINTLN("Sk Odd_Mulitplier: B 0, M 1");
                 #endif
 
             }
