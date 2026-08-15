@@ -1,33 +1,39 @@
 #include <ArduboyFX.h>  
 
-void drawTitle() {
 
-    FX::drawBitmap(0, 0, Images::Title_Options, 0, dbmNormal);
-    FX::drawBitmap(76, 0, Images::Title_Skull, 0, dbmNormal);
-    FX::drawBitmap(25, 0, Images::Title_Text, 0, dbmMasked);
-    drawNumber(11, 46, bestLevel);
-
-}
-
-
-void updateTitle() {
+void title() {
 
     if (arduboy.justPressed(A_BUTTON)) {
 
         level = 1;
         hand.deckCount = 0;
 
-        hand.addSkullToDeck(SkullType::Pair_Multiplier);
-        hand.addSkullToDeck(SkullType::Big_Multiplier);
-        hand.addSkullToDeck(SkullType::No_Reroll_Bonus);
-        hand.addSkullToDeck(SkullType::Six_Bonus);
-        hand.addSkullToDeck(SkullType::Six_Bonus);
+        // hand.addSkullToDeck(SkullType::Pair_Multiplier);
+        // hand.addSkullToDeck(SkullType::Big_Multiplier);
+        // hand.addSkullToDeck(SkullType::No_Reroll_Bonus);
+        // hand.addSkullToDeck(SkullType::Six_Bonus);
+        // hand.addSkullToDeck(SkullType::Six_Bonus);
         // hand.addSkullToDeck(SkullType::Extra_Hand);
-        hand.deckCount = 5;
+        // hand.deckCount = 6;
 
         startLevel();
         // gameState = GameState::Game_Upgrade_Choice_Init;
 
     }
+
+
+    FX::drawBitmap(0, 0, Images::Fire, arduboy.getFrameCount(48) / 3, dbmNormal);
+
+
+    FX::drawBitmap(1, 0, Images::Title_Options, 0, dbmMasked);
+    FX::drawBitmap(76, 12, Images::Skull_Large, skullData.getMouth(), dbmNormal);
+    FX::drawBitmap(24, 0, Images::Title_Text, 0, dbmMasked);
+    arduboy.fillRect(11, 51, 7, 5, BLACK);
+    if (bestLevel > 10)    arduboy.fillRect(11, 55, 7, 5, BLACK);
+    drawNumber(12, 46, bestLevel);
+
+
+    FX::drawBitmap(100, 22, Images::Skull_Eyes, skullData.getEyes(), dbmNormal);
+    // skullStack.push(1);
 
 }

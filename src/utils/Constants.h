@@ -6,7 +6,7 @@
 
 #define _DEBUG
 
-#define DEBUG_HAND
+#define _DEBUG_HAND
 #define DEBUG_PRINT    Serial.print
 #define DEBUG_PRINTLN  Serial.println
 #define _DEBUG_PRINT    void
@@ -39,6 +39,8 @@ namespace Constants {
 
     constexpr uint8_t HandScore_StartingPos = 128 - 64;
     constexpr uint8_t HandScore_LineSpacing = 7;
+
+    constexpr uint8_t Level_Count = 1;
 }
 
 // ---------------------------------------------------------------------
@@ -108,7 +110,6 @@ enum class UpgradeHand_BottomOptions : uint8_t {
 
 };
 
-
 enum class HandScore_BottomOptions : uint8_t {
 
     DownOnly,
@@ -117,6 +118,16 @@ enum class HandScore_BottomOptions : uint8_t {
     None
 
 };
+
+enum class Skull_EyeMode : uint8_t {
+
+    DoNothing,
+    LeftRight,
+    UpDone,
+    None
+
+};
+
 
 enum class GameState : uint8_t {
 

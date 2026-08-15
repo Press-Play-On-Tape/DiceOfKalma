@@ -4,8 +4,10 @@
 #include "src/utils/Arduboy2Ext.h"
 #include "src/utils/Constants.h"
 #include "src/utils/Structs.h"
+#include "src/utils/Stack.h"
 #include "src/entities/Hand.h"
 #include "src/entities/Particle.h"
+#include "src/entities/SkullData.h"
 #include <EEPROM.h>
 
 #include "images.h"
@@ -32,9 +34,9 @@ uint8_t rollDice_Counter = 0;
 // ---------------------------------------------------------------------
 // Run state
 // ---------------------------------------------------------------------
+
 uint8_t  level = 1;
 int16_t threshold = 0;
-// uint16_t runScore = 0;      // score accumulated this level
 uint8_t  handsLeft = 0;
 uint8_t  handsMax  = 0;
 uint8_t  rerollsLeft = 0;
@@ -49,7 +51,8 @@ HandScore tempHandScore;
 Particle particles[Constants::ParticlesMax];
 
 SkullType skullChoiceA, skullChoiceB, skullChoiceC;
-SkullType pendingSkull = SkullType::None;   // skull waiting for a deck slot when deck is full
+SkullType skullInfoType;
+SkullType pendingSkull = SkullType::None;   
 
 uint8_t skullCursor = 0;
 uint8_t upgradeCursor = 0;
@@ -58,7 +61,8 @@ uint8_t swapCursor = 0;
 uint8_t deckViewCursor = 0;
 uint8_t deckViewTop = 0;
 
-
+Stack <uint16_t, 30> skullStack;
+SkullData skullData;
 
 void setup() {
     
@@ -69,6 +73,22 @@ void setup() {
 
     FX::display(CLEAR_BUFFER);
     FX::begin(FX_DATA_PAGE, FX_SAVE_PAGE);
+
+    skullStack.push(0x0105);
+    skullStack.push(0x0004);
+    skullStack.push(0x0003);
+    skullStack.push(0x0002);
+    skullStack.push(0x0001);
+    skullStack.push(0x0205);
+    skullStack.push(0x0004);
+    skullStack.push(0x0003);
+    skullStack.push(0x0002);
+    skullStack.push(0x0001);
+    skullStack.push(0x0005);
+    skullStack.push(0x0004);
+    skullStack.push(0x0003);
+    skullStack.push(0x0002);
+    skullStack.push(0x0101);
 
 
 }
@@ -86,8 +106,7 @@ void loop() {
             break;
 
         case GameState::Title:         
-            updateTitle();         
-            drawTitle();         
+            title();         
             break;
 
         case GameState::Game_Level_Intro:   
@@ -163,8 +182,10 @@ void loop() {
             break;
 
         case GameState::Game_Deck_Full_Swap:
-            updateDeckFullSwap();  
-            drawDeckFullSwap();  
+            // updateDeckFullSwap();  
+            // drawDeckFullSwap(); 
+            updateDeckView();      
+            drawDeckView(); 
             break;
 
         case GameState::Game_Deck_View:     
@@ -185,5 +206,16 @@ void loop() {
 
     updateAndRenderParticles();
     FX::display(CLEAR_BUFFER);
+
+    if (!skullStack.isEmpty() && arduboy.isFrameCount(2)) {
+    
+        skullData.setData(skullStack.pop());
+        Serial.print(skullData.getData());
+        Serial.print(" ");
+        Serial.print(skullData.getEyes());
+        Serial.print(" ");
+        Serial.println(skullData.getMouth());
+
+    }
 
 }

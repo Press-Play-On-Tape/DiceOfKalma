@@ -3,7 +3,7 @@
 
 uint16_t computeThreshold() {
 
-    return 40;//SJH
+    return 400;//SJH
 
     uint32_t base = 150 + (uint32_t)(level - 1) * 60 + (uint32_t)(level - 1) * (level - 1) * 20;
     uint8_t discountPct = hand.countSkull(SkullType::Threshold_Discount) * 5;
@@ -31,116 +31,116 @@ void startLevel() {
 }
 
 void newHand() {
+
     rerollsLeft = rerollsMax;
     cursor = 0;
     hand.rerollUsedThisHand = false;
-    // hand.rollAllDice();
+
 }
 
-
-
-
-// ---------------------------------------------------------------------
-// State updates
-// ---------------------------------------------------------------------
 
 void updateLevelIntro() {
-  stateTimer++;
-  if (stateTimer > 60 || arduboy.justPressed(A_BUTTON)) {
-  hand.rollAll();
-    gameState = GameState::Game_Roll_Dice;
-    returnState = GameState::Game_Roll;
-  }
-}
 
+    stateTimer++;
+
+    if (stateTimer > 60 || arduboy.justPressed(A_BUTTON)) {
+        hand.rollAll();
+        gameState = GameState::Game_Roll_Dice;
+        returnState = GameState::Game_Roll;
+    }
+
+}
 
 
 void updateRoll() {
 
-  hand.evaluateHand(); // live preview of current dice
+    hand.evaluateHand(); // live preview of current dice
 
-  if (arduboy.justPressed(UP_BUTTON)) {
-    cursor = (cursor == 0) ? CURSOR_REROLL : cursor - 1;
-  }
+    if (arduboy.justPressed(UP_BUTTON)) {
 
-  if (arduboy.justPressed(LEFT_BUTTON)) {
-  
-    if (cursor == 0 || cursor == 1) cursor = CURSOR_PLAY;
-    if (cursor == 2) cursor = CURSOR_DECK;
-    if (cursor == 3 || cursor == 4) cursor = CURSOR_REROLL;
-  }
+        cursor = (cursor == 0) ? CURSOR_REROLL : cursor - 1;
 
-  if (arduboy.justPressed(RIGHT_BUTTON)) {
-    if (cursor == CURSOR_PLAY) cursor = 0;
-    if (cursor == CURSOR_DECK) cursor = 2;
-    if (cursor == CURSOR_REROLL) cursor = 4;
-  }
-
-  if (arduboy.justPressed(DOWN_BUTTON)) {
-    cursor = (cursor == CURSOR_REROLL) ? 0 : cursor + 1;
-  }
-
-  if (arduboy.justPressed(B_BUTTON)) {
-    gameState = GameState::Game_Hand_Info_Init;
-  }
-
-  if (arduboy.justPressed(A_BUTTON)) {
-    if (cursor < 5) {
-        if (hand.marked[cursor] == Marked::True) {
-          hand.marked[cursor] = Marked::False;
-        }
-        else {
-          hand.marked[cursor] = Marked::True;
-        }
-    } 
-    else if (cursor == CURSOR_REROLL) {
-      bool anyMarked = false;
-        hand.rerollHighlight = Constants::RerollHighlight_Minimum;
-        // DEBUG_BREAK
-      for (uint8_t i = 0; i < 5; i++) if (hand.marked[i] == Marked::True) anyMarked = true;
-      if (rerollsLeft > 0 && anyMarked) {
-        // hand.rerollMarked();
-        rerollsLeft--;
-        hand.rerollUsedThisHand = 4;
-        gameState = GameState::Game_Roll_Dice;
-        returnState = GameState::Game_Roll;
-        rollDice_Counter = 1;
-        // DEBUG_BREAK
-      }
-    } else if (cursor == CURSOR_PLAY) { // CURSOR_PLAY
-        hand.playHandHighlight = Constants::PlayHandlHighlight_Minimum;
-      hand.evaluateHand();
-    //   runScore += hand.lastHandScore.score;
-      handsLeft--;
-      hand.firstHandOfLevel = false;
-      gameState = GameState::Game_Hand_Result_Init;
-      stateTimer = 0;
-    } else if (cursor == CURSOR_DECK) {
-        returnState = GameState::Game_Roll;
-        deckViewCursor = 0;
-        gameState = GameState::Game_Deck_View;
     }
-  }
 
-}
+    if (arduboy.justPressed(LEFT_BUTTON)) {
 
+        if (cursor == 0 || cursor == 1) cursor = CURSOR_PLAY;
+        if (cursor == 2) cursor = CURSOR_DECK;
+        if (cursor == 3 || cursor == 4) cursor = CURSOR_REROLL;
 
-void updateDeckFullSwap() {
-  if (arduboy.justPressed(UP_BUTTON)) {
-    swapCursor = (swapCursor == 0) ? MAX_DECK - 1 : swapCursor - 1;
-  }
-  if (arduboy.justPressed(DOWN_BUTTON)) {
-    swapCursor = (swapCursor == MAX_DECK - 1) ? 0 : swapCursor + 1;
-  }
-  if (arduboy.justPressed(A_BUTTON)) {
-    hand.deck[swapCursor].skullType = pendingSkull;
-    level++;
-    if (level > 25) gameState = GameState::Game_Win; else startLevel();
-  }
-  if (arduboy.justPressed(B_BUTTON)) {
-    level++;
-    if (level > 25) gameState = GameState::Game_Win; else startLevel();
-  }
+    }
+
+    if (arduboy.justPressed(RIGHT_BUTTON)) {
+
+        if (cursor == CURSOR_PLAY) cursor = 0;
+        if (cursor == CURSOR_DECK) cursor = 2;
+        if (cursor == CURSOR_REROLL) cursor = 4;
+
+    }
+
+    if (arduboy.justPressed(DOWN_BUTTON)) {
+
+        cursor = (cursor == CURSOR_REROLL) ? 0 : cursor + 1;
+
+    }
+
+    if (arduboy.justPressed(B_BUTTON)) {
+
+        gameState = GameState::Game_Hand_Info_Init;
+
+    }
+
+    if (arduboy.justPressed(A_BUTTON)) {
+
+        if (cursor < 5) {
+
+            if (hand.marked[cursor] == Marked::True) {
+                hand.marked[cursor] = Marked::False;
+            }
+            else {
+                hand.marked[cursor] = Marked::True;
+            }
+
+        } 
+        else if (cursor == CURSOR_REROLL) {
+
+            bool anyMarked = false;
+            hand.rerollHighlight = Constants::RerollHighlight_Minimum;
+            
+            for (uint8_t i = 0; i < 5; i++) if (hand.marked[i] == Marked::True) anyMarked = true;
+
+            if (rerollsLeft > 0 && anyMarked) {
+
+                rerollsLeft--;
+                hand.rerollUsedThisHand = 4;
+                gameState = GameState::Game_Roll_Dice;
+                returnState = GameState::Game_Roll;
+                rollDice_Counter = 1;
+
+            }
+
+        } 
+        else if (cursor == CURSOR_PLAY) { 
+
+            hand.playHandHighlight = Constants::PlayHandlHighlight_Minimum;
+            hand.evaluateHand();
+            //   runScore += hand.lastHandScore.score;
+            handsLeft--;
+            hand.firstHandOfLevel = false;
+            gameState = GameState::Game_Hand_Result_Init;
+            stateTimer = 0;
+
+        } 
+        else if (cursor == CURSOR_DECK) {
+
+            returnState = GameState::Game_Roll;
+            deckViewCursor = 0;
+            gameState = GameState::Game_Deck_View;
+
+        }
+
+    }
+
 }
 
 
@@ -155,25 +155,6 @@ void updateWin() {
     gameState = GameState::Title;
   }
 }
-
-
-
-void drawDeckFullSwap() {
-  arduboy.setCursor(2, 0);
-  arduboy.print(F("DECK FULL - SWAP?"));
-  arduboy.drawLine(0, 9, 127, 9, WHITE);
-
-  for (uint8_t i = 0; i < MAX_DECK; i++) {
-    int16_t y = 11 + i * 8;
-    if (i == swapCursor) arduboy.fillRect(0, y, 128, 8, WHITE);
-    uint8_t col = (i == swapCursor) ? BLACK : WHITE;
-    arduboy.setCursor(2, y);
-    arduboy.setTextColor(col);
-    arduboy.print(skullName(hand.deck[i].skullType));
-  }
-  arduboy.setTextColor(WHITE);
-}
-
 
 
 void renderRollDice() {
@@ -344,7 +325,7 @@ void renderHandResult_Hand() {
                 if (tempHandScore.totalBones < hand.lastHandScore.baseBones + hand.lastHandScore.handBones) {
 
                     tempHandScore.totalBones++;
-                    // if ((tempHandScore.totalBones - hand.lastHandScore.baseBones) % hand.lastHandScore.handMultiplier == 0 &&
+
                     if (tempHandScore.handBones % hand.lastHandScore.handMultiplier == 0 &&
                         tempHandScore.totalMultiplier < hand.lastHandScore.handMultiplier) {
                         tempHandScore.totalMultiplier++;
@@ -444,7 +425,6 @@ void renderHandResult_SkullsPlayed() {
 
         case 6:
 
-            // hand.markWiningHand(hand.lastHandScore);
             renderHandResult_Timer++;
 
             if (hand.lastHandScore.skullBones >= 10 || (hand.lastHandScore.skullBones < 10 && arduboy.isFrameCount(4))) {
@@ -545,7 +525,6 @@ void renderHandResult_UpgradesPlayed() {
 
         case 6:
 
-            // hand.markWiningHand(hand.lastHandScore);
             renderHandResult_Timer++;
 
             if (hand.lastHandScore.upgradeBones >= 10 || (hand.lastHandScore.upgradeBones < 10 && arduboy.isFrameCount(4))) {
@@ -685,7 +664,15 @@ void renderHandResult_Countdown() {
 
                     if (arduboy.justPressed(A_BUTTON)) {
                         renderHandResult_Counter = 0;
-                        gameState = GameState::Game_Skull_Choice_Init;
+                        level++;
+
+                        if (level > Constants::Level_Count) {
+                            gameState = GameState::Game_Win; 
+                        }
+                        else {
+                            gameState = GameState::Game_Skull_Choice_Init;
+                        }
+
                     }
 
                 }

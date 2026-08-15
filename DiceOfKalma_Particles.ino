@@ -18,7 +18,7 @@ void launchParticles(int16_t x, int16_t y) {
             particles[i].setVelX(random(-4, 5));
             particles[i].setVelY(random(-4, 4));
             particles[i].setCounter(random(20, 56));
-                // particles[i].setSize(random(1, 3));
+
         }
     
     }
@@ -32,15 +32,6 @@ void updateAndRenderParticles() {
         particles[i].update();
 
         if ( particles[i].render() ) { // the dot should be rendered
-
-            // int pSize = particles[i].getSize();
-
-            // if (pSize == 1) {
-            //     arduboy.drawPixel(particles[i].getY(), particles[i].getX(), 1);
-            // } 
-            // else {
-            //     arduboy.drawRect(particles[i].getY(), particles[i].getX(), pSize, pSize, 1);
-            // }
 
             Sprites::drawExternalMask(particles[i].getY() - 1, particles[i].getX() - 1, Images::Particle_Sml, Images::Particle_Sml_Mask, 0, 0);
 

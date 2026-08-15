@@ -56,13 +56,45 @@ void updateDeckView() {
 
     if (arduboy.justPressed(DOWN_BUTTON)) {
     
-        gameState = GameState::Game_Skull_Info; returnState = GameState::Game_Deck_View;
+        skullInfoType = hand.deck[deckViewCursor].skullType;
+        gameState = GameState::Game_Skull_Info; 
+        returnState = GameState::Game_Deck_View;
 
     }
 
     if (arduboy.justPressed(A_BUTTON)) {
 
-        gameState = GameState::Game_Roll;
+        switch (gameState) {
+        
+            case GameState::Game_Deck_Full_Swap:
+                
+                gameState = GameState::Game_Upgrade_Choice_Init;
+
+                if (arduboy.justPressed(A_BUTTON)) {
+                    hand.deck[swapCursor].skullType = pendingSkull;
+                }
+
+                deckViewCursor = 0;
+                deckViewTop = 0;
+
+                break;
+
+            case GameState::Game_Deck_View:
+
+                gameState = GameState::Game_Roll;
+                deckViewCursor = 0;
+                deckViewTop = 0;
+
+                break;
+
+        }
+
+    }
+
+
+    if (arduboy.justPressed(B_BUTTON)) {
+
+        gameState = GameState::Game_Upgrade_Choice_Init;
 
     }
 
@@ -73,7 +105,20 @@ void drawDeckView() {
     uint8_t x = 90;
     Inventory_BottomOptions botImage = Inventory_BottomOptions::Both;
 
-    FX::drawBitmap(96, 0, Images::Inventory_Top, 0, dbmNormal);
+
+    switch (gameState) {
+    
+        case GameState::Game_Deck_Full_Swap:
+            FX::drawBitmap(115, 0, Images::Swap, 0, dbmNormal);
+            break;
+
+        case GameState::Game_Deck_View:
+            FX::drawBitmap(96, 0, Images::Inventory_Top, 0, dbmNormal);
+            drawNumber(119, 44, hand.deckCount);
+            break;
+
+    }
+
 
 
     if (hand.deckCount == 0) {
@@ -90,8 +135,10 @@ void drawDeckView() {
         else {
             botImage = Inventory_BottomOptions::Both;
         }
+        
     }
-    else { //Do not show up
+    else { 
+
         if (deckViewCursor == hand.deckCount -1) {
             botImage = Inventory_BottomOptions::NoScrolling;
 
@@ -99,26 +146,25 @@ void drawDeckView() {
         else {
             botImage = Inventory_BottomOptions::DownOnly;
         }
+
     }
     
 
     FX::drawBitmap(0, 0, Images::Inventory_Bot, static_cast<uint8_t>(botImage), dbmNormal);
 
-    drawNumber(119, 45, hand.deckCount);
-//   arduboy.print(F(")"));
-//   arduboy.drawLine(0, 9, 127, 9, WHITE);
 
-  if (hand.deckCount != 0) {
+    if (hand.deckCount != 0) {
 
-    for (uint8_t i = deckViewTop; i < hand.deckCount; i++) {
+        for (uint8_t i = deckViewTop; i < hand.deckCount; i++) {
 
-        uint24_t aIcon = FX::readIndexedUInt24(Images::Skulls_Thumb, static_cast<uint8_t>(hand.deck[i].skullType));
-        FX::drawBitmap(x, 0, aIcon, 0, dbmNormal);
+            uint24_t aIcon = FX::readIndexedUInt24(Images::Skulls_Thumb, static_cast<uint8_t>(hand.deck[i].skullType));
+            FX::drawBitmap(x, 0, aIcon, 0, dbmNormal);
 
-      x= x - 24;
+            x= x - 24;
+
+        }
+
     }
-
-  }
 
 
     if (arduboy.frameCount % 24 < 12) {

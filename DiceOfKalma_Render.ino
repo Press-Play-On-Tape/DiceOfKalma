@@ -179,7 +179,7 @@ void drawNumber(uint8_t x, int8_t y, uint16_t number) {
 
 void drawSkull() {
 
-    FX::drawBitmap(76, 0, Images::Title_Skull, 0, dbmNormal);
+    FX::drawBitmap(76, 12, Images::Skull_Large, 0, dbmNormal);
 
 }
 
@@ -264,8 +264,9 @@ void drawFooterRoll() {
 
 void drawLevelIntro() {
 
-    FX::drawBitmap(76, 0, Images::Title_Skull, 0, dbmNormal);
-    FX::drawBitmap(0, 0 , Images::LevelEntry, 0, dbmNormal);
+    FX::drawBitmap(0, 0, Images::Fire, arduboy.getFrameCount(48) / 3, dbmNormal);
+    FX::drawBitmap(76, 12, Images::Skull_Large, 0, dbmNormal);
+    FX::drawBitmap(0, 0 , Images::LevelEntry, 0, dbmMasked);
     drawNumber_Padded(43, 40, level, 2);
     drawNumber_Padded(32, 45, threshold, 4);
     drawNumber_Padded(21, 40, handsMax, 2);

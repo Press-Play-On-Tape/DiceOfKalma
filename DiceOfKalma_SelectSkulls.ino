@@ -16,9 +16,6 @@ void offerSkulls() {
         skullChoiceC = static_cast<SkullType>(random(0, static_cast<uint8_t>(SkullType::Skull_Count)));
     } while (skullChoiceC == skullChoiceA || skullChoiceC == skullChoiceB);
 
-    skullCursor = 0;
-    gameState = GameState::Game_Skull_Choice;
-
 }
 
 
@@ -56,26 +53,51 @@ void skullChoice() {
 
     }
     else if (arduboy.justPressed(DOWN_BUTTON)) {
+  
+        switch (skullCursor) {
+
+            case 0:
+                skullInfoType = skullChoiceA;
+                break;
+
+            case 1:
+                skullInfoType = skullChoiceB;
+                break;
+
+            case 2:
+                skullInfoType = skullChoiceC;
+                break;
+                
+        }
 
         gameState = GameState::Game_Skull_Info; 
         returnState = GameState::Game_Skull_Choice;
 
     }
-    if (arduboy.justPressed(A_BUTTON)) {
+    else if (arduboy.justPressed(A_BUTTON)) {
 
-        SkullType chosen = (skullCursor == 0) ? skullChoiceA : skullChoiceB;
+        SkullType chosen;
+        
+        switch (skullCursor) {
+
+            case 0:
+                chosen = skullChoiceA;
+                break;
+
+            case 1:
+                chosen = skullChoiceB;
+                break;
+
+            case 2:
+                chosen = skullChoiceC;
+                break;
+                
+        }
 
         if (hand.deckCount < MAX_DECK) {
 
             hand.addSkullToDeck(chosen);
-            level++;
-
-            if (level > 25) {
-                gameState = GameState::Game_Win; 
-            }
-            else {
-                gameState = GameState::Game_Upgrade_Choice_Init;
-            }
+            gameState = GameState::Game_Upgrade_Choice_Init;
     
         } 
         else {
@@ -85,6 +107,11 @@ void skullChoice() {
             gameState = GameState::Game_Deck_Full_Swap;
 
         }
+
+    }
+    else if (arduboy.justPressed(B_BUTTON)) {
+
+        gameState = GameState::Game_Upgrade_Choice_Init;
 
     }
 
@@ -107,22 +134,17 @@ void skullChoice() {
         FX::drawBitmap(90 - (skullCursor * 24), 0, Images::Skull_Thumb_Cursor, 0, dbmWhite);
     }
     
-
-//   arduboy.setCursor(10, 54);
-//   arduboy.print(F("<- ->  A TO PICK"));
 }
 
 void  drawSkullInfo() {
 
     FX::drawBitmap(0, 0, Images::SkullInfo, 0, dbmNormal);
 
-    uint24_t img = FX::readIndexedUInt24(Images::Skulls, static_cast<uint8_t>(skullChoiceA));
+    uint24_t img = FX::readIndexedUInt24(Images::Skulls, static_cast<uint8_t>(skullInfoType));
     FX::drawBitmap(65, 0, img, 0, dbmNormal);
 
-  if (arduboy.justPressed(A_BUTTON)) {
-    gameState = returnState;
-
-  }
-
+    if (arduboy.justPressed(A_BUTTON)) {
+        gameState = returnState;
+    }
 
 }

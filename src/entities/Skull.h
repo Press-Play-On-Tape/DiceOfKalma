@@ -5,10 +5,11 @@
 #include "../utils/Constants.h"
 #include "../utils/Structs.h"
 
-class DeckEntry {
+class Skull {
     
     public:
         SkullType skullType;
+        boolean isMarked;
         uint8_t bones;
         uint8_t multiplier;
 

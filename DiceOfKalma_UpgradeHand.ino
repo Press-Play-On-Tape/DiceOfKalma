@@ -74,7 +74,7 @@ void upgradeHand() {
         }
 
     }
-    else { //Do not show up
+    else { 
 
         if (upgradeCursor == Constants::UpgradeHand_Count - 1) {
             botImage = UpgradeHand_BottomOptions::Both;

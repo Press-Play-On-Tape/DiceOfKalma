@@ -52,7 +52,6 @@ class Hand {
         void clearDeck() {
         
             for (uint8_t i = 0; i < MAX_DECK; i++) {
-                this->deck[i].isMarked = false;
                 this->deck[i].bones = 0;
                 this->deck[i].multiplier = 0;
             }
@@ -585,8 +584,8 @@ class Hand {
 // skullMultiplier = 5;
 // skullBones = 20;
 
-upgradeMultiplier = 5;
-upgradeBones = 20;
+// upgradeMultiplier = 5;
+// upgradeBones = 20;
 
             this->lastHandScore.baseBones = this->diceSum();
             this->lastHandScore.handBones = handBones;
