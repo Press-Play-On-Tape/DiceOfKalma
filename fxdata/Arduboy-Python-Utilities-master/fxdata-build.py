@@ -110,6 +110,7 @@ def imageData(filename):
 
   #load image
   img = Image.open(filename).convert("RGBA")
+  img = img.rotate(-90, expand=True)  #rotate 90 degrees clockwise before conversion
   pixels = list(img.getdata())
   #check for transparency
   transparency = False
