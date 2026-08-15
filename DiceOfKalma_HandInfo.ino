@@ -92,7 +92,7 @@ void handInfo() {
     x = x - Constants::HandScore_LineSpacing - 2;
 
 
-    // Hand Bones ..
+    // Hand multiplier ..
 
     if (hand.lastHandScore.handType != HandType::None) {
 
@@ -103,7 +103,7 @@ void handInfo() {
     }
 
 
-    // Skull Bones ..
+    // Skull multiplier ..
 
     for (uint8_t i = 0; i < hand.deckCount; i++) {
 
@@ -116,7 +116,7 @@ void handInfo() {
     }
 
 
-    // Upgrade Bones ..
+    // Upgrade multiplier ..
 
     if (hand.lastHandScore.upgradeMultiplier > 0) {
         FX::drawBitmap(x, 4, Images::Upgrade, 0, dbmNormal);
@@ -126,7 +126,7 @@ void handInfo() {
     }
 
 
-    // Total Bones ..
+    // Total multiplier ..
 
     x = x - Constants::HandScore_LineSpacing + 4;
     drawNumber_Right(x, 45, hand.lastHandScore.totalMultiplier);

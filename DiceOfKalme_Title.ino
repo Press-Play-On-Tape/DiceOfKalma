@@ -11,7 +11,7 @@ void title() {
         hand.addSkullToDeck(SkullType::Pair_Multiplier);
         hand.addSkullToDeck(SkullType::Big_Multiplier);
         hand.addSkullToDeck(SkullType::Kind_3or4_Multiplier);
-        hand.addSkullToDeck(SkullType::Six_Bonus);
+        hand.addSkullToDeck(SkullType::Flat_Bones);
         hand.addSkullToDeck(SkullType::Six_Bonus);
         hand.addSkullToDeck(SkullType::Extra_Hand);
         hand.deckCount = 6;

@@ -193,12 +193,12 @@ void loop() {
     if (!skullStack.isEmpty() && arduboy.isFrameCount(2)) {
         uint16_t data = skullStack.pop();
         skullData.setData(data);
-        Serial.print("Data: ");
-        Serial.print(data);
-        Serial.print(" E: ");
-        Serial.print(skullData.getEyes());
-        Serial.print(", M: ");
-        Serial.println(skullData.getMouth());
+        // Serial.print("Data: ");
+        // Serial.print(data);
+        // Serial.print(" E: ");
+        // Serial.print(skullData.getEyes());
+        // Serial.print(", M: ");
+        // Serial.println(skullData.getMouth());
 
     }
 

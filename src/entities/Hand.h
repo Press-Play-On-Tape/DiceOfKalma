@@ -542,7 +542,7 @@ class Hand {
             if (this->countSkull(SkullType::Six_Bonus) > 0) {
 
                 skullBones += this->countSkull(SkullType::Six_Bonus) * 3 * sixCount;
-                updateDeckEntry_Bones(SkullType::Six_Bonus, 3);
+                updateDeckEntry_Bones(SkullType::Six_Bonus, 3 * sixCount);
 
                 #ifdef DEBUG_HAND
                     DEBUG_PRINT("Sk Six_Bonus: B ");
@@ -555,7 +555,7 @@ class Hand {
             if (this->countSkull(SkullType::Ace_Bonus) > 0) {
 
                 skullBones += this->countSkull(SkullType::Ace_Bonus) * 3 * aceCount;
-                updateDeckEntry_Bones(SkullType::Ace_Bonus, 3);
+                updateDeckEntry_Bones(SkullType::Ace_Bonus, 3 * aceCount);
 
                 #ifdef DEBUG_HAND
                     DEBUG_PRINT("Sk Six_Bonus: B ");
