@@ -207,6 +207,7 @@ void renderHandResult_Base() {
         case 0:
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
+            renderHandResult_Timer = 0;
             addLookLeftThenRight();
 
             [[fallthrough]]
@@ -223,8 +224,10 @@ void renderHandResult_Base() {
 
         case 6:
 
+            renderHandResult_Timer++;
             hand.markAllCards(Marked::True);
-            if (arduboy.isFrameCount(2)) {
+
+            if (arduboy.isFrameCount(2) && tempHandScore.totalBones < hand.lastHandScore.baseBones) {
                 tempHandScore.totalBones++;
                 tempHandScore.totalMultiplier = 0;
                 tempHandScore.score++;
@@ -237,12 +240,13 @@ void renderHandResult_Base() {
             Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
             FX::drawBitmap(59, 0, Images::Speech_Sml, 9, dbmWhite);
 
-            if (tempHandScore.totalBones == hand.lastHandScore.baseBones) {
+            if (renderHandResult_Timer > 48 && tempHandScore.totalBones == hand.lastHandScore.baseBones) {
                 renderHandResult_Counter++;
             }
             break;
 
         case 7 ... 10:
+
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
             drawSkull();
@@ -290,8 +294,10 @@ void renderHandResult_Hand() {
     switch (renderHandResult_Counter) {
     
         case 0:
+
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
+            renderHandResult_Timer = 0;
             addLookDownThenUp();            
             [[fallthrough]]
 
@@ -352,7 +358,7 @@ void renderHandResult_Hand() {
             Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
             FX::drawBitmap(59, 0, Images::Speech_Sml, static_cast<uint8_t>(hand.lastHandScore.handType), dbmWhite);
             
-            if (renderHandResult_Timer > 32 && tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones) {
+            if (renderHandResult_Timer > 48 && tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones) {
                 renderHandResult_Counter++;
             }
             break;
@@ -459,7 +465,7 @@ void renderHandResult_SkullsPlayed() {
             Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
             FX::drawBitmap(59, 0, Images::Speech_Sml, 10, dbmWhite);
             
-            if (renderHandResult_Timer > 32 && tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones) {
+            if (renderHandResult_Timer > 48 && tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones) {
                 renderHandResult_Counter++;
             }
             break;
@@ -560,7 +566,7 @@ void renderHandResult_UpgradesPlayed() {
             Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
             FX::drawBitmap(59, 0, Images::Speech_Sml, 11, dbmWhite);
             
-            if (renderHandResult_Timer > 32 && (tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones + hand.lastHandScore.upgradeBones)) {
+            if (renderHandResult_Timer > 48 && (tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones + hand.lastHandScore.upgradeBones)) {
                 renderHandResult_Counter++;
             }
             break;
@@ -659,6 +665,7 @@ void renderHandResult_Countdown() {
 
             if (renderHandResult_Counter == 10) {
 
+                addLongTalk();
                 hand.rerollHighlight = Constants::RerollHighlight_None;
                 hand.playHandHighlight = Constants::PlayHandHighlight_None;
 

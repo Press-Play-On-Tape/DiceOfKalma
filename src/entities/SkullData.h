@@ -8,7 +8,7 @@
 class SkullData {
     
     private:
-        uint8_t eyes;
+        uint8_t eyes = 255;
         uint8_t mouth = 255;
 
     public:

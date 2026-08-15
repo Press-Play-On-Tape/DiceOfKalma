@@ -46,24 +46,8 @@ void loadHighScore() {
 
     void addLookLeftThenRight() {
     
-        skullStack.push(0x0205);
-        skullStack.push(0x0005);
-        skullStack.push(0x0005);
-        skullStack.push(0x0005);
-        skullStack.push(0x0004);
-        skullStack.push(0x0004);
-        skullStack.push(0x0003);
-        skullStack.push(0x0003);
-        skullStack.push(0x0002);
-        skullStack.push(0x0002);
-        skullStack.push(0x0001);
-        skullStack.push(0x0101);
-    
-    }
 
-    void addLookDownThenUp() {
-    
-        skullStack.push(0x020B);
+        skullStack.push(0x000B);
         skullStack.push(0x000B);
         skullStack.push(0x000A);
         skullStack.push(0x000A);
@@ -74,13 +58,59 @@ void loadHighScore() {
         skullStack.push(0x0007);
         skullStack.push(0x0007);
         skullStack.push(0x0006);
-        skullStack.push(0x0106);
+        skullStack.push(0x0006);
+        skullStack.push(0x0205);
+        skullStack.push(0x0005);
+        skullStack.push(0x0004);
+        skullStack.push(0x0004);
+        skullStack.push(0x0003);
+        skullStack.push(0x0003);
+        skullStack.push(0x0002);
+        skullStack.push(0x0002);
+        skullStack.push(0x0001);
+        skullStack.push(0x0001);
+        skullStack.push(0x0000);
+        skullStack.push(0x0100);
+    
+    }
+
+    void addLookDownThenUp() {
+    
+
+        skullStack.push(0x0017);
+        skullStack.push(0x0017);
+        skullStack.push(0x0016);
+        skullStack.push(0x0016);
+        skullStack.push(0x0015);
+        skullStack.push(0x0015);
+        skullStack.push(0x0014);
+        skullStack.push(0x0014);
+        skullStack.push(0x0013);
+        skullStack.push(0x0013);
+        skullStack.push(0x0012);
+        skullStack.push(0x0012);
+        skullStack.push(0x0211);
+        skullStack.push(0x0011);
+        skullStack.push(0x0010);
+        skullStack.push(0x0010);
+        skullStack.push(0x000F);
+        skullStack.push(0x000F);
+        skullStack.push(0x000E);
+        skullStack.push(0x000E);
+        skullStack.push(0x000D);
+        skullStack.push(0x000D);
+        skullStack.push(0x000C);
+        skullStack.push(0x010C);
     
     }
 
 
     void addLongTalk() {
     
+        skullStack.push(0x000B);
+        skullStack.push(0x000B);
+        skullStack.push(0x0000);
+        skullStack.push(0x0000);
         skullStack.push(0x0201);
         skullStack.push(0x0001);
         skullStack.push(0x0001);
@@ -92,6 +122,7 @@ void loadHighScore() {
         skullStack.push(0x0001);
         skullStack.push(0x0001);
         skullStack.push(0x0001);
-        skullStack.push(0x0101);
+        skullStack.push(0x0000);
+        skullStack.push(0x0100);
     
     }

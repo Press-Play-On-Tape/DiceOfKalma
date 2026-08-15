@@ -27,7 +27,7 @@ void title() {
 
     FX::drawBitmap(1, 0, Images::Title_Options, 0, dbmMasked);
     FX::drawBitmap(76, 12, Images::Skull_Large, skullData.getMouth(), dbmNormal);
-    FX::drawBitmap(99, 21, Images::Skull_Eyes, skullData.getEyes(), dbmWhite);
+    if (skullData.getEyes() != 255) FX::drawBitmap(99, 21, Images::Skull_Eyes, skullData.getEyes(), dbmWhite);
     FX::drawBitmap(24, 0, Images::Title_Text, 0, dbmMasked);
     arduboy.fillRect(11, 51, 7, 5, BLACK);
     if (bestLevel > 10)    arduboy.fillRect(11, 55, 7, 5, BLACK);
