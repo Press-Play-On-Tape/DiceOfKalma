@@ -3,7 +3,7 @@
 
 uint16_t computeThreshold() {
 
-    return 400;//SJH
+    // return 400;//SJH
 
     uint32_t base = 150 + (uint32_t)(level - 1) * 60 + (uint32_t)(level - 1) * (level - 1) * 20;
     uint8_t discountPct = hand.countSkull(SkullType::Threshold_Discount) * 5;
@@ -144,11 +144,6 @@ void updateRoll() {
 }
 
 
-void updateGameOver() {
-  if (arduboy.justPressed(A_BUTTON)) {
-    gameState = GameState::Title;
-  }
-}
 
 void updateWin() {
   if (arduboy.justPressed(A_BUTTON)) {
@@ -173,10 +168,11 @@ void renderRollDice() {
 
         }
 
-        // // SJH .. Fix hands
+        // SJH .. Fix hands
         // for (uint8_t i = 0; i < 5; i++) {
-        //     hand.dice[i] = 5;
+        //     hand.dice[i] = i + 1;
         // }
+        //     hand.dice[4] = 6;
 
     }
 
@@ -208,7 +204,7 @@ void renderHandResult_Base() {
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
             renderHandResult_Timer = 0;
-            addLookLeftThenRight();
+            addLookLeft();
 
             [[fallthrough]]
 
@@ -298,7 +294,7 @@ void renderHandResult_Hand() {
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
             renderHandResult_Timer = 0;
-            addLookDownThenUp();            
+            addLookDown();            
             [[fallthrough]]
 
         case 1 ... 5:
@@ -600,6 +596,16 @@ void renderHandResult_Countdown() {
             if (countdownDiv == 0) countdownDiv = 1;
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
+            addWideEyes();
+
+            if (tempHandScore.score < threshold && handsLeft == 0) {
+// Serial.println("810");
+                messageIdx = random(8, 10);
+            }
+            else {
+// Serial.println("08");
+                messageIdx = random(0, 8);
+            }
             [[fallthrough]]
 
         case 1 ... 5:
@@ -655,7 +661,15 @@ void renderHandResult_Countdown() {
 
             hand.markAllCards(Marked::False);
 
-            if (renderHandResult_Counter < 10) renderHandResult_Counter++;
+            if (renderHandResult_Counter < 10) {
+
+                renderHandResult_Counter++;
+
+                if (renderHandResult_Counter == 10) {
+                    addLongTalk();
+                }
+
+            }
 
             drawSkull();
             drawLevelAndTarget(hand.lastHandScore, level, threshold);
@@ -665,11 +679,13 @@ void renderHandResult_Countdown() {
 
             if (renderHandResult_Counter == 10) {
 
-                addLongTalk();
                 hand.rerollHighlight = Constants::RerollHighlight_None;
                 hand.playHandHighlight = Constants::PlayHandHighlight_None;
 
                 if (threshold == 0) {
+
+                    
+                    FX::drawBitmap(42, 0, Images::Speech_Lrg, messageIdx, dbmNormal);
 
                     if (arduboy.isFrameCount(16)) launchParticles();
 
@@ -706,7 +722,7 @@ void renderHandResult_Countdown() {
             drawSkull();
             drawBonesMultTotal(tempHandScore);
             drawDice();
-            FX::drawBitmap(42, 0, Images::Speech_Lrg, 0, dbmNormal);
+            FX::drawBitmap(42, 0, Images::Speech_Lrg, messageIdx, dbmNormal);
             drawFooterRoll();
 
             if (arduboy.justPressed(A_BUTTON)) {
@@ -726,12 +742,14 @@ void renderHandResult_Countdown() {
             drawSkull();
             drawBonesMultTotal(tempHandScore);
             drawDice();
-            FX::drawBitmap(42, 0, Images::Speech_Lrg, 0, dbmNormal);
+            FX::drawBitmap(42, 0, Images::Speech_Lrg, messageIdx, dbmNormal);
             drawFooterRoll();
 
             if (arduboy.justPressed(A_BUTTON)) {
 
+                // Serial.println("Game Over 1");
                 gameState = GameState::Game_Over;
+
             }
 
             break;

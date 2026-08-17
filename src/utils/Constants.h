@@ -7,6 +7,7 @@
 #define _DEBUG
 
 #define _DEBUG_HAND
+#define _DEBUG_ADD_SKULLS
 #define DEBUG_PRINT    Serial.print
 #define DEBUG_PRINTLN  Serial.println
 #define _DEBUG_PRINT    void
@@ -24,23 +25,18 @@
 
 namespace Constants {
 
-    // constexpr uint16_t EEPROM_Start         = EEPROM_STORAGE_SPACE_START + 143;
     constexpr uint8_t ParticlesMax = 30;
     constexpr uint8_t EEPROM_Addr = 16;
     constexpr uint8_t EEPROM_Magic  = 0xA5;   
-
     constexpr uint8_t RerollHighlight_Minimum = 8;
     constexpr uint8_t RerollHighlight_None = 0;
-
     constexpr uint8_t PlayHandlHighlight_Minimum = 8;
     constexpr uint8_t PlayHandHighlight_None = 0;
-
     constexpr uint8_t UpgradeHand_Count = 8;
-
     constexpr uint8_t HandScore_StartingPos = 128 - 64;
     constexpr uint8_t HandScore_LineSpacing = 7;
-
-    constexpr uint8_t Level_Count = 1;
+    constexpr uint8_t Level_Count = 20;
+    
 }
 
 // ---------------------------------------------------------------------

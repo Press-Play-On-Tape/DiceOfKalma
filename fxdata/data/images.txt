@@ -24,7 +24,7 @@ namespace Images {
     image_t Fire                    = "../Assets/Fire_64x64.png"
     image_t Swap                    = "../Assets/Swap.png"
 
-    image_t HandScore_Top           = "../Assets/HandScore/HandScore_Top.png"
+    image_t HandScore_Top           = "../Assets/HandScore/HandScore_Top_48x64.png"
     image_t HandScore_Bot           = "../Assets/HandScore/HandScore_Bot_15x64.png"
 
     image_t Inventory_Top           = "../Assets/Inventory_Top.png"
@@ -39,6 +39,7 @@ namespace Images {
     image_t SkullSelect_Bot         = "../Assets/SkullSelect/SkullSelect_Bot.png"
 
     image_t Skull_Names             = "../Assets/Skulls/Skull_Names_6x41.png"
+    image_t Skull_Cursor            = "../Assets/Skulls/Skull_Cursor.png"
     image_t Skull_00                = "../Assets/Skulls/Skull_00.png"
     image_t Skull_01                = "../Assets/Skulls/Skull_01.png"
     image_t Skull_02                = "../Assets/Skulls/Skull_02.png"

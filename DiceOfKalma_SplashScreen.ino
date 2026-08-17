@@ -11,6 +11,7 @@ void splashScreen() {
 
     if (justPressed > 0) {
 
+        arduboy.initRandomSeed();
         gameState = GameState::Title;
 
     }

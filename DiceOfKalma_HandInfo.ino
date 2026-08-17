@@ -8,10 +8,15 @@ void handInfo_Init() {
 
     handScore_x = Constants::HandScore_StartingPos;
     gameState = GameState::Game_Hand_Info;
+    addLongTalk();
+    arduboy.frameCount = 1;
+    messageIdx = random(0, 4);
 
 }
 
 void handInfo() {
+
+    if (arduboy.getFrameCount(96) == 0) addPinPrick();
 
 
     UpgradeHand_BottomOptions botImage = UpgradeHand_BottomOptions::Both;
@@ -169,7 +174,9 @@ void handInfo() {
     }
 
 
-    FX::drawBitmap(128 - 48, 0, Images::HandScore_Top, 0, dbmNormal);
+    FX::drawBitmap(128 - 48, 0, Images::HandScore_Top, messageIdx, dbmNormal);
+    FX::drawBitmap(79, -5, Images::Skull_Large, skullData.getMouth(), dbmWhite);
+    if (skullData.getEyes() != 255) FX::drawBitmap(102, 4, Images::Skull_Eyes, skullData.getEyes(), dbmWhite);    
     FX::drawBitmap(0, 0, Images::HandScore_Bot, static_cast<uint8_t>(bottomOptions_Idx), dbmNormal);
 
 }

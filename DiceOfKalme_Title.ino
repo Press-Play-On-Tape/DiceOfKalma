@@ -8,16 +8,21 @@ void title() {
         level = 1;
         hand.deckCount = 0;
 
-        hand.addSkullToDeck(SkullType::Pair_Multiplier);
-        hand.addSkullToDeck(SkullType::Big_Multiplier);
-        hand.addSkullToDeck(SkullType::Kind_3or4_Multiplier);
-        hand.addSkullToDeck(SkullType::Flat_Bones);
-        hand.addSkullToDeck(SkullType::Six_Bonus);
-        hand.addSkullToDeck(SkullType::Extra_Hand);
-        hand.deckCount = 6;
+        #ifdef DEBUG_ADD_SKULLS
 
+            hand.addSkullToDeck(SkullType::Pair_Multiplier);
+            hand.addSkullToDeck(SkullType::Big_Multiplier);
+            hand.addSkullToDeck(SkullType::Kind_3or4_Multiplier);
+            hand.addSkullToDeck(SkullType::Flat_Bones);
+            hand.addSkullToDeck(SkullType::Six_Bonus);
+            hand.addSkullToDeck(SkullType::Extra_Hand);
+            hand.deckCount = 6;
+
+        #endif
+
+        hand.reset();
         startLevel();
-        // gameState = GameState::Game_Upgrade_Choice_Init;
+        // gameState = GameState::Game_Over;
 
     }
 
@@ -33,7 +38,5 @@ void title() {
     if (bestLevel > 10)    arduboy.fillRect(11, 55, 7, 5, BLACK);
     drawNumber(12, 46, bestLevel);
 
-
-    // skullStack.push(1);
 
 }

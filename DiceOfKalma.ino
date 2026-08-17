@@ -60,6 +60,7 @@ uint8_t upgradeTop = 0;
 uint8_t swapCursor = 0;
 uint8_t deckViewCursor = 0;
 uint8_t deckViewTop = 0;
+uint8_t messageIdx = 0;
 
 Stack <uint16_t, 60> skullStack;
 SkullData skullData;
@@ -68,7 +69,6 @@ void setup() {
     
     arduboy.boot();
     arduboy.setFrameRate(30);
-    // arduboy.initRandomSeed(12);
     loadHighScore();
 
     FX::display(CLEAR_BUFFER);

@@ -41,7 +41,24 @@ class Hand {
 
         }
 
+        uint8_t getFirstDice(uint8_t number) { 
+
+            for (uint8_t i = 0; i < 6; i++) {
+                if (this->dice[i] == number) return i;
+            }
+
+            return 255;
+
+        }
+
     public:
+
+        void reset() {
+
+            this->deckCount = 0;
+            this->clearDeck();
+
+        }
 
         void markAllCards(Marked markedVal){
         
@@ -125,19 +142,11 @@ class Hand {
 
                 case HandType::High_Roll:
                     {
-                        uint8_t diceValue = this->getDice_OfaKind(1, 0);
-                        for (uint8_t i = 0; i < 5; i++) {
-                            if (this->dice[i] == diceValue) {
-                                this->marked[i] = Marked::True;
-                            }
-                        }
+                        uint8_t i = this->getFirstDice(1);
+                        this->marked[i] = Marked::True;
 
-                        diceValue = this->getDice_OfaKind(1, diceValue);
-                        for (uint8_t i = 0; i < 5; i++) {
-                            if (this->dice[i] == diceValue) {
-                                this->marked[i] = Marked::True;
-                            }
-                        }
+                        i = this->getFirstDice(6);
+                        this->marked[i] = Marked::True;
 
                     }
                     break;
@@ -553,12 +562,12 @@ class Hand {
             }
 
             if (this->countSkull(SkullType::Ace_Bonus) > 0) {
-
+Serial.println("aaa");
                 skullBones += this->countSkull(SkullType::Ace_Bonus) * 3 * aceCount;
                 updateDeckEntry_Bones(SkullType::Ace_Bonus, 3 * aceCount);
 
                 #ifdef DEBUG_HAND
-                    DEBUG_PRINT("Sk Six_Bonus: B ");
+                    DEBUG_PRINT("Sk Ace_Bonus: B ");
                     DEBUG_PRINT(this->countSkull(SkullType::Six_Bonus) * 3 * sixCount);
                     DEBUG_PRINTLN(", M 0");
                 #endif

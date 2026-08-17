@@ -190,7 +190,7 @@ void drawLevelAndTarget(HandScore hand, uint8_t levelNumber, uint16_t target) {
     FX::drawBitmap(60, 0, Images::Background_02, 0, dbmNormal);
 
     drawNumber_Right(62, -2, levelNumber);
-    drawNumber(62, 14, 25);
+    drawNumber(62, 14, 20);
     drawNumber(62, 41, target);
 
 }
