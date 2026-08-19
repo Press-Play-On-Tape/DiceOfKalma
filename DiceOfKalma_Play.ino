@@ -1,6 +1,5 @@
 #include <ArduboyFX.h>  
 
-
 uint16_t computeThreshold() {
 
     // return 400;//SJH
@@ -38,18 +37,6 @@ void newHand() {
 
 }
 
-
-void updateLevelIntro() {
-
-    stateTimer++;
-
-    if (stateTimer > 60 || arduboy.justPressed(A_BUTTON)) {
-        hand.rollAll();
-        gameState = GameState::Game_Roll_Dice;
-        returnState = GameState::Game_Roll;
-    }
-
-}
 
 
 void updateRoll() {

@@ -93,8 +93,7 @@ void loop() {
             break;
 
         case GameState::Game_Level_Intro:   
-            updateLevelIntro();    
-            drawLevelIntro();    
+            levelIntro();    
             break;
 
         case GameState::Game_Roll_Dice:          

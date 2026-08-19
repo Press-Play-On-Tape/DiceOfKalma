@@ -129,7 +129,8 @@ void skullChoice() {
 
 void  drawSkullInfo() {
 
-    FX::drawBitmap(0, 0, Images::SkullInfo, 0, dbmNormal);
+    FX::drawBitmap(118, 0, Images::SkullInfo_Top, 0, dbmNormal);
+    FX::drawBitmap(0, 0, Images::SkullInfo_Bot, 0, dbmNormal);
 
     uint24_t img = FX::readIndexedUInt24(Images::Skulls, static_cast<uint8_t>(skullInfoType));
     FX::drawBitmap(65, 0, img, 0, dbmNormal);

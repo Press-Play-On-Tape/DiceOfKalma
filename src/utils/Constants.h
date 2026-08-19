@@ -36,7 +36,7 @@ namespace Constants {
     constexpr uint8_t HandScore_StartingPos = 128 - 64;
     constexpr uint8_t HandScore_LineSpacing = 7;
     constexpr uint8_t Level_Count = 20;
-    
+
 }
 
 // ---------------------------------------------------------------------
@@ -61,7 +61,13 @@ enum class SkullType : uint8_t {
     High_Roll_Save = 11,            // HIGH ROLL hands score as if base 15 chips
     Threshold_Discount = 12,        // threshold -5% (stacks, capped)
     Double_First = 13,              // first hand played each level scores x2
-    Skull_Count = 14,
+    Skull_14 = 14,
+    Skull_15 = 15,
+    Skull_16 = 16,
+    Skull_17 = 17,
+    Skull_18 = 18,
+    Skull_19 = 19,
+    Skull_Count = 20,
     None
 };
 
@@ -72,13 +78,12 @@ enum class HandType : uint8_t {
     Pair,
     Two_Pair,
     Three_of_a_Kind,
-    Straight,
     Full_House,
     Four_of_a_Kind,
+    Straight,
     Five_of_a_Kind,
 
 };
-
 
 enum class Marked : uint8_t {
 

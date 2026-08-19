@@ -294,15 +294,13 @@ class Hand {
             uint8_t handMultiplier = 0;
             uint8_t skullMultiplier = 0;
             uint8_t upgradeMultiplier = 0;
-            uint8_t handCategory; // 0=high,1=pair-ish,2=big,3=kind
-            
+
             HandType handType = HandType::None; 
 
             if (maxCount == 5) {
 
                 handBones = 30; 
                 handMultiplier = 14; 
-                handCategory = 3;
                 handType = HandType::Five_of_a_Kind;
 
                 if (this->upgradeHand == HandType::Five_of_a_Kind) {
@@ -321,13 +319,12 @@ class Hand {
 
                 handBones = 30; 
                 handMultiplier = 11; 
-                handCategory = 2;
                 handType = HandType::Straight;
 
                 if (this->upgradeHand == HandType::Straight) {
                 
-                    upgradeBones = 15;
-                    upgradeMultiplier = 0;
+                    upgradeBones = 25;
+                    upgradeMultiplier = 10;
                     
                 }
                 
@@ -340,7 +337,6 @@ class Hand {
 
                 handBones = 25; 
                 handMultiplier = 8; 
-                handCategory = 3;
                 handType = HandType::Four_of_a_Kind;
 
                 if (this->upgradeHand == HandType::Four_of_a_Kind) {
@@ -359,7 +355,6 @@ class Hand {
 
                 handBones = 20; 
                 handMultiplier = 6; 
-                handCategory = 2;
                 handType = HandType::Full_House;
                 
                 if (this->upgradeHand == HandType::Full_House) {
@@ -377,7 +372,6 @@ class Hand {
 
                 handBones = 15; 
                 handMultiplier = 4; 
-                handCategory = 3;
                 handType = HandType::Three_of_a_Kind;
                 
                 if (this->upgradeHand == HandType::Three_of_a_Kind) {
@@ -396,7 +390,6 @@ class Hand {
 
                 handBones = 10; 
                 handMultiplier = 3; 
-                handCategory = 1;
                 handType = HandType::Two_Pair;
                 
                 if (this->upgradeHand == HandType::Two_Pair) {
@@ -415,7 +408,6 @@ class Hand {
 
                 handBones = 5; 
                 handMultiplier = 2; 
-                handCategory = 1;
                 handType = HandType::Pair;
                 
                 if (this->upgradeHand == HandType::Pair) {
@@ -434,7 +426,6 @@ class Hand {
 
                 handBones = 5; 
                 handMultiplier = 2; 
-                handCategory = 0;
                 handType = HandType::High_Roll;
                 
                 if (this->upgradeHand == HandType::High_Roll) {
@@ -453,7 +444,6 @@ class Hand {
 
                 handBones = 0; 
                 handMultiplier = 1; 
-                handCategory = 255;
                 handType = HandType::None;
                 
                 #ifdef DEBUG_HAND
@@ -462,7 +452,7 @@ class Hand {
 
             }
 
-            if (handCategory == 0 && this->countSkull(SkullType::High_Roll_Save) > 0) {
+            if (handType == HandType::High_Roll && this->countSkull(SkullType::High_Roll_Save) > 0) {
 
                 handBones = 15;
 
@@ -478,7 +468,7 @@ class Hand {
 
             // skull-driven mult bonuses
 
-            if (handCategory == 1) {
+            if (handType == HandType::Pair || handType == HandType::Two_Pair) {
 
                 skullMultiplier += this->countSkull(SkullType::Pair_Multiplier);
                 updateDeckEntry_Multiplier(SkullType::Pair_Multiplier, 1);
@@ -489,7 +479,7 @@ class Hand {
 
             }
 
-            if (handCategory == 2) {
+            if (handType == HandType::Straight || handType == HandType::Full_House) {
 
                 skullMultiplier += this->countSkull(SkullType::Big_Multiplier);
                 updateDeckEntry_Multiplier(SkullType::Big_Multiplier, 1);
@@ -500,7 +490,7 @@ class Hand {
 
             }
 
-            if (handCategory == 3) {
+            if (handType == HandType::Three_of_a_Kind || handType == HandType::Four_of_a_Kind) {
 
                 skullMultiplier += this->countSkull(SkullType::Kind_3or4_Multiplier);
                 updateDeckEntry_Multiplier(SkullType::Kind_3or4_Multiplier, 1);
@@ -562,7 +552,7 @@ class Hand {
             }
 
             if (this->countSkull(SkullType::Ace_Bonus) > 0) {
-Serial.println("aaa");
+
                 skullBones += this->countSkull(SkullType::Ace_Bonus) * 3 * aceCount;
                 updateDeckEntry_Bones(SkullType::Ace_Bonus, 3 * aceCount);
 
