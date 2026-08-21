@@ -11,8 +11,9 @@ void offerSkulls() {
     uint8_t rangeLow = max(0, rangeHigh - 3);
 // Serial.print("0 to ");
 // Serial.println(range);
+// SJH
     skullChoiceA = static_cast<SkullType>(random(rangeLow, rangeHigh));
-
+skullChoiceA = SkullType::TwiceAsHigh;
     do {
         skullChoiceB = static_cast<SkullType>(random(rangeLow, rangeHigh));
     } while (skullChoiceB == skullChoiceA);

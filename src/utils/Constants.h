@@ -61,8 +61,8 @@ enum class SkullType : uint8_t {
     High_Roll_Save = 11,            // HIGH ROLL hands score as if base 15 chips
     Threshold_Discount = 12,        // threshold -5% (stacks, capped)
     Double_First = 13,              // first hand played each level scores x2
-    Skull_14 = 14,
-    Skull_15 = 15,
+    Mountainous = 14,               // 3 multiplier for 0,1,2,1,0 or equivalent
+    TwiceAsHigh = 15,               // 3 multiplier for 1,1,6,6,x
     Skull_16 = 16,
     Skull_17 = 17,
     Skull_18 = 18,

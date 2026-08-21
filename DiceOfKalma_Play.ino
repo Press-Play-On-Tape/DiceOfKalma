@@ -2,11 +2,11 @@
 
 uint16_t computeThreshold() {
 
-    // return 400;//SJH
+    return 40;//SJH
 
     uint32_t base = 150 + (uint32_t)(level - 1) * 60 + (uint32_t)(level - 1) * (level - 1) * 20;
     uint8_t discountPct = hand.countSkull(SkullType::Threshold_Discount) * 5;
-    if (discountPct > 40) discountPct = 40;
+    if (discountPct > 20) discountPct = 20;
     base = base - (base * discountPct) / 100;
     return (uint16_t)base;
 
@@ -160,6 +160,24 @@ void renderRollDice() {
         //     hand.dice[i] = i + 1;
         // }
         //     hand.dice[4] = 6;
+
+        // SJH .. Fix hands
+        for (uint8_t i = 0; i < 5; i++) {
+
+            switch (i) {
+                case 0:
+                case 4:
+                    hand.dice[i] = 1;
+                    break;
+                case 1:
+                case 3:
+                    hand.dice[i] = 6;
+                    break;
+                case 2:
+                    hand.dice[i] = 3;
+                    break;
+            }
+        }
 
     }
 

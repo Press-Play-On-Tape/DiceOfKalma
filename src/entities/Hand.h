@@ -580,6 +580,32 @@ class Hand {
                 }
 
             }
+
+            if (this->dice[0] + 2 == this->dice[1] + 1 && this->dice[1] + 1 == this->dice[2] && this->dice[2] == this->dice[3] + 1 && this->dice[3] + 1 == this->dice[4] + 2) {
+
+                skullMultiplier += this->countSkull(SkullType::Mountainous) * 3;
+                updateDeckEntry_Multiplier(SkullType::Mountainous, 3);
+
+                #ifdef DEBUG_HAND
+                    DEBUG_PRINT("Sk Mountainous: B 0, M ");
+                    DEBUG_PRINT(this->countSkull(SkullType::Mountainous) * 3);
+                    DEBUG_PRINTLN("");
+                #endif
+                            
+            }
+
+            if (sixCount == 2 && aceCount == 2) {
+
+                skullMultiplier += this->countSkull(SkullType::TwiceAsHigh) * 3;
+                updateDeckEntry_Multiplier(SkullType::TwiceAsHigh, 3);
+
+                #ifdef DEBUG_HAND
+                    DEBUG_PRINT("Sk TwiceAsHigh: B 0, M ");
+                    DEBUG_PRINT(this->countSkull(SkullType::TwiceAsHigh) * 3);
+                    DEBUG_PRINTLN("");
+                #endif
+
+            } 
 // skullMultiplier = 5;
 // skullBones = 20;
 

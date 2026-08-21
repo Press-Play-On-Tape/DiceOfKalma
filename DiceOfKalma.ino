@@ -50,7 +50,7 @@ Hand hand;
 HandScore tempHandScore;
 Particle particles[Constants::ParticlesMax];
 
-SkullType skullChoiceA, skullChoiceB, skullChoiceC;
+SkullType skullChoiceA, skullChoiceB;
 SkullType skullInfoType;
 SkullType pendingSkull = SkullType::None;   
 
