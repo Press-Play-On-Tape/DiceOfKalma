@@ -69,7 +69,7 @@ void handInfo() {
     for (uint8_t i = 0; i < hand.deckCount; i++) {
 
         if (hand.deck[i].bones > 0) {
-            FX::drawBitmap(x, 4, Images::Skull_Names, static_cast<uint8_t>(hand.deck[i].skullType), dbmNormal);
+            FX::drawBitmap(x - 1, 4, Images::Skull_Names, static_cast<uint8_t>(hand.deck[i].skullType), dbmNormal);
             drawNumber_Right(x, 45, hand.deck[i].bones);
             x = x - Constants::HandScore_LineSpacing;
         }
@@ -113,7 +113,7 @@ void handInfo() {
     for (uint8_t i = 0; i < hand.deckCount; i++) {
 
         if (hand.deck[i].multiplier > 0) {
-            FX::drawBitmap(x, 4, Images::Skull_Names, static_cast<uint8_t>(hand.deck[i].skullType), dbmNormal);
+            FX::drawBitmap(x - 1, 4, Images::Skull_Names, static_cast<uint8_t>(hand.deck[i].skullType), dbmNormal);
             drawNumber_Right(x, 45, hand.deck[i].multiplier);
             x = x - Constants::HandScore_LineSpacing;
         }

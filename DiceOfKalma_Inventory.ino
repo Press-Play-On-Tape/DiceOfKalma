@@ -92,7 +92,7 @@ void updateDeckView() {
     }
 
 
-    if (arduboy.justPressed(B_BUTTON)) {
+    if (arduboy.justPressed(B_BUTTON) && gameState != GameState::Game_Deck_View) {
 
         gameState = GameState::Game_Upgrade_Choice_Init;
 

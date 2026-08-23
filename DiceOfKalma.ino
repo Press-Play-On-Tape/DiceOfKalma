@@ -61,6 +61,8 @@ uint8_t swapCursor = 0;
 uint8_t deckViewCursor = 0;
 uint8_t deckViewTop = 0;
 uint8_t messageIdx = 0;
+uint16_t takeTooLong = 0;
+uint8_t takeTooLong_Type = 0;
 
 Stack <uint16_t, 60> skullStack;
 SkullData skullData;

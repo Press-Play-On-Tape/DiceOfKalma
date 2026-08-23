@@ -2,7 +2,7 @@
 
 uint16_t computeThreshold() {
 
-    return 40;//SJH
+    // return 40;//SJH
 
     uint32_t base = 150 + (uint32_t)(level - 1) * 60 + (uint32_t)(level - 1) * (level - 1) * 20;
     uint8_t discountPct = hand.countSkull(SkullType::Threshold_Discount) * 5;
@@ -15,12 +15,10 @@ uint16_t computeThreshold() {
 void startLevel() {
 
     threshold = computeThreshold();
-    // runScore = 0;
     handsMax = 3 + hand.countSkull(SkullType::Extra_Hand);
     handsLeft = handsMax;
     rerollsMax = 3 + hand.countSkull(SkullType::Extra_Reroll);
     rerollsLeft = rerollsMax;
-    // hand.rollAll();
     hand.firstHandOfLevel = true;
     hand.rerollUsedThisHand = false;
     hand.resetDice();
@@ -34,12 +32,57 @@ void newHand() {
     rerollsLeft = rerollsMax;
     cursor = 0;
     hand.rerollUsedThisHand = false;
+    takeTooLong =0;
 
 }
 
 
 
 void updateRoll() {
+
+    takeTooLong++;
+
+    if (takeTooLong % 512 == 0) { 
+    
+        takeTooLong_Type++;
+
+        switch (takeTooLong_Type % 8) {
+
+            case 0:
+                addRollEyes(); 
+                break;
+
+            case 1:
+                addLookLeft(false);
+                break;
+
+            case 2:
+                addLookUp(false);
+                break;
+
+            case 3:
+                addLookDown(false);
+                break;
+
+            case 4:
+                addLookRight(false);
+                break;
+
+            case 5:
+                addDeathStare(false);
+                break;
+
+            case 6:
+                addPinPrick();
+                break;       
+                
+            case 7:
+                addWideEyes();
+                break;                
+
+        }
+
+    }
 
     hand.evaluateHand(); // live preview of current dice
 
@@ -142,7 +185,6 @@ void updateWin() {
 void renderRollDice() {
 
     if (rollDice_Counter == 6) {
-// DEBUG_BREAK
 
         for (uint8_t i = 0; i < 5; i++) {
             
@@ -161,22 +203,28 @@ void renderRollDice() {
         // }
         //     hand.dice[4] = 6;
 
-        // SJH .. Fix hands
+        // // SJH .. Fix hands
+        // for (uint8_t i = 0; i < 5; i++) {
+
+        //     switch (i) {
+        //         case 0:
+        //         case 4:
+        //             hand.dice[i] = 1;
+        //             break;
+        //         case 1:
+        //         case 3:
+        //             hand.dice[i] = 6;
+        //             break;
+        //         case 2:
+        //             hand.dice[i] = 3;
+        //             break;
+        //     }
+        // }
+
+ // SJH .. Fix hands
         for (uint8_t i = 0; i < 5; i++) {
 
-            switch (i) {
-                case 0:
-                case 4:
-                    hand.dice[i] = 1;
-                    break;
-                case 1:
-                case 3:
-                    hand.dice[i] = 6;
-                    break;
-                case 2:
-                    hand.dice[i] = 3;
-                    break;
-            }
+            hand.dice[i] = 3;
         }
 
     }
@@ -201,6 +249,25 @@ void renderRollDice() {
 
 }
 
+
+void renderHandResult_DrawFrame(HandScore tempHandScore) {
+
+    drawSkull();
+    drawBonesMultTotal(tempHandScore);
+    drawDice();
+    drawFooterRoll();
+
+};
+
+
+void renderHandResult_DrawSpeechBubble(uint8_t imageIdx) {
+
+    Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
+    FX::drawBitmap(59, 0, Images::Speech_Sml, imageIdx, dbmWhite);
+
+};
+
+
 void renderHandResult_Base() {
 
     switch (renderHandResult_Counter) {
@@ -209,16 +276,13 @@ void renderHandResult_Base() {
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
             renderHandResult_Timer = 0;
-            addLookLeft();
+            addLookLeft(true);
 
             [[fallthrough]]
 
         case 1 ... 5:
             {
-                drawSkull();
-                drawBonesMultTotal(tempHandScore);
-                drawDice();
-                drawFooterRoll();
+                renderHandResult_DrawFrame(tempHandScore);
                 renderHandResult_Counter++;
             }
             break;
@@ -234,12 +298,8 @@ void renderHandResult_Base() {
                 tempHandScore.score++;
             }
             
-            drawSkull();
-            drawBonesMultTotal(tempHandScore);
-            drawDice();
-            drawFooterRoll();
-            Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
-            FX::drawBitmap(59, 0, Images::Speech_Sml, 9, dbmWhite);
+            renderHandResult_DrawFrame(tempHandScore);
+            renderHandResult_DrawSpeechBubble(9);
 
             if (renderHandResult_Timer > 48 && tempHandScore.totalBones == hand.lastHandScore.baseBones) {
                 renderHandResult_Counter++;
@@ -250,10 +310,7 @@ void renderHandResult_Base() {
 
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
-            drawSkull();
-            drawBonesMultTotal(tempHandScore);
-            drawDice();
-            drawFooterRoll();
+            renderHandResult_DrawFrame(tempHandScore);
 
             if (renderHandResult_Counter == 10) {
                 renderHandResult_Counter = 0;
@@ -299,15 +356,12 @@ void renderHandResult_Hand() {
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
             renderHandResult_Timer = 0;
-            addLookDown();            
+            addLookDown(true);            
             [[fallthrough]]
 
         case 1 ... 5:
             {
-                drawSkull();
-                drawBonesMultTotal(tempHandScore);
-                drawDice();
-                drawFooterRoll();
+                renderHandResult_DrawFrame(tempHandScore);
                 renderHandResult_Counter++;
 
                 if (renderHandResult_Counter == 6) {
@@ -334,9 +388,14 @@ void renderHandResult_Hand() {
                 if (tempHandScore.totalBones < hand.lastHandScore.baseBones + hand.lastHandScore.handBones) {
 
                     tempHandScore.totalBones++;
-
-                    if (tempHandScore.handBones % hand.lastHandScore.handMultiplier == 0 &&
-                        tempHandScore.totalMultiplier < hand.lastHandScore.handMultiplier) {
+// Serial.print(tempHandScore.totalBones - hand.lastHandScore.baseBones);
+// Serial.print(" % ");
+// Serial.print((hand.lastHandScore.handBones / hand.lastHandScore.handMultiplier));
+// Serial.print(" ");
+// Serial.println((tempHandScore.totalBones - hand.lastHandScore.baseBones) % (hand.lastHandScore.handBones / hand.lastHandScore.handMultiplier));
+                    if ((tempHandScore.totalBones - hand.lastHandScore.baseBones) % (hand.lastHandScore.handBones / hand.lastHandScore.handMultiplier) == 0 &&
+                         tempHandScore.totalMultiplier < hand.lastHandScore.handMultiplier) {
+                      
                         tempHandScore.totalMultiplier++;
                         
                     }
@@ -352,12 +411,8 @@ void renderHandResult_Hand() {
                 tempHandScore.score = tempHandScore.totalBones;
             }
             
-            drawSkull();
-            drawBonesMultTotal(tempHandScore);
-            drawDice();
-            drawFooterRoll();
-            Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
-            FX::drawBitmap(59, 0, Images::Speech_Sml, static_cast<uint8_t>(hand.lastHandScore.handType), dbmWhite);
+            renderHandResult_DrawFrame(tempHandScore);
+            renderHandResult_DrawSpeechBubble(static_cast<uint8_t>(hand.lastHandScore.handType));
             
             if (renderHandResult_Timer > 48 && tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones) {
                 renderHandResult_Counter++;
@@ -368,21 +423,18 @@ void renderHandResult_Hand() {
 
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
-            drawSkull();
-            drawBonesMultTotal(tempHandScore);
-            drawDice();
-            drawFooterRoll();
+            renderHandResult_DrawFrame(tempHandScore);
 
             if (renderHandResult_Counter == 10) {
 
                 renderHandResult_Counter = 0;
 
-                if (hand.lastHandScore.skullBones > 0) {
+                if (hand.lastHandScore.skullBones > 0 || hand.lastHandScore.skullMultiplier > 0) {
 
                     gameState = GameState::Game_Hand_Result_Skulls_Played;
 
                 }
-                else if (hand.lastHandScore.upgradeBones > 0) {
+                else if (hand.lastHandScore.upgradeBones > 0 || hand.lastHandScore.upgradeMultiplier > 0) {
 
                     gameState = GameState::Game_Hand_Result_Upgrades_Played;
 
@@ -404,95 +456,99 @@ void renderHandResult_Hand() {
 void renderHandResult_SkullsPlayed() {
 
     switch (renderHandResult_Counter) {
-    
+
         case 0:
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
-            addLookLeftThenRight();
+            addLookLeftThenRight(true);
             [[fallthrough]]
 
         case 1 ... 5:
-            {
-                drawSkull();
-                drawBonesMultTotal(tempHandScore);
-                drawDice();
-                drawFooterRoll();
-                renderHandResult_Counter++;
+            renderHandResult_DrawFrame(tempHandScore);
+            renderHandResult_Counter++;
 
-                if (renderHandResult_Counter == 6) {
-                
-                    renderHandResult_Timer = 0;
+            if (renderHandResult_Counter == 6) {
+                renderHandResult_Timer = 0;
 
+                if (hand.lastHandScore.skullBones > 0) {
                     if (hand.lastHandScore.skullMultiplier > 0) {
-
                         tempHandScore.totalMultiplier++;
-                    
                     }
-
                 }
+                else {
+                    renderHandResult_Counter = 7; // No skull bones -> multiplier-only phase
+                }
+
             }
+
             break;
 
-        case 6:
-
+        case 6: // Player has skull bones and maybe multipliers
             renderHandResult_Timer++;
 
-            if (hand.lastHandScore.skullBones >= 10 || (hand.lastHandScore.skullBones < 10 && arduboy.isFrameCount(4))) {
+            if (hand.lastHandScore.skullBones >= 10 ||
+                (hand.lastHandScore.skullBones < 10 && arduboy.isFrameCount(4))) {
 
                 if (tempHandScore.totalBones < hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones) {
 
                     tempHandScore.totalBones++;
-                    if ((tempHandScore.totalBones - hand.lastHandScore.baseBones - hand.lastHandScore.handBones) % hand.lastHandScore.skullMultiplier == 0 &&
+
+                    if (hand.lastHandScore.skullMultiplier > 0 && (tempHandScore.totalBones - hand.lastHandScore.baseBones - hand.lastHandScore.handBones) % (hand.lastHandScore.skullMultiplier / hand.lastHandScore.skullMultiplier) == 0 &&
                         tempHandScore.totalMultiplier < hand.lastHandScore.handMultiplier + hand.lastHandScore.skullMultiplier) {
                         tempHandScore.totalMultiplier++;
-                        
                     }
 
                 }
 
             }
 
-            if (tempHandScore.totalMultiplier > 0) {
-                tempHandScore.score = tempHandScore.totalBones * tempHandScore.totalMultiplier;
+            tempHandScore.score = tempHandScore.totalMultiplier > 0
+                ? tempHandScore.totalBones * tempHandScore.totalMultiplier
+                : tempHandScore.totalBones;
+
+            renderHandResult_DrawFrame(tempHandScore);
+            renderHandResult_DrawSpeechBubble(10);
+
+            if (renderHandResult_Timer > 48 &&
+                tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones) {
+                renderHandResult_Counter = 8; // always skips case 7 from here
             }
-            else {
-                tempHandScore.score = tempHandScore.totalBones;
-            }
-            
-            drawSkull();
-            drawBonesMultTotal(tempHandScore);
-            drawDice();
-            drawFooterRoll();
-            Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
-            FX::drawBitmap(59, 0, Images::Speech_Sml, 10, dbmWhite);
-            
-            if (renderHandResult_Timer > 48 && tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones) {
-                renderHandResult_Counter++;
-            }
+
             break;
 
-        case 7 ... 10:
+        case 7: // Player only has skull multiplier (skullBones == 0)
+            renderHandResult_Timer++;
 
+            if (renderHandResult_Timer % 8 == 0 && tempHandScore.totalMultiplier < hand.lastHandScore.handMultiplier + hand.lastHandScore.skullMultiplier) {
+                tempHandScore.totalMultiplier++;
+                tempHandScore.score = tempHandScore.totalBones * tempHandScore.totalMultiplier;
+            }
+
+            renderHandResult_DrawFrame(tempHandScore);
+            renderHandResult_DrawSpeechBubble(10);
+
+            if (renderHandResult_Timer > 48 &&
+                tempHandScore.totalMultiplier == hand.lastHandScore.handMultiplier + hand.lastHandScore.skullMultiplier) {
+                renderHandResult_Counter++;
+            }
+
+            break;
+
+        case 8:
             hand.markAllCards(Marked::False);
+            [[fallthrough]]
+
+        case 9 ... 11:
+            renderHandResult_DrawFrame(tempHandScore);
             renderHandResult_Counter++;
-            drawSkull();
-            drawBonesMultTotal(tempHandScore);
-            drawDice();
-            drawFooterRoll();
 
             if (renderHandResult_Counter == 10) {
+
                 renderHandResult_Counter = 0;
 
-                if (hand.lastHandScore.upgradeBones > 0) {
-
-                    gameState = GameState::Game_Hand_Result_Upgrades_Played;
-
-                }
-                else {
-
-                    gameState = GameState::Game_Hand_Result_Countdown;
-                
-                };
+                gameState = hand.lastHandScore.upgradeBones > 0
+                    ? GameState::Game_Hand_Result_Upgrades_Played
+                    : GameState::Game_Hand_Result_Countdown;
 
             }
 
@@ -509,15 +565,12 @@ void renderHandResult_UpgradesPlayed() {
         case 0:
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
-            addLookLeftThenRight();
+            addLookLeftThenRight(true);
             [[fallthrough]]
 
         case 1 ... 5:
             {
-                drawSkull();
-                drawBonesMultTotal(tempHandScore);
-                drawDice();
-                drawFooterRoll();
+                renderHandResult_DrawFrame(tempHandScore);
                 renderHandResult_Counter++;
 
                 if (renderHandResult_Counter == 6) {
@@ -543,11 +596,20 @@ void renderHandResult_UpgradesPlayed() {
                 if (tempHandScore.totalBones < hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones + hand.lastHandScore.upgradeBones) {
 
                     tempHandScore.totalBones++;
-                    if ((tempHandScore.totalBones - hand.lastHandScore.baseBones - hand.lastHandScore.handBones - hand.lastHandScore.skullBones) % hand.lastHandScore.skullMultiplier == 0 &&
+                    // Serial.print(tempHandScore.totalBones);
+                    // Serial.print(" ");
+                    // Serial.print(tempHandScore.totalBones - hand.lastHandScore.baseBones - hand.lastHandScore.handBones - hand.lastHandScore.skullBones);
+                    // Serial.print(" ");
+                    // Serial.print((tempHandScore.totalBones - hand.lastHandScore.baseBones - hand.lastHandScore.handBones - hand.lastHandScore.skullBones) % (hand.lastHandScore.upgradeBones / hand.lastHandScore.upgradeMultiplier));
+                    if ((tempHandScore.totalBones - hand.lastHandScore.baseBones - hand.lastHandScore.handBones - hand.lastHandScore.skullBones) % (hand.lastHandScore.upgradeBones / hand.lastHandScore.upgradeMultiplier) == 0 &&
                         tempHandScore.totalMultiplier < hand.lastHandScore.handMultiplier + hand.lastHandScore.skullMultiplier + hand.lastHandScore.upgradeMultiplier) {
+                    // Serial.print(" U ");
+                    // Serial.print(tempHandScore.totalMultiplier + 1);
+
                         tempHandScore.totalMultiplier++;
                         
                     }
+                    // Serial.println("  ");
 
                 }
 
@@ -560,25 +622,26 @@ void renderHandResult_UpgradesPlayed() {
                 tempHandScore.score = tempHandScore.totalBones;
             }
             
-            drawSkull();
-            drawBonesMultTotal(tempHandScore);
-            drawDice();
-            drawFooterRoll();
-            Sprites::drawOverwrite(60, 0, Images::Speech_Bubble, 0);
-            FX::drawBitmap(59, 0, Images::Speech_Sml, 11, dbmWhite);
-            
             if (renderHandResult_Timer > 48 && (tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones + hand.lastHandScore.upgradeBones)) {
+
+                if (tempHandScore.totalMultiplier < hand.lastHandScore.handMultiplier + hand.lastHandScore.skullMultiplier + hand.lastHandScore.upgradeMultiplier) {
+                    tempHandScore.totalMultiplier++;
+                    
+                }
+
                 renderHandResult_Counter++;
+
             }
+            
+            renderHandResult_DrawFrame(tempHandScore);
+            renderHandResult_DrawSpeechBubble(11);
+
             break;
 
         case 7 ... 10:
             hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
-            drawSkull();
-            drawBonesMultTotal(tempHandScore);
-            drawDice();
-            drawFooterRoll();
+            renderHandResult_DrawFrame(tempHandScore);
 
             if (renderHandResult_Counter == 10) {
                 renderHandResult_Counter = 0;

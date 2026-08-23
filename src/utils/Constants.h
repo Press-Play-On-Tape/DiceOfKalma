@@ -49,7 +49,7 @@ namespace Constants {
 enum class SkullType : uint8_t {
     Pair_Multiplier = 0,            // +1 mult on PAIR / TWO PAIR
     Big_Multiplier = 1,             // +1 mult on 3 KIND / STRAIGHT / FULL HOUSE
-    Kind_3or4_Multiplier = 2,       // +1 mult on 4 / 5 OF A KIND
+    Kind_3or4_Multiplier = 2,       // +1 mult on 3 / 4 OF A KIND
     Flat_Bones = 3,                 // +10 chips every hand
     Extra_Reroll = 4,               // +1 reroll per hand
     Extra_Hand = 5,                 // +1 hand per level
@@ -63,8 +63,8 @@ enum class SkullType : uint8_t {
     Double_First = 13,              // first hand played each level scores x2
     Mountainous = 14,               // 3 multiplier for 0,1,2,1,0 or equivalent
     TwiceAsHigh = 15,               // 3 multiplier for 1,1,6,6,x
-    Skull_16 = 16,
-    Skull_17 = 17,
+    StraightUp = 16,                // 3 multiplier for 1,2,3,4,5 or 2,3,4,5,6 in seq
+    Kind_345_Multiplier = 17,       // 4 multiplier for a 3,4,5 of a kind
     Skull_18 = 18,
     Skull_19 = 19,
     Skull_Count = 20,

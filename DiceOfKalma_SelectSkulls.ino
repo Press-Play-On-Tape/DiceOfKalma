@@ -11,9 +11,11 @@ void offerSkulls() {
     uint8_t rangeLow = max(0, rangeHigh - 3);
 // Serial.print("0 to ");
 // Serial.println(range);
-// SJH
     skullChoiceA = static_cast<SkullType>(random(rangeLow, rangeHigh));
-skullChoiceA = SkullType::TwiceAsHigh;
+
+// SJH
+skullChoiceA = SkullType::Kind_345_Multiplier;
+
     do {
         skullChoiceB = static_cast<SkullType>(random(rangeLow, rangeHigh));
     } while (skullChoiceB == skullChoiceA);
@@ -130,8 +132,8 @@ void skullChoice() {
 
 void  drawSkullInfo() {
 
-    FX::drawBitmap(118, 0, Images::SkullInfo_Top, 0, dbmNormal);
-    FX::drawBitmap(0, 0, Images::SkullInfo_Bot, 0, dbmNormal);
+    FX::drawBitmap(112, 0, Images::SkullInfo_Top, 0, dbmNormal);
+    FX::drawBitmap(-3, 0, Images::SkullInfo_Bot, 0, dbmNormal);
 
     uint24_t img = FX::readIndexedUInt24(Images::Skulls, static_cast<uint8_t>(skullInfoType));
     FX::drawBitmap(65, 0, img, 0, dbmNormal);

@@ -501,6 +501,17 @@ class Hand {
 
             }
 
+            if (handType == HandType::Three_of_a_Kind || handType == HandType::Four_of_a_Kind || handType == HandType::Five_of_a_Kind) {
+
+                skullMultiplier += this->countSkull(SkullType::Kind_345_Multiplier);
+                updateDeckEntry_Multiplier(SkullType::Kind_345_Multiplier, 3);
+
+                #ifdef DEBUG_HAND
+                    DEBUG_PRINTLN("Sk Kind_345_Multiplier: B 0, M 3");
+                #endif
+
+            }
+
             if (allEven) {
 
                 skullMultiplier += this->countSkull(SkullType::Even_Mulitplier);
@@ -605,7 +616,21 @@ class Hand {
                     DEBUG_PRINTLN("");
                 #endif
 
-            } 
+            }
+
+            if (this->dice[0] == this->dice[1] - 1 && this->dice[1] == this->dice[2] - 1 && this->dice[2] == this->dice[3] - 1 && this->dice[3] == this->dice[4] - 1) {
+
+                skullMultiplier += this->countSkull(SkullType::StraightUp) * 3;
+                updateDeckEntry_Multiplier(SkullType::StraightUp, 3);
+
+                #ifdef DEBUG_HAND
+                    DEBUG_PRINT("Sk StraightUp: B 0, M ");
+                    DEBUG_PRINT(this->countSkull(SkullType::StraightUp) * 3);
+                    DEBUG_PRINTLN("");
+                #endif
+                            
+            }            
+
 // skullMultiplier = 5;
 // skullBones = 20;
 
