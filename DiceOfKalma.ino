@@ -8,16 +8,11 @@
 #include "src/entities/Hand.h"
 #include "src/entities/Particle.h"
 #include "src/entities/SkullData.h"
-#include <EEPROM.h>
+#include "src/entities/Cookie.h"
 
 #include "images.h"
 
 Arduboy2Ext arduboy;
-
-// ---------------------------------------------------------------------
-// EEPROM (Arduboy2 system area occupies the first 16 bytes, so we start
-// safely after that)
-// ---------------------------------------------------------------------
 
 
 uint8_t renderHandResult_Counter = 0;
@@ -37,16 +32,18 @@ uint8_t rollDice_Counter = 0;
 
 uint8_t  level = 1;
 int16_t threshold = 0;
+int16_t thresholdMin = 0;
 uint8_t  handsLeft = 0;
 uint8_t  handsMax  = 0;
 uint8_t  rerollsLeft = 0;
 uint8_t  rerollsMax  = 0;
-uint8_t  bestLevel = 1;
+uint16_t bCounter = 0;
 
 Hand hand;
 
 // last hand result, for the result screen
 
+Cookie cookie;
 HandScore tempHandScore;
 Particle particles[Constants::ParticlesMax];
 
@@ -57,7 +54,6 @@ SkullType pendingSkull = SkullType::None;
 uint8_t skullCursor = 0;
 uint8_t upgradeCursor = 0;
 uint8_t upgradeTop = 0;
-uint8_t swapCursor = 0;
 uint8_t deckViewCursor = 0;
 uint8_t deckViewTop = 0;
 uint8_t messageIdx = 0;
@@ -71,10 +67,10 @@ void setup() {
     
     arduboy.boot();
     arduboy.setFrameRate(30);
-    loadHighScore();
 
     FX::display(CLEAR_BUFFER);
     FX::begin(FX_DATA_PAGE, FX_SAVE_PAGE);
+    FX::loadGameState((uint8_t*)&cookie, sizeof(cookie));
 
 }
 
@@ -105,13 +101,21 @@ void loop() {
         case GameState::Game_Roll:          
             updateRoll();          
             drawSkull();
-            drawLevelAndTarget(hand.lastHandScore, level, threshold);
-            drawBonesMultTotal(hand.lastHandScore);
+            drawLevelAndTarget(hand.getLastHandScore(), level, threshold);
+
+            if (bCounter > 16) {
+                drawBonesMultTotal(hand.getLastHandScore());
+            }
+            else {
+                FX::drawBitmap(0, 0, Images::Background_00, 0, dbmNormal);
+            }
+
             drawDice();
             drawFooterRoll();    
             break;
 
-        case GameState::Game_Hand_Result_Init:   
+        case GameState::Game_Hand_Result_Init:  
+            thresholdMin = (threshold > hand.getLastHandScore().score ? threshold - hand.getLastHandScore().score : 0); 
             renderHandResult_Counter = 0;
             tempHandScore.reset();
             gameState = GameState::Game_Hand_Result_Base;
@@ -166,25 +170,16 @@ void loop() {
             break;
 
         case GameState::Game_Deck_Full_Swap:
-            // updateDeckFullSwap();  
-            // drawDeckFullSwap(); 
-            updateDeckView();      
-            drawDeckView(); 
-            break;
-
         case GameState::Game_Deck_View:     
-            updateDeckView();      
-            drawDeckView();      
+            deckView();      
             break;
 
         case GameState::Game_Over:      
-            updateGameOver();      
-            drawGameOver();      
+            gameOver();      
             break;
 
         case GameState::Game_Win:           
-            updateWin();           
-            drawWin();           
+            win();           
             break;
     }
 
@@ -194,13 +189,6 @@ void loop() {
     if (!skullStack.isEmpty() && arduboy.isFrameCount(2)) {
         uint16_t data = skullStack.pop();
         skullData.setData(data);
-        // Serial.print("Data: ");
-        // Serial.print(data);
-        // Serial.print(" E: ");
-        // Serial.print(skullData.getEyes());
-        // Serial.print(", M: ");
-        // Serial.println(skullData.getMouth());
-
     }
 
 }

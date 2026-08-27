@@ -4,7 +4,7 @@
 
 void setDeckViewTop() {
 
-    switch (hand.deckCount) {
+    switch (hand.getDeckCount()) {
     
         case 0 ... 4:
             deckViewTop = 0;
@@ -38,16 +38,16 @@ void setDeckViewTop() {
 
 }
 
-void updateDeckView() {
+void deckView() {
 
-    if (arduboy.justPressed(LEFT_BUTTON) && hand.deckCount > 0 && deckViewCursor < hand.deckCount - 1) {
+    if (arduboy.justPressed(LEFT_BUTTON) && hand.getDeckCount() > 0 && deckViewCursor < hand.getDeckCount() - 1) {
 
         deckViewCursor++;
         setDeckViewTop();
 
     }
 
-    if (arduboy.justPressed(RIGHT_BUTTON) && hand.deckCount > 0 && deckViewCursor > 0) {
+    if (arduboy.justPressed(RIGHT_BUTTON) && hand.getDeckCount() > 0 && deckViewCursor > 0) {
 
         deckViewCursor--;
         setDeckViewTop();
@@ -56,7 +56,7 @@ void updateDeckView() {
 
     if (arduboy.justPressed(DOWN_BUTTON)) {
     
-        skullInfoType = hand.deck[deckViewCursor].skullType;
+        skullInfoType = hand.getDeckEntry(deckViewCursor).getSkullType();
         gameState = GameState::Game_Skull_Info; 
         returnState = GameState::Game_Deck_View;
 
@@ -71,7 +71,7 @@ void updateDeckView() {
                 gameState = GameState::Game_Upgrade_Choice_Init;
 
                 if (arduboy.justPressed(A_BUTTON)) {
-                    hand.deck[swapCursor].skullType = pendingSkull;
+                    hand.getDeckEntry(deckViewCursor).setSkullType(pendingSkull);
                 }
 
                 deckViewCursor = 0;
@@ -98,9 +98,8 @@ void updateDeckView() {
 
     }
 
-}
 
-void drawDeckView() {
+    // Render screen ..
 
     uint8_t x = 90;
     Inventory_BottomOptions botImage = Inventory_BottomOptions::Both;
@@ -114,22 +113,22 @@ void drawDeckView() {
 
         case GameState::Game_Deck_View:
             FX::drawBitmap(96, 0, Images::Inventory_Top, 0, dbmNormal);
-            drawNumber(119, 44, hand.deckCount);
+            drawNumber(119, 44, hand.getDeckCount());
             break;
 
     }
 
 
 
-    if (hand.deckCount == 0) {
+    if (hand.getDeckCount() == 0) {
         botImage = Inventory_BottomOptions::NoSkulls;
     }
-    else if (hand.deckCount < 5) {
+    else if (hand.getDeckCount() < 5) {
         botImage = Inventory_BottomOptions::NoScrolling;
     }
     else if (deckViewCursor > 0) { 
 
-        if (deckViewCursor == hand.deckCount -1) {
+        if (deckViewCursor == hand.getDeckCount() -1) {
             botImage = Inventory_BottomOptions::UpOnly;
         }
         else {
@@ -139,7 +138,7 @@ void drawDeckView() {
     }
     else { 
 
-        if (deckViewCursor == hand.deckCount -1) {
+        if (deckViewCursor == hand.getDeckCount() -1) {
             botImage = Inventory_BottomOptions::NoScrolling;
 
         }
@@ -151,11 +150,11 @@ void drawDeckView() {
     
     FX::drawBitmap(0, 0, Images::Inventory_Bot, static_cast<uint8_t>(botImage), dbmNormal);
 
-    if (hand.deckCount != 0) {
+    if (hand.getDeckCount() != 0) {
 
-        for (uint8_t i = deckViewTop; i < hand.deckCount; i++) {
+        for (uint8_t i = deckViewTop; i < hand.getDeckCount(); i++) {
 
-            uint24_t aIcon = FX::readIndexedUInt24(Images::Skulls_Thumb, static_cast<uint8_t>(hand.deck[i].skullType));
+            uint24_t aIcon = FX::readIndexedUInt24(Images::Skulls_Thumb, static_cast<uint8_t>(hand.getDeckEntry(i).getSkullType()));
             FX::drawBitmap(x, 0, aIcon, 0, dbmNormal);
 
             x= x - 24;

@@ -31,7 +31,7 @@ void updateAndRenderParticles() {
 
         particles[i].update();
 
-        if ( particles[i].render() ) { // the dot should be rendered
+        if ( particles[i].render() ) {
 
             Sprites::drawExternalMask(particles[i].getY() - 1, particles[i].getX() - 1, Images::Particle_Sml, Images::Particle_Sml_Mask, 0, 0);
 

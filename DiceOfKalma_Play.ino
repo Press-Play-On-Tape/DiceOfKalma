@@ -1,29 +1,32 @@
 #include <ArduboyFX.h>  
+#include <avr/pgmspace.h>
+
+const uint16_t levelThresholds[20] PROGMEM = {
+    176, 263, 353, 451, 560, 683, 825, 989, 1178, 1397,
+    1649, 1937, 2265, 2638, 3058, 3529, 4056, 4640, 5287, 6000
+};
 
 uint16_t computeThreshold() {
 
-    // return 40;//SJH
-
-    uint32_t base = 150 + (uint32_t)(level - 1) * 60 + (uint32_t)(level - 1) * (level - 1) * 20;
-    uint8_t discountPct = hand.countSkull(SkullType::Threshold_Discount) * 5;
-    if (discountPct > 20) discountPct = 20;
-    base = base - (base * discountPct) / 100;
-    return (uint16_t)base;
+    if (level < 1) level = 1;
+    if (level > 20) level = 20;
+    return pgm_read_word(&levelThresholds[level - 1]);
 
 }
 
-void startLevel() {
+void startLevel(bool transition) {
 
     threshold = computeThreshold();
-    handsMax = 3 + hand.countSkull(SkullType::Extra_Hand);
+    handsMax = 3 + (hand.countSkull(SkullType::Extra_Hand) > 0 ? 1 : 0);
     handsLeft = handsMax;
     rerollsMax = 3 + hand.countSkull(SkullType::Extra_Reroll);
     rerollsLeft = rerollsMax;
-    hand.firstHandOfLevel = true;
-    hand.rerollUsedThisHand = false;
+    hand.setFirstHandOfLevel(true);
+    hand.setRerollUsedThisHand(false);
     hand.resetDice();
-    gameState = GameState::Game_Level_Intro;
     stateTimer = 0;
+
+    if (transition) gameState = GameState::Game_Level_Intro;
 
 }
 
@@ -31,7 +34,7 @@ void newHand() {
 
     rerollsLeft = rerollsMax;
     cursor = 0;
-    hand.rerollUsedThisHand = false;
+    hand.setRerollUsedThisHand(false);
     takeTooLong =0;
 
 }
@@ -42,7 +45,7 @@ void updateRoll() {
 
     takeTooLong++;
 
-    if (takeTooLong % 512 == 0) { 
+    if (takeTooLong % 256 == 0) { 
     
         takeTooLong_Type++;
 
@@ -84,6 +87,12 @@ void updateRoll() {
 
     }
 
+    if (arduboy.frameCount > 5) {
+
+        hand.setRerollHighlight(Constants::RerollHighlight_None);
+
+    }
+
     hand.evaluateHand(); // live preview of current dice
 
     if (arduboy.justPressed(UP_BUTTON)) {
@@ -114,9 +123,19 @@ void updateRoll() {
 
     }
 
-    if (arduboy.justPressed(B_BUTTON)) {
+    if (arduboy.pressed(B_BUTTON)) {
+        bCounter++;
+    }
 
-        gameState = GameState::Game_Hand_Info_Init;
+    if (arduboy.justReleased(B_BUTTON)) {
+
+        if (bCounter < 16) {
+
+            gameState = GameState::Game_Hand_Info_Init;
+
+        }
+
+        bCounter = 0;
 
     }
 
@@ -124,25 +143,26 @@ void updateRoll() {
 
         if (cursor < 5) {
 
-            if (hand.marked[cursor] == Marked::True) {
-                hand.marked[cursor] = Marked::False;
+            if (hand.getMarked(cursor) == Marked::True) {
+                hand.setMarked(cursor, Marked::False);
             }
             else {
-                hand.marked[cursor] = Marked::True;
+                hand.setMarked(cursor, Marked::True);
             }
 
         } 
         else if (cursor == CURSOR_REROLL) {
 
             bool anyMarked = false;
-            hand.rerollHighlight = Constants::RerollHighlight_Minimum;
+            arduboy.frameCount = 0;
+            hand.setRerollHighlight(Constants::RerollHighlight_Minimum);
             
-            for (uint8_t i = 0; i < 5; i++) if (hand.marked[i] == Marked::True) anyMarked = true;
+            for (uint8_t i = 0; i < 5; i++) if (hand.getMarked(i) == Marked::True) anyMarked = true;
 
             if (rerollsLeft > 0 && anyMarked) {
 
                 rerollsLeft--;
-                hand.rerollUsedThisHand = 4;
+                hand.setRerollUsedThisHand(true);
                 gameState = GameState::Game_Roll_Dice;
                 returnState = GameState::Game_Roll;
                 rollDice_Counter = 1;
@@ -152,11 +172,10 @@ void updateRoll() {
         } 
         else if (cursor == CURSOR_PLAY) { 
 
-            hand.playHandHighlight = Constants::PlayHandlHighlight_Minimum;
+            hand.setPlayHandHighlight(Constants::PlayHandlHighlight_Minimum);
             hand.evaluateHand();
-            //   runScore += hand.lastHandScore.score;
             handsLeft--;
-            hand.firstHandOfLevel = false;
+            hand.setFirstHandOfLevel(false);
             gameState = GameState::Game_Hand_Result_Init;
             stateTimer = 0;
 
@@ -174,65 +193,33 @@ void updateRoll() {
 }
 
 
-
-void updateWin() {
-  if (arduboy.justPressed(A_BUTTON)) {
-    gameState = GameState::Title;
-  }
-}
-
-
 void renderRollDice() {
 
     if (rollDice_Counter == 6) {
 
         for (uint8_t i = 0; i < 5; i++) {
             
-            if (hand.marked[i] == Marked::True || hand.marked[i] == Marked::True_NoHighlight) {
+            if (hand.getMarked(i) == Marked::True || hand.getMarked(i) == Marked::True_NoHighlight) {
         
                 hand.rerollDice(i);
-                hand.marked[i] = Marked::True_NoHighlight;
+                hand.setMarked(i, Marked::True_NoHighlight);
 
             }
 
         }
 
-        // SJH .. Fix hands
+        // SJH
+
         // for (uint8_t i = 0; i < 5; i++) {
-        //     hand.dice[i] = i + 1;
+        //     hand.setDice(i, 6);
         // }
-        //     hand.dice[4] = 6;
-
-        // // SJH .. Fix hands
-        // for (uint8_t i = 0; i < 5; i++) {
-
-        //     switch (i) {
-        //         case 0:
-        //         case 4:
-        //             hand.dice[i] = 1;
-        //             break;
-        //         case 1:
-        //         case 3:
-        //             hand.dice[i] = 6;
-        //             break;
-        //         case 2:
-        //             hand.dice[i] = 3;
-        //             break;
-        //     }
-        // }
-
- // SJH .. Fix hands
-        for (uint8_t i = 0; i < 5; i++) {
-
-            hand.dice[i] = 3;
-        }
 
     }
 
     rollDice_Counter++;
 
     drawSkull();
-    drawLevelAndTarget(hand.lastHandScore, level, threshold);
+    drawLevelAndTarget(hand.getLastHandScore(), level, threshold);
     drawBonesMultTotal(tempHandScore);
     drawDice();
     drawFooterRoll();
@@ -243,7 +230,7 @@ void renderRollDice() {
         rollDice_Counter = 0;
 
         hand.markAllCards(Marked::False);
-        hand.rerollHighlight = Constants::RerollHighlight_None;
+        hand.setRerollHighlight(Constants::RerollHighlight_None);
 
     }
 
@@ -292,7 +279,7 @@ void renderHandResult_Base() {
             renderHandResult_Timer++;
             hand.markAllCards(Marked::True);
 
-            if (arduboy.isFrameCount(2) && tempHandScore.totalBones < hand.lastHandScore.baseBones) {
+            if (arduboy.isFrameCount(2) && tempHandScore.totalBones < hand.getLastHandScore().baseBones) {
                 tempHandScore.totalBones++;
                 tempHandScore.totalMultiplier = 0;
                 tempHandScore.score++;
@@ -301,7 +288,7 @@ void renderHandResult_Base() {
             renderHandResult_DrawFrame(tempHandScore);
             renderHandResult_DrawSpeechBubble(9);
 
-            if (renderHandResult_Timer > 48 && tempHandScore.totalBones == hand.lastHandScore.baseBones) {
+            if (renderHandResult_Timer > 48 && tempHandScore.totalBones == hand.getLastHandScore().baseBones) {
                 renderHandResult_Counter++;
             }
             break;
@@ -315,17 +302,17 @@ void renderHandResult_Base() {
             if (renderHandResult_Counter == 10) {
                 renderHandResult_Counter = 0;
 
-                if (hand.lastHandScore.handBones > 0) {
+                if (hand.getLastHandScore().handBones > 0) {
 
                     gameState = GameState::Game_Hand_Result_Hand;
 
                 }
-                else if (hand.lastHandScore.skullBones > 0) {
+                else if (hand.getLastHandScore().skullBones > 0) {
 
                     gameState = GameState::Game_Hand_Result_Skulls_Played;
 
                 }
-                else if (hand.lastHandScore.upgradeBones > 0) {
+                else if (hand.getLastHandScore().upgradeBones > 0) {
 
                     gameState = GameState::Game_Hand_Result_Upgrades_Played;
 
@@ -368,7 +355,7 @@ void renderHandResult_Hand() {
                     
                     renderHandResult_Timer = 0;
 
-                    if (hand.lastHandScore.handMultiplier > 0) {
+                    if (hand.getLastHandScore().handMultiplier > 0) {
 
                         tempHandScore.totalMultiplier++;
                     
@@ -381,20 +368,16 @@ void renderHandResult_Hand() {
         case 6:
 
             renderHandResult_Timer++;
-            hand.markWiningHand(hand.lastHandScore);
+            hand.markWiningHand(hand.getLastHandScore());
 
-            if (hand.lastHandScore.handBones > 10 || (hand.lastHandScore.handBones <= 10 && arduboy.isFrameCount(4))) {
+            if (hand.getLastHandScore().handBones > 10 || (hand.getLastHandScore().handBones <= 10 && arduboy.isFrameCount(4))) {
 
-                if (tempHandScore.totalBones < hand.lastHandScore.baseBones + hand.lastHandScore.handBones) {
+                if (tempHandScore.totalBones < hand.getLastHandScore().baseBones + hand.getLastHandScore().handBones) {
 
                     tempHandScore.totalBones++;
-// Serial.print(tempHandScore.totalBones - hand.lastHandScore.baseBones);
-// Serial.print(" % ");
-// Serial.print((hand.lastHandScore.handBones / hand.lastHandScore.handMultiplier));
-// Serial.print(" ");
-// Serial.println((tempHandScore.totalBones - hand.lastHandScore.baseBones) % (hand.lastHandScore.handBones / hand.lastHandScore.handMultiplier));
-                    if ((tempHandScore.totalBones - hand.lastHandScore.baseBones) % (hand.lastHandScore.handBones / hand.lastHandScore.handMultiplier) == 0 &&
-                         tempHandScore.totalMultiplier < hand.lastHandScore.handMultiplier) {
+
+                    if ((tempHandScore.totalBones - hand.getLastHandScore().baseBones) % (hand.getLastHandScore().handBones / hand.getLastHandScore().handMultiplier) == 0 &&
+                         tempHandScore.totalMultiplier < hand.getLastHandScore().handMultiplier) {
                       
                         tempHandScore.totalMultiplier++;
                         
@@ -412,9 +395,9 @@ void renderHandResult_Hand() {
             }
             
             renderHandResult_DrawFrame(tempHandScore);
-            renderHandResult_DrawSpeechBubble(static_cast<uint8_t>(hand.lastHandScore.handType));
+            renderHandResult_DrawSpeechBubble(static_cast<uint8_t>(hand.getLastHandScore().handType));
             
-            if (renderHandResult_Timer > 48 && tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones) {
+            if (renderHandResult_Timer > 48 && tempHandScore.totalBones == hand.getLastHandScore().baseBones + hand.getLastHandScore().handBones) {
                 renderHandResult_Counter++;
             }
             break;
@@ -429,12 +412,12 @@ void renderHandResult_Hand() {
 
                 renderHandResult_Counter = 0;
 
-                if (hand.lastHandScore.skullBones > 0 || hand.lastHandScore.skullMultiplier > 0) {
+                if (hand.getLastHandScore().skullBones > 0 || hand.getLastHandScore().skullMultiplier > 0) {
 
                     gameState = GameState::Game_Hand_Result_Skulls_Played;
 
                 }
-                else if (hand.lastHandScore.upgradeBones > 0 || hand.lastHandScore.upgradeMultiplier > 0) {
+                else if (hand.getLastHandScore().upgradeBones > 0 || hand.getLastHandScore().upgradeMultiplier > 0) {
 
                     gameState = GameState::Game_Hand_Result_Upgrades_Played;
 
@@ -470,8 +453,8 @@ void renderHandResult_SkullsPlayed() {
             if (renderHandResult_Counter == 6) {
                 renderHandResult_Timer = 0;
 
-                if (hand.lastHandScore.skullBones > 0) {
-                    if (hand.lastHandScore.skullMultiplier > 0) {
+                if (hand.getLastHandScore().skullBones > 0) {
+                    if (hand.getLastHandScore().skullMultiplier > 0) {
                         tempHandScore.totalMultiplier++;
                     }
                 }
@@ -486,15 +469,15 @@ void renderHandResult_SkullsPlayed() {
         case 6: // Player has skull bones and maybe multipliers
             renderHandResult_Timer++;
 
-            if (hand.lastHandScore.skullBones >= 10 ||
-                (hand.lastHandScore.skullBones < 10 && arduboy.isFrameCount(4))) {
+            if (hand.getLastHandScore().skullBones >= 10 ||
+                (hand.getLastHandScore().skullBones < 10 && arduboy.isFrameCount(4))) {
 
-                if (tempHandScore.totalBones < hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones) {
+                if (tempHandScore.totalBones < hand.getLastHandScore().baseBones + hand.getLastHandScore().handBones + hand.getLastHandScore().skullBones) {
 
                     tempHandScore.totalBones++;
 
-                    if (hand.lastHandScore.skullMultiplier > 0 && (tempHandScore.totalBones - hand.lastHandScore.baseBones - hand.lastHandScore.handBones) % (hand.lastHandScore.skullMultiplier / hand.lastHandScore.skullMultiplier) == 0 &&
-                        tempHandScore.totalMultiplier < hand.lastHandScore.handMultiplier + hand.lastHandScore.skullMultiplier) {
+                    if (hand.getLastHandScore().skullMultiplier > 0 && (tempHandScore.totalBones - hand.getLastHandScore().baseBones - hand.getLastHandScore().handBones) % (hand.getLastHandScore().skullMultiplier / hand.getLastHandScore().skullMultiplier) == 0 &&
+                        tempHandScore.totalMultiplier < hand.getLastHandScore().handMultiplier + hand.getLastHandScore().skullMultiplier) {
                         tempHandScore.totalMultiplier++;
                     }
 
@@ -510,7 +493,7 @@ void renderHandResult_SkullsPlayed() {
             renderHandResult_DrawSpeechBubble(10);
 
             if (renderHandResult_Timer > 48 &&
-                tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones) {
+                tempHandScore.totalBones == hand.getLastHandScore().baseBones + hand.getLastHandScore().handBones + hand.getLastHandScore().skullBones) {
                 renderHandResult_Counter = 8; // always skips case 7 from here
             }
 
@@ -519,7 +502,7 @@ void renderHandResult_SkullsPlayed() {
         case 7: // Player only has skull multiplier (skullBones == 0)
             renderHandResult_Timer++;
 
-            if (renderHandResult_Timer % 8 == 0 && tempHandScore.totalMultiplier < hand.lastHandScore.handMultiplier + hand.lastHandScore.skullMultiplier) {
+            if (renderHandResult_Timer % 8 == 0 && tempHandScore.totalMultiplier < hand.getLastHandScore().handMultiplier + hand.getLastHandScore().skullMultiplier) {
                 tempHandScore.totalMultiplier++;
                 tempHandScore.score = tempHandScore.totalBones * tempHandScore.totalMultiplier;
             }
@@ -528,7 +511,7 @@ void renderHandResult_SkullsPlayed() {
             renderHandResult_DrawSpeechBubble(10);
 
             if (renderHandResult_Timer > 48 &&
-                tempHandScore.totalMultiplier == hand.lastHandScore.handMultiplier + hand.lastHandScore.skullMultiplier) {
+                tempHandScore.totalMultiplier == hand.getLastHandScore().handMultiplier + hand.getLastHandScore().skullMultiplier) {
                 renderHandResult_Counter++;
             }
 
@@ -546,7 +529,7 @@ void renderHandResult_SkullsPlayed() {
 
                 renderHandResult_Counter = 0;
 
-                gameState = hand.lastHandScore.upgradeBones > 0
+                gameState = hand.getLastHandScore().upgradeBones > 0
                     ? GameState::Game_Hand_Result_Upgrades_Played
                     : GameState::Game_Hand_Result_Countdown;
 
@@ -577,7 +560,7 @@ void renderHandResult_UpgradesPlayed() {
                                 
                     renderHandResult_Timer = 0;
 
-                    if (hand.lastHandScore.upgradeMultiplier > 0) {
+                    if (hand.getLastHandScore().upgradeMultiplier > 0) {
 
                         tempHandScore.totalMultiplier++;
                     
@@ -591,25 +574,18 @@ void renderHandResult_UpgradesPlayed() {
 
             renderHandResult_Timer++;
 
-            if (hand.lastHandScore.upgradeBones >= 10 || (hand.lastHandScore.upgradeBones < 10 && arduboy.isFrameCount(4))) {
+            if (hand.getLastHandScore().upgradeBones >= 10 || (hand.getLastHandScore().upgradeBones < 10 && arduboy.isFrameCount(4))) {
 
-                if (tempHandScore.totalBones < hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones + hand.lastHandScore.upgradeBones) {
+                if (tempHandScore.totalBones < hand.getLastHandScore().baseBones + hand.getLastHandScore().handBones + hand.getLastHandScore().skullBones + hand.getLastHandScore().upgradeBones) {
 
                     tempHandScore.totalBones++;
-                    // Serial.print(tempHandScore.totalBones);
-                    // Serial.print(" ");
-                    // Serial.print(tempHandScore.totalBones - hand.lastHandScore.baseBones - hand.lastHandScore.handBones - hand.lastHandScore.skullBones);
-                    // Serial.print(" ");
-                    // Serial.print((tempHandScore.totalBones - hand.lastHandScore.baseBones - hand.lastHandScore.handBones - hand.lastHandScore.skullBones) % (hand.lastHandScore.upgradeBones / hand.lastHandScore.upgradeMultiplier));
-                    if ((tempHandScore.totalBones - hand.lastHandScore.baseBones - hand.lastHandScore.handBones - hand.lastHandScore.skullBones) % (hand.lastHandScore.upgradeBones / hand.lastHandScore.upgradeMultiplier) == 0 &&
-                        tempHandScore.totalMultiplier < hand.lastHandScore.handMultiplier + hand.lastHandScore.skullMultiplier + hand.lastHandScore.upgradeMultiplier) {
-                    // Serial.print(" U ");
-                    // Serial.print(tempHandScore.totalMultiplier + 1);
+
+                    if ((tempHandScore.totalBones - hand.getLastHandScore().baseBones - hand.getLastHandScore().handBones - hand.getLastHandScore().skullBones) % (hand.getLastHandScore().upgradeBones / hand.getLastHandScore().upgradeMultiplier) == 0 &&
+                        tempHandScore.totalMultiplier < hand.getLastHandScore().handMultiplier + hand.getLastHandScore().skullMultiplier + hand.getLastHandScore().upgradeMultiplier) {
 
                         tempHandScore.totalMultiplier++;
                         
                     }
-                    // Serial.println("  ");
 
                 }
 
@@ -622,9 +598,9 @@ void renderHandResult_UpgradesPlayed() {
                 tempHandScore.score = tempHandScore.totalBones;
             }
             
-            if (renderHandResult_Timer > 48 && (tempHandScore.totalBones == hand.lastHandScore.baseBones + hand.lastHandScore.handBones + hand.lastHandScore.skullBones + hand.lastHandScore.upgradeBones)) {
+            if (renderHandResult_Timer > 48 && (tempHandScore.totalBones == hand.getLastHandScore().baseBones + hand.getLastHandScore().handBones + hand.getLastHandScore().skullBones + hand.getLastHandScore().upgradeBones)) {
 
-                if (tempHandScore.totalMultiplier < hand.lastHandScore.handMultiplier + hand.lastHandScore.skullMultiplier + hand.lastHandScore.upgradeMultiplier) {
+                if (tempHandScore.totalMultiplier < hand.getLastHandScore().handMultiplier + hand.getLastHandScore().skullMultiplier + hand.getLastHandScore().upgradeMultiplier) {
                     tempHandScore.totalMultiplier++;
                     
                 }
@@ -667,11 +643,9 @@ void renderHandResult_Countdown() {
             addWideEyes();
 
             if (tempHandScore.score < threshold && handsLeft == 0) {
-// Serial.println("810");
                 messageIdx = random(8, 10);
             }
             else {
-// Serial.println("08");
                 messageIdx = random(0, 8);
             }
             [[fallthrough]]
@@ -679,7 +653,7 @@ void renderHandResult_Countdown() {
         case 1 ... 5:
             {
                 drawSkull();
-                drawLevelAndTarget(hand.lastHandScore, level, threshold);
+                drawLevelAndTarget(hand.getLastHandScore(), level, threshold);
                 drawBonesMultTotal(tempHandScore);
                 drawDice();
                 drawFooterRoll();
@@ -690,24 +664,41 @@ void renderHandResult_Countdown() {
 
         case 6:
 
-            // hand.markWiningHand(hand.lastHandScore);
             if (tempHandScore.score >= countdownDiv && threshold >= countdownDiv) {
+
                 tempHandScore.score = tempHandScore.score - countdownDiv;
-                threshold = threshold - countdownDiv;
+
+                if (threshold - countdownDiv >= thresholdMin) {
+                    threshold = threshold - countdownDiv;
+                }
+                else {
+                    threshold = thresholdMin;
+                }
+
             }
             else if (tempHandScore.score >= countdownDiv && threshold < countdownDiv) {
+
                 tempHandScore.totalBones = 0;
                 tempHandScore.totalMultiplier = 0;
                 tempHandScore.score = tempHandScore.score - countdownDiv;
                 threshold = 0;
                 renderHandResult_Counter++;
+
             }
             else if (tempHandScore.score < countdownDiv && threshold >= countdownDiv) {
+
                 tempHandScore.totalBones = 0;
                 tempHandScore.totalMultiplier = 0;
                 tempHandScore.score = 0;
-                threshold = threshold - countdownDiv;
                 renderHandResult_Counter++;
+
+                if (threshold - countdownDiv >= thresholdMin) {
+                    threshold = threshold - countdownDiv;
+                }
+                else {
+                    threshold = thresholdMin;
+                }
+
             }
             else if (tempHandScore.score < countdownDiv && threshold < countdownDiv) {
                 tempHandScore.score = 0;
@@ -718,7 +709,7 @@ void renderHandResult_Countdown() {
             }
             
             drawSkull();
-            drawLevelAndTarget(hand.lastHandScore, level, threshold);
+            drawLevelAndTarget(hand.getLastHandScore(), level, threshold);
             drawBonesMultTotal(tempHandScore);
             drawDice();
             drawFooterRoll();
@@ -727,6 +718,7 @@ void renderHandResult_Countdown() {
 
         case 7 ... 10:
 
+            threshold = thresholdMin;
             hand.markAllCards(Marked::False);
 
             if (renderHandResult_Counter < 10) {
@@ -740,15 +732,15 @@ void renderHandResult_Countdown() {
             }
 
             drawSkull();
-            drawLevelAndTarget(hand.lastHandScore, level, threshold);
+            drawLevelAndTarget(hand.getLastHandScore(), level, threshold);
             drawBonesMultTotal(tempHandScore);
             drawDice();
             drawFooterRoll();
 
             if (renderHandResult_Counter == 10) {
 
-                hand.rerollHighlight = Constants::RerollHighlight_None;
-                hand.playHandHighlight = Constants::PlayHandHighlight_None;
+                hand.setRerollHighlight(Constants::RerollHighlight_None);
+                hand.setPlayHandHighlight(Constants::PlayHandHighlight_None);
 
                 if (threshold == 0) {
 
@@ -815,7 +807,6 @@ void renderHandResult_Countdown() {
 
             if (arduboy.justPressed(A_BUTTON)) {
 
-                // Serial.println("Game Over 1");
                 gameState = GameState::Game_Over;
 
             }

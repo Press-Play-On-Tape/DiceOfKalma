@@ -26,8 +26,6 @@
 namespace Constants {
 
     constexpr uint8_t ParticlesMax = 30;
-    constexpr uint8_t EEPROM_Addr = 16;
-    constexpr uint8_t EEPROM_Magic  = 0xA5;   
     constexpr uint8_t RerollHighlight_Minimum = 8;
     constexpr uint8_t RerollHighlight_None = 0;
     constexpr uint8_t PlayHandlHighlight_Minimum = 8;
@@ -37,14 +35,30 @@ namespace Constants {
     constexpr uint8_t HandScore_LineSpacing = 7;
     constexpr uint8_t Level_Count = 20;
 
-}
+};
 
-// ---------------------------------------------------------------------
-// SKULLS - the deckbuilding layer.
-// Each skull is a passive that triggers off hand type / dice values /
-// how the hand was played. Skulls are stackable: owning 2 copies of a
-// mult skull doubles its bonus, etc.
-// ---------------------------------------------------------------------
+uint8_t SkullTypeOrder[] {
+    0,
+    1,
+    2,
+    3,
+    6,
+    7,
+    4,
+    8,
+    9,
+    5,
+    10, 
+    11,
+    12, 
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+};
 
 enum class SkullType : uint8_t {
     Pair_Multiplier = 0,            // +1 mult on PAIR / TWO PAIR
@@ -64,9 +78,9 @@ enum class SkullType : uint8_t {
     Mountainous = 14,               // 3 multiplier for 0,1,2,1,0 or equivalent
     TwiceAsHigh = 15,               // 3 multiplier for 1,1,6,6,x
     StraightUp = 16,                // 3 multiplier for 1,2,3,4,5 or 2,3,4,5,6 in seq
-    Kind_345_Multiplier = 17,       // 4 multiplier for a 3,4,5 of a kind
-    Skull_18 = 18,
-    Skull_19 = 19,
+    Kind_345_Multiplier = 17,       // 3 multiplier for a 3,4,5 of a kind
+    Sixes_45 = 18,                  // 3 multiplier for a 4 or 5 sixes
+    Them_Bones = 19,                  // +25 chips
     Skull_Count = 20,
     None
 };

@@ -8,21 +8,44 @@
 
 class Hand {
     
-    public:
+    private:
 
         uint8_t dice[5];
         uint8_t deckCount = 0;
-        Marked marked[5];
-        DeckEntry deck[MAX_DECK];
-        HandType upgradeHand = HandType::None;
-        
-        bool rerollUsedThisHand = false;
-        bool firstHandOfLevel = true;
         uint8_t rerollHighlight = Constants::RerollHighlight_None;
         uint8_t playHandHighlight = Constants::PlayHandHighlight_None;
 
-        HandScore lastHandScore;
+        bool rerollUsedThisHand = false;
+        bool firstHandOfLevel = true;
 
+        DeckEntry deck[MAX_DECK];
+        HandType upgradeHand = HandType::None;
+        HandScore lastHandScore;
+        Marked marked[5];
+
+    public:
+        
+        uint8_t getDice(uint8_t idx)                    { return this->dice[idx]; }
+        uint8_t getDeckCount()                          { return this->deckCount; }
+        bool getRerollUsedThisHand()                    { return this->rerollUsedThisHand; }
+        bool isFirstHandOfLevel()                       { return this->firstHandOfLevel; }
+        bool getRerollHighlight()                       { return this->rerollHighlight; }
+        bool getPlayHandHighlight()                     { return this->playHandHighlight; }
+
+        DeckEntry &getDeckEntry(int8_t idx)             { return this->deck[idx]; }
+        HandType getUpgradeHand()                       { return this->upgradeHand; }
+        HandScore &getLastHandScore()                   { return this->lastHandScore; }
+        Marked getMarked(uint8_t idx)                   { return this->marked[idx]; }
+
+        void setDice(uint8_t idx, uint8_t val)          { this->dice[idx] = val; }
+        void setDeckCount(uint8_t val)                  { this->deckCount = val; }
+        bool setRerollUsedThisHand(bool val)            { this->rerollUsedThisHand = val; }
+        bool setFirstHandOfLevel(bool val)              { this->firstHandOfLevel = val; }
+        bool setRerollHighlight(bool val)               { this->rerollHighlight = val; }
+        bool setPlayHandHighlight(bool val)             { this->playHandHighlight = val; }
+
+        void setUpgradeHand(HandType val)               { this->upgradeHand = val; }
+        void setMarked(uint8_t idx, Marked val)         { this->marked[idx] = val; }
 
     private:
 
@@ -58,6 +81,10 @@ class Hand {
             this->deckCount = 0;
             this->clearDeck();
 
+            for (uint8_t i = 0; i < 6; i++) {
+                this->deck[i].setSkullType(SkullType::None);
+            }
+
         }
 
         void markAllCards(Marked markedVal){
@@ -69,8 +96,8 @@ class Hand {
         void clearDeck() {
         
             for (uint8_t i = 0; i < MAX_DECK; i++) {
-                this->deck[i].bones = 0;
-                this->deck[i].multiplier = 0;
+                this->deck[i].setBones(0);
+                this->deck[i].setMultiplier(0);
             }
 
         }
@@ -158,7 +185,7 @@ class Hand {
         void addSkullToDeck(SkullType id) {
 
             if (this->deckCount < MAX_DECK) {
-                this->deck[this->deckCount++].skullType = id;
+                this->deck[this->deckCount++].setSkullType(id);
             }
 
         }
@@ -170,7 +197,7 @@ class Hand {
 
             for (uint8_t i = 0; i < this->deckCount; i++) {
 
-                if (this->deck[i].skullType == id) {
+                if (this->deck[i].getSkullType() == id) {
                     n++;
                 }
 
@@ -186,9 +213,9 @@ class Hand {
 
             for (uint8_t i = 0; i < this->deckCount; i++) {
 
-                if (this->deck[i].skullType == id) {
+                if (this->deck[i].getSkullType() == id) {
 
-                    this->deck[i].bones = bones;
+                    this->deck[i].setBones(bones);
                     
                 }
 
@@ -202,9 +229,9 @@ class Hand {
 
             for (uint8_t i = 0; i < this->deckCount; i++) {
 
-                if (this->deck[i].skullType == id) {
+                if (this->deck[i].getSkullType() == id) {
 
-                    this->deck[i].multiplier = multiplier;
+                    this->deck[i].setMultiplier(multiplier);
                     
                 }
 
@@ -468,7 +495,7 @@ class Hand {
 
             // skull-driven mult bonuses
 
-            if (handType == HandType::Pair || handType == HandType::Two_Pair) {
+            if (this->countSkull(SkullType::Pair_Multiplier) > 0 && (handType == HandType::Pair || handType == HandType::Two_Pair)) {
 
                 skullMultiplier += this->countSkull(SkullType::Pair_Multiplier);
                 updateDeckEntry_Multiplier(SkullType::Pair_Multiplier, 1);
@@ -479,7 +506,7 @@ class Hand {
 
             }
 
-            if (handType == HandType::Straight || handType == HandType::Full_House) {
+            if (this->countSkull(SkullType::Big_Multiplier) > 0 && (handType == HandType::Straight || handType == HandType::Full_House)) {
 
                 skullMultiplier += this->countSkull(SkullType::Big_Multiplier);
                 updateDeckEntry_Multiplier(SkullType::Big_Multiplier, 1);
@@ -490,7 +517,7 @@ class Hand {
 
             }
 
-            if (handType == HandType::Three_of_a_Kind || handType == HandType::Four_of_a_Kind) {
+            if (this->countSkull(SkullType::Kind_3or4_Multiplier) > 0 && (handType == HandType::Three_of_a_Kind || handType == HandType::Four_of_a_Kind)) {
 
                 skullMultiplier += this->countSkull(SkullType::Kind_3or4_Multiplier);
                 updateDeckEntry_Multiplier(SkullType::Kind_3or4_Multiplier, 1);
@@ -501,7 +528,7 @@ class Hand {
 
             }
 
-            if (handType == HandType::Three_of_a_Kind || handType == HandType::Four_of_a_Kind || handType == HandType::Five_of_a_Kind) {
+            if (this->countSkull(SkullType::Kind_345_Multiplier) > 0 && (handType == HandType::Three_of_a_Kind || handType == HandType::Four_of_a_Kind || handType == HandType::Five_of_a_Kind)) {
 
                 skullMultiplier += this->countSkull(SkullType::Kind_345_Multiplier);
                 updateDeckEntry_Multiplier(SkullType::Kind_345_Multiplier, 3);
@@ -512,7 +539,7 @@ class Hand {
 
             }
 
-            if (allEven) {
+            if (this->countSkull(SkullType::Even_Mulitplier) > 0 && allEven) {
 
                 skullMultiplier += this->countSkull(SkullType::Even_Mulitplier);
                 updateDeckEntry_Multiplier(SkullType::Even_Mulitplier, 1);
@@ -523,7 +550,7 @@ class Hand {
 
             }
 
-            if (allOdd)  {
+            if (this->countSkull(SkullType::Odd_Mulitplier) > 0 && allOdd)  {
 
                 skullMultiplier += this->countSkull(SkullType::Odd_Mulitplier);
                 updateDeckEntry_Multiplier(SkullType::Odd_Mulitplier, 1);
@@ -575,24 +602,20 @@ class Hand {
 
             }
 
-            if (!this->rerollUsedThisHand) {
+            if (this->countSkull(SkullType::No_Reroll_Bonus) > 0 && !this->rerollUsedThisHand) {
 
-                if (this->countSkull(SkullType::No_Reroll_Bonus) > 0) {
+                skullBones += this->countSkull(SkullType::No_Reroll_Bonus) * 15;
+                updateDeckEntry_Bones(SkullType::No_Reroll_Bonus, 15);
 
-                    skullBones += this->countSkull(SkullType::No_Reroll_Bonus) * 15;
-                    updateDeckEntry_Bones(SkullType::No_Reroll_Bonus, 15);
-
-                    #ifdef DEBUG_HAND
-                        DEBUG_PRINT("Sk No_Reroll_Bonus: B ");
-                        DEBUG_PRINT(this->countSkull(SkullType::No_Reroll_Bonus) * 15);
-                        DEBUG_PRINTLN(", M 0");
-                    #endif
-
-                }
+                #ifdef DEBUG_HAND
+                    DEBUG_PRINT("Sk No_Reroll_Bonus: B ");
+                    DEBUG_PRINT(this->countSkull(SkullType::No_Reroll_Bonus) * 15);
+                    DEBUG_PRINTLN(", M 0");
+                #endif
 
             }
 
-            if (this->dice[0] + 2 == this->dice[1] + 1 && this->dice[1] + 1 == this->dice[2] && this->dice[2] == this->dice[3] + 1 && this->dice[3] + 1 == this->dice[4] + 2) {
+            if (this->countSkull(SkullType::Mountainous) >  0 && this->dice[0] + 2 == this->dice[1] + 1 && this->dice[1] + 1 == this->dice[2] && this->dice[2] == this->dice[3] + 1 && this->dice[3] + 1 == this->dice[4] + 2) {
 
                 skullMultiplier += this->countSkull(SkullType::Mountainous) * 3;
                 updateDeckEntry_Multiplier(SkullType::Mountainous, 3);
@@ -605,7 +628,7 @@ class Hand {
                             
             }
 
-            if (sixCount == 2 && aceCount == 2) {
+            if (this->countSkull(SkullType::TwiceAsHigh) >  0 && sixCount == 2 && aceCount == 2) {
 
                 skullMultiplier += this->countSkull(SkullType::TwiceAsHigh) * 3;
                 updateDeckEntry_Multiplier(SkullType::TwiceAsHigh, 3);
@@ -618,7 +641,7 @@ class Hand {
 
             }
 
-            if (this->dice[0] == this->dice[1] - 1 && this->dice[1] == this->dice[2] - 1 && this->dice[2] == this->dice[3] - 1 && this->dice[3] == this->dice[4] - 1) {
+            if (this->countSkull(SkullType::StraightUp) >  0 && this->dice[0] == this->dice[1] - 1 && this->dice[1] == this->dice[2] - 1 && this->dice[2] == this->dice[3] - 1 && this->dice[3] == this->dice[4] - 1) {
 
                 skullMultiplier += this->countSkull(SkullType::StraightUp) * 3;
                 updateDeckEntry_Multiplier(SkullType::StraightUp, 3);
@@ -631,6 +654,31 @@ class Hand {
                             
             }            
 
+            if (this->countSkull(SkullType::Sixes_45) >  0 && sixCount >= 4) {
+
+                skullMultiplier += this->countSkull(SkullType::Sixes_45) * 3;
+                updateDeckEntry_Multiplier(SkullType::Sixes_45, 3);
+
+                #ifdef DEBUG_HAND
+                    DEBUG_PRINT("Sk Sixes_45: B 0, M ");
+                    DEBUG_PRINT(this->countSkull(SkullType::Sixes_45) * 3);
+                    DEBUG_PRINTLN("");
+                #endif
+
+            }
+
+            if (this->countSkull(SkullType::Them_Bones) > 0) {
+
+                skullBones += this->countSkull(SkullType::Them_Bones) * 25;
+                updateDeckEntry_Bones(SkullType::Them_Bones, 25);
+
+                #ifdef DEBUG_HAND
+                    DEBUG_PRINT("Sk Them_Bones: B ");
+                    DEBUG_PRINT(this->countSkull(SkullType::Them_Bones) * 25);
+                    DEBUG_PRINTLN(", M 0");
+                #endif
+
+            }
 // skullMultiplier = 5;
 // skullBones = 20;
 

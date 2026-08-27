@@ -1,6 +1,4 @@
 #include <Arduboy2.h>
-#include <EEPROM.h>
-
 #include "images.h"
 
 
@@ -12,25 +10,25 @@ void drawDice() {
 
     for (uint8_t i = 0; i < 5; i++) {
 
-        bool isMarked = (hand.marked[i] == Marked::True || hand.marked[i] == Marked::True_NoHighlight);
+        bool isMarked = (hand.getMarked(i) == Marked::True || hand.getMarked(i) == Marked::True_NoHighlight);
 
-        switch (hand.marked[i]) {
+        switch (hand.getMarked(i)) {
 
             case Marked::True:
-                FX::drawBitmap(27, i * 13, Images::Dice_Reverse,((hand.dice[i] - 1) * 6) + (rollDice_Counter == 0 ? 0 : rollDice_Counter - 1), dbmNormal);
+                FX::drawBitmap(27, i * 13, Images::Dice_Reverse,((hand.getDice(i) - 1) * 6) + (rollDice_Counter == 0 ? 0 : rollDice_Counter - 1), dbmNormal);
                 break;
 
             case Marked::True_NoHighlight:
-                FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.dice[i] - 1) * 11) + (rollDice_Counter == 0 ? 0 : rollDice_Counter - 1), dbmNormal);
+                FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.getDice(i) - 1) * 11) + (rollDice_Counter == 0 ? 0 : rollDice_Counter - 1), dbmNormal);
                 break;
 
             case Marked::False:
-                FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.dice[i] - 1) * 11), dbmNormal);
+                FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.getDice(i) - 1) * 11), dbmNormal);
                 break;
                 
         }
 
-        if (i == cursor && rollDice_Counter == 0 && hand.dice[i] != 7 && arduboy.frameCount % 16 < 4) {
+        if (i == cursor && rollDice_Counter == 0 && hand.getDice(i) != 7 && arduboy.frameCount % 16 < 4) {
             arduboy.drawRect(27, i * 13, 12, 12, BLACK);
         }
 
@@ -199,7 +197,6 @@ void drawBonesMultTotal(HandScore handScore) {
 
     FX::drawBitmap(0, 0, Images::Background_00, 0, dbmNormal);
 
-
     if (handScore.totalBones > 0) drawNumber(44, 3, handScore.totalBones);
     if (handScore.totalMultiplier > 0) drawNumber(44, 24, handScore.totalMultiplier);
     if (handScore.score > 0) drawNumber(44, 46, handScore.score);
@@ -209,7 +206,7 @@ void drawBonesMultTotal(HandScore handScore) {
 
 void drawFooterRoll() {
 
-    if (hand.playHandHighlight > Constants::PlayHandHighlight_None) {
+    if (hand.getPlayHandHighlight() > Constants::PlayHandHighlight_None) {
 
         FX::drawBitmap(0, 0, Images::Button_PlayHand, 0, dbmNormal);
         Sprites::drawSelfMasked(3, 6, Images::Numbers_BW, handsLeft);
@@ -224,7 +221,7 @@ void drawFooterRoll() {
     }
 
 
-    if (hand.rerollHighlight > Constants::RerollHighlight_None) {
+    if (hand.getRerollHighlight() > Constants::RerollHighlight_None) {
 
         FX::drawBitmap(0, 39, Images::Button_Reroll, 0, dbmNormal);
         Sprites::drawSelfMasked(3, 45, Images::Numbers_BW, rerollsLeft);
@@ -243,7 +240,7 @@ void drawFooterRoll() {
         switch (cursor) {
 
             case CURSOR_PLAY:
-                if (hand.playHandHighlight == Constants::RerollHighlight_None) {
+                if (hand.getPlayHandHighlight() == Constants::RerollHighlight_None) {
                     arduboy.drawRect(0, 0, 24, 25, BLACK);
                 }
                 break;
@@ -253,7 +250,7 @@ void drawFooterRoll() {
                 break;
 
             case CURSOR_REROLL:
-                if (hand.rerollHighlight == Constants::RerollHighlight_None) {
+                if (hand.getRerollHighlight() == Constants::RerollHighlight_None) {
                     arduboy.drawRect(0, 39, 24, 25, BLACK);
                 }
                 break;

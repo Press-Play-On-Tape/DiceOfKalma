@@ -49,16 +49,16 @@ void handInfo() {
     
 
     FX::drawBitmap(x, 4, Images::Bones_Heading, 0, dbmNormal);
-    drawNumber_Right(x, 45, hand.lastHandScore.baseBones);
+    drawNumber_Right(x, 45, hand.getLastHandScore().baseBones);
     x = x - Constants::HandScore_LineSpacing;
 
 
     // Hand Bones ..
 
-    if (hand.lastHandScore.handType != HandType::None) {
+    if (hand.getLastHandScore().handType != HandType::None) {
 
-        FX::drawBitmap(x, 4, Images::Hand_Names, static_cast<uint8_t>(hand.lastHandScore.handType), dbmNormal);
-        drawNumber_Right(x, 45, hand.lastHandScore.handBones);
+        FX::drawBitmap(x, 4, Images::Hand_Names, static_cast<uint8_t>(hand.getLastHandScore().handType), dbmNormal);
+        drawNumber_Right(x, 45, hand.getLastHandScore().handBones);
         x = x - Constants::HandScore_LineSpacing;
     
     }
@@ -66,11 +66,11 @@ void handInfo() {
 
     // Skull Bones ..
 
-    for (uint8_t i = 0; i < hand.deckCount; i++) {
+    for (uint8_t i = 0; i < hand.getDeckCount(); i++) {
 
-        if (hand.deck[i].bones > 0) {
-            FX::drawBitmap(x - 1, 4, Images::Skull_Names, static_cast<uint8_t>(hand.deck[i].skullType), dbmNormal);
-            drawNumber_Right(x, 45, hand.deck[i].bones);
+        if (hand.getDeckEntry(i).getBones() > 0) {
+            FX::drawBitmap(x - 1, 4, Images::Skull_Names, static_cast<uint8_t>(hand.getDeckEntry(i).getSkullType()), dbmNormal);
+            drawNumber_Right(x, 45, hand.getDeckEntry(i).getBones());
             x = x - Constants::HandScore_LineSpacing;
         }
 
@@ -79,9 +79,9 @@ void handInfo() {
 
     // Upgrade Bones ..
 
-    if (hand.lastHandScore.upgradeBones > 0) {
+    if (hand.getLastHandScore().upgradeBones > 0) {
         FX::drawBitmap(x, 4, Images::Upgrade, 0, dbmNormal);
-        drawNumber_Right(x, 45, hand.lastHandScore.upgradeBones);
+        drawNumber_Right(x, 45, hand.getLastHandScore().upgradeBones);
         x = x - Constants::HandScore_LineSpacing;
     }
 
@@ -90,7 +90,7 @@ void handInfo() {
     // Total Bones ..
 
     x = x - Constants::HandScore_LineSpacing + 4;
-    drawNumber_Right(x, 45, hand.lastHandScore.totalBones);
+    drawNumber_Right(x, 45, hand.getLastHandScore().totalBones);
     arduboy.drawFastVLine(x + 7, 50, 11, WHITE);
     x = x - Constants::HandScore_LineSpacing - 5;
     FX::drawBitmap(x, 4, Images::Multiplier, 0, dbmNormal);
@@ -99,10 +99,10 @@ void handInfo() {
 
     // Hand multiplier ..
 
-    if (hand.lastHandScore.handType != HandType::None) {
+    if (hand.getLastHandScore().handType != HandType::None) {
 
-        FX::drawBitmap(x, 4, Images::Hand_Names, static_cast<uint8_t>(hand.lastHandScore.handType), dbmNormal);
-        drawNumber_Right(x, 45, hand.lastHandScore.handMultiplier);
+        FX::drawBitmap(x, 4, Images::Hand_Names, static_cast<uint8_t>(hand.getLastHandScore().handType), dbmNormal);
+        drawNumber_Right(x, 45, hand.getLastHandScore().handMultiplier);
         x = x - Constants::HandScore_LineSpacing;
     
     }
@@ -110,11 +110,11 @@ void handInfo() {
 
     // Skull multiplier ..
 
-    for (uint8_t i = 0; i < hand.deckCount; i++) {
+    for (uint8_t i = 0; i < hand.getDeckCount(); i++) {
 
-        if (hand.deck[i].multiplier > 0) {
-            FX::drawBitmap(x - 1, 4, Images::Skull_Names, static_cast<uint8_t>(hand.deck[i].skullType), dbmNormal);
-            drawNumber_Right(x, 45, hand.deck[i].multiplier);
+        if (hand.getDeckEntry(i).getMultiplier() > 0) {
+            FX::drawBitmap(x - 1, 4, Images::Skull_Names, static_cast<uint8_t>(hand.getDeckEntry(i).getSkullType()), dbmNormal);
+            drawNumber_Right(x, 45, hand.getDeckEntry(i).getMultiplier());
             x = x - Constants::HandScore_LineSpacing;
         }
 
@@ -123,9 +123,9 @@ void handInfo() {
 
     // Upgrade multiplier ..
 
-    if (hand.lastHandScore.upgradeMultiplier > 0) {
+    if (hand.getLastHandScore().upgradeMultiplier > 0) {
         FX::drawBitmap(x, 4, Images::Upgrade, 0, dbmNormal);
-        drawNumber_Right(x, 45, hand.lastHandScore.upgradeMultiplier);
+        drawNumber_Right(x, 45, hand.getLastHandScore().upgradeMultiplier);
         x = x - Constants::HandScore_LineSpacing;
 
     }
@@ -134,7 +134,7 @@ void handInfo() {
     // Total multiplier ..
 
     x = x - Constants::HandScore_LineSpacing + 4;
-    drawNumber_Right(x, 45, hand.lastHandScore.totalMultiplier);
+    drawNumber_Right(x, 45, hand.getLastHandScore().totalMultiplier);
     arduboy.drawFastVLine(x + 7, 50, 11, WHITE);
     x = x - Constants::HandScore_LineSpacing;
 
@@ -143,7 +143,7 @@ void handInfo() {
 
     x = x - Constants::HandScore_LineSpacing;
     FX::drawBitmap(x, 4, Images::Total, 0, dbmNormal);
-    drawNumber_Right(x, 45, hand.lastHandScore.score);
+    drawNumber_Right(x, 45, hand.getLastHandScore().score);
     arduboy.drawFastVLine(x + 7, 44, 17, WHITE);
     x = x - Constants::HandScore_LineSpacing - Constants::HandScore_LineSpacing - 5;
 

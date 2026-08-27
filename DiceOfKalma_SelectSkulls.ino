@@ -6,38 +6,39 @@
 
 void offerSkulls() {
 
-    uint8_t maxVal = static_cast<uint8_t>(SkullType::Skull_Count);
-    uint8_t rangeHigh = min(level + 1, maxVal);
-    uint8_t rangeLow = max(0, rangeHigh - 3);
-// Serial.print("0 to ");
-// Serial.println(range);
-    skullChoiceA = static_cast<SkullType>(random(rangeLow, rangeHigh));
+    uint8_t skullsBot[] = { 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 19 };
+    uint8_t skullsTop[] = { 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 18, 18, 18, 19 };
 
-// SJH
-skullChoiceA = SkullType::Kind_345_Multiplier;
+    uint8_t skullA = random(skullsBot[level - 2], skullsTop[level - 2]);
+    uint8_t skullB = 0;
+    // SJH
+    // skullA = 19;
 
     do {
-        skullChoiceB = static_cast<SkullType>(random(rangeLow, rangeHigh));
-    } while (skullChoiceB == skullChoiceA);
+        skullB = random(skullsBot[level - 2], skullsTop[level - 2]);
+    } while (skullB == skullA);
+
+// Serial.print(skullA);
+// Serial.print(" ");
+// Serial.print(skullB);
+// Serial.print(" ");
+// Serial.print(SkullTypeOrder[skullA]);
+// Serial.print(" ");
+// Serial.print(SkullTypeOrder[skullB]);
+// Serial.print("\n");
+
+    skullChoiceA = static_cast<SkullType>(SkullTypeOrder[skullA]);
+    skullChoiceB = static_cast<SkullType>(SkullTypeOrder[skullB]);
 
 }
 
 
-
 void skullChoice_Init() {
 
-    // if (handsLeft == 0) {
-    //     saveHighScore();
-    //     Serial.println("Game Over 2");
-    //     gameState = GameState::Game_Over;
-    // } 
-    // else {
-        saveHighScore();
-        offerSkulls();
-        // newHand();
-        gameState = GameState::Game_Skull_Choice;
-        skullCursor = 0;
-    // }
+    saveHighScore();
+    offerSkulls();
+    gameState = GameState::Game_Skull_Choice;
+    skullCursor = 0;
   
 }
 
@@ -52,29 +53,11 @@ void skullChoice() {
         skullCursor = skullCursor - 1;
 
     }
-    else if (arduboy.justPressed(LEFT_BUTTON) && skullCursor < 2) {
+    else if (arduboy.justPressed(LEFT_BUTTON) && skullCursor < 1) {
         
         skullCursor = skullCursor + 1;
 
     }
-    // else if (arduboy.justPressed(DOWN_BUTTON)) {
-  
-    //     switch (skullCursor) {
-
-    //         case 0:
-    //             skullInfoType = skullChoiceA;
-    //             break;
-
-    //         case 1:
-    //             skullInfoType = skullChoiceB;
-    //             break;
-                
-    //     }
-
-    //     gameState = GameState::Game_Skull_Info; 
-    //     returnState = GameState::Game_Skull_Choice;
-
-    // }
     else if (arduboy.justPressed(A_BUTTON)) {
 
         SkullType chosen;
@@ -91,7 +74,7 @@ void skullChoice() {
                 
         }
 
-        if (hand.deckCount < MAX_DECK) {
+        if (hand.getDeckCount() < MAX_DECK) {
 
             hand.addSkullToDeck(chosen);
             gameState = GameState::Game_Upgrade_Choice_Init;
@@ -100,7 +83,7 @@ void skullChoice() {
         else {
 
             pendingSkull = chosen;
-            swapCursor = 0;
+            deckViewCursor = 0;
             gameState = GameState::Game_Deck_Full_Swap;
 
         }

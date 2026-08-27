@@ -133,6 +133,265 @@ namespace Images {
         Skull_Thumb_19,
     };
 
+
+    image_t Zoom_01          = "../Assets/Zoom/Zoom_001.png"
+    image_t Zoom_02          = "../Assets/Zoom/Zoom_002.png"
+    image_t Zoom_03          = "../Assets/Zoom/Zoom_003.png"
+    image_t Zoom_04          = "../Assets/Zoom/Zoom_004.png"
+    image_t Zoom_05          = "../Assets/Zoom/Zoom_005.png"
+    image_t Zoom_06          = "../Assets/Zoom/Zoom_006.png"
+    image_t Zoom_07          = "../Assets/Zoom/Zoom_007.png"
+    image_t Zoom_08          = "../Assets/Zoom/Zoom_008.png"
+    image_t Zoom_09          = "../Assets/Zoom/Zoom_009.png"
+    image_t Zoom_10          = "../Assets/Zoom/Zoom_010.png"
+    image_t Zoom_11          = "../Assets/Zoom/Zoom_011.png"
+    image_t Zoom_12          = "../Assets/Zoom/Zoom_012.png"
+    image_t Zoom_13          = "../Assets/Zoom/Zoom_013.png"
+    image_t Zoom_14          = "../Assets/Zoom/Zoom_014.png"
+    image_t Zoom_15          = "../Assets/Zoom/Zoom_015.png"
+    image_t Zoom_16          = "../Assets/Zoom/Zoom_016.png"
+    image_t Zoom_17          = "../Assets/Zoom/Zoom_017.png"
+    image_t Zoom_18          = "../Assets/Zoom/Zoom_018.png"
+    image_t Zoom_19          = "../Assets/Zoom/Zoom_019.png"
+    image_t Zoom_20          = "../Assets/Zoom/Zoom_020.png"
+    image_t Zoom_21          = "../Assets/Zoom/Zoom_021.png"
+    image_t Zoom_22          = "../Assets/Zoom/Zoom_022.png"
+    image_t Zoom_23          = "../Assets/Zoom/Zoom_023.png"
+    image_t Zoom_24          = "../Assets/Zoom/Zoom_024.png"
+    image_t Zoom_25          = "../Assets/Zoom/Zoom_025.png"
+    image_t Zoom_26          = "../Assets/Zoom/Zoom_026.png"
+    image_t Zoom_27          = "../Assets/Zoom/Zoom_027.png"
+    image_t Zoom_28          = "../Assets/Zoom/Zoom_028.png"
+    image_t Zoom_29          = "../Assets/Zoom/Zoom_029.png"
+    image_t Zoom_30          = "../Assets/Zoom/Zoom_030.png"
+    image_t Zoom_31          = "../Assets/Zoom/Zoom_031.png"
+    image_t Zoom_32          = "../Assets/Zoom/Zoom_032.png"
+    image_t Zoom_33          = "../Assets/Zoom/Zoom_033.png"
+    image_t Zoom_34          = "../Assets/Zoom/Zoom_034.png"
+    image_t Zoom_35          = "../Assets/Zoom/Zoom_035.png"
+    image_t Zoom_36          = "../Assets/Zoom/Zoom_036.png"
+    image_t Zoom_37          = "../Assets/Zoom/Zoom_037.png"
+    image_t Zoom_38          = "../Assets/Zoom/Zoom_038.png"
+    image_t Zoom_39          = "../Assets/Zoom/Zoom_039.png"
+    image_t Zoom_40          = "../Assets/Zoom/Zoom_040.png"
+    image_t Zoom_41          = "../Assets/Zoom/Zoom_041.png"
+    image_t Zoom_42          = "../Assets/Zoom/Zoom_042.png"
+    image_t Zoom_43          = "../Assets/Zoom/Zoom_043.png"
+    image_t Zoom_44          = "../Assets/Zoom/Zoom_044.png"
+    image_t Zoom_45          = "../Assets/Zoom/Zoom_045.png"
+    image_t Zoom_46          = "../Assets/Zoom/Zoom_046.png"
+    image_t Zoom_47          = "../Assets/Zoom/Zoom_047.png"
+    image_t Zoom_48          = "../Assets/Zoom/Zoom_048.png"
+    image_t Zoom_49          = "../Assets/Zoom/Zoom_049.png"
+    image_t Zoom_50          = "../Assets/Zoom/Zoom_050.png"
+
+    image_t Drip_01          = "../Assets/Zoom/Drip_01.png"
+    image_t Drip_02          = "../Assets/Zoom/Drip_02.png"
+    image_t Drip_03          = "../Assets/Zoom/Drip_03.png"
+    image_t Drip_04          = "../Assets/Zoom/Drip_04.png"
+    image_t Drip_05          = "../Assets/Zoom/Drip_05.png"
+    image_t Drip_06          = "../Assets/Zoom/Drip_06.png"
+    image_t Drip_07          = "../Assets/Zoom/Drip_07.png"
+    image_t Drip_08          = "../Assets/Zoom/Drip_08.png"
+    image_t Drip_09          = "../Assets/Zoom/Drip_09.png"
+    image_t Drip_10          = "../Assets/Zoom/Drip_10.png"
+    image_t Drip_11          = "../Assets/Zoom/Drip_11.png"
+    image_t Drip_12          = "../Assets/Zoom/Drip_12.png"
+    image_t Drip_13          = "../Assets/Zoom/Drip_13.png"
+    image_t Drip_14          = "../Assets/Zoom/Drip_14.png"
+    image_t Drip_15          = "../Assets/Zoom/Drip_15.png"
+    image_t Drip_16          = "../Assets/Zoom/Drip_16.png"
+    image_t Drip_17          = "../Assets/Zoom/Drip_17.png"
+    image_t Drip_18          = "../Assets/Zoom/Drip_18.png"
+    image_t Drip_19          = "../Assets/Zoom/Drip_19.png"
+    image_t Drip_20          = "../Assets/Zoom/Drip_20.png"
+    image_t Drip_21          = "../Assets/Zoom/Drip_21.png"
+    image_t Drip_22          = "../Assets/Zoom/Drip_22.png"
+    image_t Drip_23          = "../Assets/Zoom/Drip_23.png"
+    image_t Drip_24          = "../Assets/Zoom/Drip_24.png"
+    image_t Drip_25          = "../Assets/Zoom/Drip_25.png"
+    image_t Drip_26          = "../Assets/Zoom/Drip_26.png"
+    image_t Drip_27          = "../Assets/Zoom/Drip_27.png"
+    image_t Drip_28          = "../Assets/Zoom/Drip_28.png"
+    image_t Drip_29          = "../Assets/Zoom/Drip_29.png"
+    image_t Drip_30          = "../Assets/Zoom/Drip_30.png"
+    image_t Drip_31          = "../Assets/Zoom/Drip_31.png"
+    image_t Drip_32          = "../Assets/Zoom/Drip_32.png"
+    image_t Drip_33          = "../Assets/Zoom/Drip_33.png"
+    image_t Drip_34          = "../Assets/Zoom/Drip_34.png"
+    image_t Drip_35          = "../Assets/Zoom/Drip_35.png"
+    image_t Drip_36          = "../Assets/Zoom/Drip_36.png"
+    image_t Drip_37          = "../Assets/Zoom/Drip_37.png"
+    image_t Drip_38          = "../Assets/Zoom/Drip_38.png"
+    image_t Drip_39          = "../Assets/Zoom/Drip_39.png"
+    image_t Drip_40          = "../Assets/Zoom/Drip_40.png"
+    image_t Drip_41          = "../Assets/Zoom/Drip_41.png"
+    image_t Drip_42          = "../Assets/Zoom/Drip_42.png"
+    image_t Drip_43          = "../Assets/Zoom/Drip_43.png"
+    image_t Drip_44          = "../Assets/Zoom/Drip_44.png"
+    image_t Drip_45          = "../Assets/Zoom/Drip_45.png"
+    image_t Drip_46          = "../Assets/Zoom/Drip_46.png"
+    image_t Drip_47          = "../Assets/Zoom/Drip_47.png"
+    image_t Drip_48          = "../Assets/Zoom/Drip_48.png"
+    image_t Drip_49          = "../Assets/Zoom/Drip_49.png"
+    image_t Drip_50          = "../Assets/Zoom/Drip_50.png"
+    image_t Drip_51          = "../Assets/Zoom/Drip_51.png"
+    image_t Drip_52          = "../Assets/Zoom/Drip_52.png"
+    image_t Drip_53          = "../Assets/Zoom/Drip_53.png"
+    image_t Drip_54          = "../Assets/Zoom/Drip_54.png"
+    image_t Drip_55          = "../Assets/Zoom/Drip_55.png"
+    image_t Drip_56          = "../Assets/Zoom/Drip_56.png"
+    image_t Drip_57          = "../Assets/Zoom/Drip_57.png"
+    image_t Drip_58          = "../Assets/Zoom/Drip_58.png"
+    image_t Drip_59          = "../Assets/Zoom/Drip_59.png"
+    image_t Drip_60          = "../Assets/Zoom/Drip_60.png"
+
+    uint24_t Zoom[] = {
+        Zoom_01,
+        Zoom_02,
+        Zoom_03,
+        Zoom_04,
+        Zoom_05,
+        Zoom_06,
+        Zoom_07,
+        Zoom_08,
+        Zoom_09,
+        Zoom_10,
+        Zoom_11,
+        Zoom_12,
+        Zoom_13,
+        Zoom_14,
+        Zoom_15,
+        Zoom_16,
+        Zoom_17,
+        Zoom_18,
+        Zoom_19,
+        Zoom_20,
+        Zoom_21,
+        Zoom_22,
+        Zoom_23,
+        Zoom_24,
+        Zoom_25,
+        Zoom_26,
+        Zoom_27,
+        Zoom_28,
+        Zoom_29,
+        Zoom_30,
+        Zoom_31,
+        Zoom_32,
+        Zoom_33,
+        Zoom_34,
+        Zoom_35,
+        Zoom_36,
+        Zoom_37,
+        Zoom_38,
+        Zoom_39,
+        Zoom_40,
+        Zoom_41,
+        Zoom_42,
+        Zoom_43,
+        Zoom_44,
+        Zoom_45,
+        Zoom_46,
+        Zoom_47,
+        Zoom_48,
+        Zoom_49,
+        Zoom_50,
+        Drip_01,
+        Drip_02,
+        Drip_03,
+        Drip_04,
+        Drip_05,
+        Drip_06,
+        Drip_07,
+        Drip_08,
+        Drip_09,
+        Drip_10,
+        Drip_11,
+        Drip_12,
+        Drip_13,
+        Drip_14,
+        Drip_15,
+        Drip_16,
+        Drip_17,
+        Drip_18,
+        Drip_19,
+        Drip_20,
+        Drip_21,
+        Drip_22,
+        Drip_23,
+        Drip_24,
+        Drip_25,
+        Drip_26,
+        Drip_27,
+        Drip_28,
+        Drip_29,
+        Drip_30,
+        Drip_31,
+        Drip_32,
+        Drip_33,
+        Drip_34,
+        Drip_35,
+        Drip_36,
+        Drip_37,
+        Drip_38,
+        Drip_39,
+        Drip_40,
+        Drip_41,
+        Drip_42,
+        Drip_43,
+        Drip_44,
+        Drip_45,
+        Drip_46,
+        Drip_47,
+        Drip_48,
+        Drip_49,
+        Drip_50, 
+        Drip_51,
+        Drip_52,
+        Drip_53,
+        Drip_54,
+        Drip_55,
+        Drip_56,
+        Drip_57,
+        Drip_58,
+        Drip_59,
+        Drip_60,                                       
+    };
+
+
+
+
+
+
+
+    uint24_t Zoom1 = {
+        Zoom_01,
+        Zoom_03,
+        Zoom_05,
+        Zoom_07,
+        Zoom_09,
+        Zoom_11,
+        Zoom_13,
+        Zoom_15,
+        Zoom_17,
+        Zoom_19,
+        Zoom_21,
+        Zoom_23,
+        Zoom_25,
+        Zoom_27,
+        Zoom_29,
+        Zoom_31,
+        Zoom_33,
+        Zoom_35,
+        Zoom_37,
+        Zoom_39,
+        Zoom_41,
+        Zoom_43,
+        Zoom_45,
+        Zoom_47,
+        Zoom_49,
+    };
 }
 
 namespace_end

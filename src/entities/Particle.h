@@ -43,20 +43,10 @@ struct Particle {
 
         void update() {
 
-
-            // move your particle based on direction, whatever ..
-
             uint8_t boundL = 0;
             uint8_t boundR = HEIGHT;
             uint8_t maxR = 128;
 
-            // this->vely -= gravity * this->pSize * -1;
-            // this->velx *= cF;
-
-            // if (this->x > boundR - this->pSize ){
-            //     this->x = boundR - this->pSize ;
-            //     this->velx = -this->velx;
-            // }
             this->vely -= gravity * -2;
             this->velx *= cF;
 

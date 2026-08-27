@@ -57,8 +57,8 @@ void upgradeHand() {
         setUpgradeTop();
     }
     else if (arduboy.justPressed(A_BUTTON)) {
-        hand.upgradeHand = static_cast<HandType>(Constants::UpgradeHand_Count - upgradeCursor);
-        startLevel();
+        hand.setUpgradeHand(static_cast<HandType>(Constants::UpgradeHand_Count - upgradeCursor));
+        startLevel(true);
     }
 
 
