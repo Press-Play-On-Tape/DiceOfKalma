@@ -365,6 +365,7 @@ namespace Images {
 
 
 
+
     uint24_t Zoom1 = {
         Zoom_01,
         Zoom_03,
@@ -391,6 +392,36 @@ namespace Images {
         Zoom_45,
         Zoom_47,
         Zoom_49,
+        Drip_02,
+        Drip_04,
+        Drip_06,
+        Drip_08,
+        Drip_10,
+        Drip_12,
+        Drip_14,
+        Drip_16,
+        Drip_18,
+        Drip_20,
+        Drip_22,
+        Drip_24,
+        Drip_26,
+        Drip_28,
+        Drip_30,
+        Drip_32,
+        Drip_34,
+        Drip_36,
+        Drip_38,
+        Drip_40,
+        Drip_42,
+        Drip_44,
+        Drip_46,
+        Drip_48,
+        Drip_50, 
+        Drip_52,
+        Drip_54,
+        Drip_56,
+        Drip_58,
+        Drip_60,          
     };
 }
 

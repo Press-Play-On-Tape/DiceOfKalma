@@ -6,14 +6,19 @@
 
 void offerSkulls() {
 
-    uint8_t skullsBot[] = { 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 19 };
-    uint8_t skullsTop[] = { 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 18, 18, 18, 19 };
+    uint8_t skullsBot[] = { 0, 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 19 };
+    uint8_t skullsTop[] = { 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 18, 19, 19, 19 };
 
     uint8_t skullA = random(skullsBot[level - 2], skullsTop[level - 2]);
     uint8_t skullB = 0;
     // SJH
     // skullA = 19;
-
+// Serial.print("Level:");
+// Serial.print(level);
+// Serial.print(", Min:");
+// Serial.print(skullsBot[level - 2]);
+// Serial.print(", Max: ");
+// Serial.println(skullsTop[level - 2]);
     do {
         skullB = random(skullsBot[level - 2], skullsTop[level - 2]);
     } while (skullB == skullA);

@@ -2,7 +2,7 @@
 
 
 void levelIntro() {
-
+    
     stateTimer++;
 
     if (stateTimer > 60 || arduboy.justPressed(A_BUTTON)) {
