@@ -218,9 +218,9 @@ void renderRollDice() {
 
         // SJH
 
-        for (uint8_t i = 0; i < 5; i++) {
-            hand.setDice(i, 1);
-        }
+        // for (uint8_t i = 0; i < 5; i++) {
+        //     hand.setDice(i, 1);
+        // }
 
     }
 

@@ -8,7 +8,7 @@ void title() {
     if (arduboy.justPressed(A_BUTTON)) {
 
         zoomOut = true;
-        zoomIdx = 0;
+        zoomIdx = 147; //SJH 0
         startLevel(false);
         level = 1;
         arduboy.setFrameRate(60);

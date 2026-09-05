@@ -11,19 +11,36 @@ void drawDice() {
     for (uint8_t i = 0; i < 5; i++) {
 
         bool isMarked = (hand.getMarked(i) == Marked::True || hand.getMarked(i) == Marked::True_NoHighlight);
+//SJH
+        // switch (hand.getMarked(i)) {
+
+        //     case Marked::True:
+        //         FX::drawBitmap(27, i * 13, Images::Dice_Reverse,((hand.getDice(i) - 1) * 6) + (rollDice_Counter == 0 ? 0 : rollDice_Counter - 1), dbmNormal);
+        //         break;
+
+        //     case Marked::True_NoHighlight:
+        //         FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.getDice(i) - 1) * 11) + (rollDice_Counter == 0 ? 0 : rollDice_Counter - 1), dbmNormal);
+        //         break;
+
+        //     case Marked::False:
+        //         FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.getDice(i) - 1) * 11), dbmNormal);
+        //         break;
+                
+        // }
 
         switch (hand.getMarked(i)) {
 
             case Marked::True:
-                FX::drawBitmap(27, i * 13, Images::Dice_Reverse,((hand.getDice(i) - 1) * 6) + (rollDice_Counter == 0 ? 0 : rollDice_Counter - 1), dbmNormal);
+                FX::drawBitmap(27, i * 13, Images::Dice_Normal,((hand.getDice(i) - 1) * 12) + (rollDice_Counter == 0 ? 11 : rollDice_Counter - 1), dbmNormal);
                 break;
 
             case Marked::True_NoHighlight:
-                FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.getDice(i) - 1) * 11) + (rollDice_Counter == 0 ? 0 : rollDice_Counter - 1), dbmNormal);
+                FX::drawBitmap(27, i * 13, Images::Dice_Reverse, ((hand.getDice(i) - 1) * 12) + (rollDice_Counter == 0 ? 11 : rollDice_Counter - 1), dbmNormal);
                 break;
 
             case Marked::False:
-                FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.getDice(i) - 1) * 11), dbmNormal);
+            Serial.println(((hand.getDice(i) - 1) * 11) );
+                FX::drawBitmap(27, i * 13, Images::Dice_Reverse, ((hand.getDice(i) - 1) * 12) + 11, dbmNormal);
                 break;
                 
         }
