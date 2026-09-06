@@ -104,6 +104,9 @@ enum class Marked : uint8_t {
     False,
     True,
     True_NoHighlight,
+    Hide,
+    Display,
+    Fade,
 
 };
 
