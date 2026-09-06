@@ -155,14 +155,14 @@ class Hand {
                         uint8_t diceValue = this->getDice_OfaKind(2, 0);
                         for (uint8_t i = 0; i < 5; i++) {
                             if (this->dice[i] == diceValue) {
-                                this->displayType[i] = DisplayType::False;
+                                this->displayType[i] = DisplayType::Display;
                             }
                         }
 
                         diceValue = this->getDice_OfaKind(2, diceValue);
                         for (uint8_t i = 0; i < 5; i++) {
                             if (this->dice[i] == diceValue) {
-                                this->displayType[i] = DisplayType::False;
+                                this->displayType[i] = DisplayType::Display;
                             }
                         }
 
@@ -189,10 +189,10 @@ class Hand {
                         }
 
                         uint8_t i = this->getFirstDice(1);
-                        this->displayType[i] = DisplayType::False;
+                        this->displayType[i] = DisplayType::Display;
 
                         i = this->getFirstDice(6);
-                        this->displayType[i] = DisplayType::False;
+                        this->displayType[i] = DisplayType::Display;
 
                     }
                     break;
@@ -262,7 +262,7 @@ class Hand {
 
             for (uint8_t i = 0; i < 5; i++) {
                 this->dice[i] = 7;
-                this->displayType[i] = DisplayType::False;
+                this->displayType[i] = DisplayType::Display;
             }
 
         }

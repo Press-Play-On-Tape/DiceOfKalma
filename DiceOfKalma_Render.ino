@@ -12,9 +12,9 @@ void drawDice() {
 
         switch (hand.getDisplayType(i)) {
 
-            case DisplayType::Display:
-                FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.getDice(i) - 1) * 12) + 11, dbmNormal);
-                break;
+            // case DisplayType::Display:
+            //     FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.getDice(i) - 1) * 12) + 11, dbmNormal);
+            //     break;
 
             case DisplayType::RollAgain:
                 if (rollDice_Counter == 0) {
@@ -25,7 +25,7 @@ void drawDice() {
                 }
                 break;
 
-            case DisplayType::False:
+            case DisplayType::Display:
                 FX::drawBitmap(27, i * 13, Images::Dice_Reverse, ((hand.getDice(i) - 1) * 12) + 11, dbmNormal);
                 break;
 
@@ -247,27 +247,28 @@ void drawFooterRoll() {
     }
 
     if (gameState == GameState::Game_Roll && arduboy.frameCount % 24 < 12) {
-    // if (gameState == GameState::Game_Roll) {
 
         switch (cursor) {
 
             case CURSOR_PLAY:
+
                 if (hand.getPlayHandHighlight() == Constants::RerollHighlight_None) {
-                    // arduboy.drawRect(0, 0, 24, 25, BLACK);
                     FX::drawBitmap(17, 4, Images::Skeleton_Hand, 0, dbmMasked);
                 }
+
                 break;
 
             case CURSOR_DECK:
-                // arduboy.drawRect(0, 26, 24, 12, BLACK);
+
                 FX::drawBitmap(17, 24, Images::Skeleton_Hand, 0, dbmMasked);
                 break;
 
             case CURSOR_REROLL:
+
                 if (hand.getRerollHighlight() == Constants::RerollHighlight_None) {
-                    // arduboy.drawRect(0, 39, 24, 25, BLACK);
                     FX::drawBitmap(17, 43, Images::Skeleton_Hand, 0, dbmMasked);
                 }
+
                 break;
 
         }

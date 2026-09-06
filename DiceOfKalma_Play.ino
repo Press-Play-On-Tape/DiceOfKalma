@@ -151,7 +151,7 @@ void updateRoll() {
         if (cursor < 5) {
 
             if (hand.getDisplayType(cursor) == DisplayType::RollAgain) {
-                hand.setDisplayType(cursor, DisplayType::False);
+                hand.setDisplayType(cursor, DisplayType::Display);
             }
             else {
                 hand.setDisplayType(cursor, DisplayType::RollAgain);
@@ -207,11 +207,9 @@ void renderRollDice() {
 
         for (uint8_t i = 0; i < 5; i++) {
             
-            // if (hand.getDisplayType(i) == DisplayType::RollAgain || hand.getDisplayType(i) == DisplayType::RollAgain_NoHighlight) {
             if (hand.getDisplayType(i) == DisplayType::RollAgain) {
         
                 hand.rerollDice(i);
-                // hand.setDisplayType(i, DisplayType::RollAgain_NoHighlight);
 
             }
 
@@ -243,7 +241,7 @@ void renderRollDice() {
         gameState = returnState;
         rollDice_Counter = 0;
 
-        hand.markAllCards(DisplayType::False);
+        hand.markAllCards(DisplayType::Display);
         hand.setRerollHighlight(Constants::RerollHighlight_None);
 
     }
@@ -423,7 +421,7 @@ void renderHandResult_Hand() {
 
         case 12 ... 15:
 
-            hand.markAllCards(DisplayType::False);
+            hand.markAllCards(DisplayType::Display);
             renderHandResult_Counter++;
             renderHandResult_DrawFrame(tempHandScore);
 
@@ -545,7 +543,7 @@ void renderHandResult_SkullsPlayed() {
 
         case 13:
 
-            hand.markAllCards(DisplayType::False);
+            hand.markAllCards(DisplayType::Display);
             [[fallthrough]]
 
         case 14 ... 16:
@@ -645,7 +643,7 @@ void renderHandResult_UpgradesPlayed() {
 
         case 12 ... 15:
 
-            hand.markAllCards(DisplayType::False);
+            hand.markAllCards(DisplayType::Display);
             renderHandResult_Counter++;
             renderHandResult_DrawFrame(tempHandScore);
 
@@ -668,7 +666,7 @@ void renderHandResult_Countdown() {
 
             countdownDiv = min(tempHandScore.score, threshold) / 50;
             if (countdownDiv == 0) countdownDiv = 1;
-            hand.markAllCards(DisplayType::False);
+            hand.markAllCards(DisplayType::Display);
             renderHandResult_Counter++;
             addWideEyes();
 
@@ -751,7 +749,7 @@ void renderHandResult_Countdown() {
         case 12 ... 15:
 
             threshold = thresholdMin;
-            hand.markAllCards(DisplayType::False);
+            hand.markAllCards(DisplayType::Display);
 
             if (renderHandResult_Counter < 15) {
 

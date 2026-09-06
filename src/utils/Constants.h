@@ -80,7 +80,7 @@ enum class SkullType : uint8_t {
     StraightUp = 16,                // 3 multiplier for 1,2,3,4,5 or 2,3,4,5,6 in seq
     Kind_345_Multiplier = 17,       // 3 multiplier for a 3,4,5 of a kind
     Sixes_45 = 18,                  // 3 multiplier for a 4 or 5 sixes
-    Them_Bones = 19,                  // +25 chips
+    Them_Bones = 19,                // +25 chips
     Skull_Count = 20,
     None
 };
@@ -101,7 +101,6 @@ enum class HandType : uint8_t {
 
 enum class DisplayType : uint8_t {
 
-    False,
     RollAgain,
     Hide,
     Display,

@@ -11,26 +11,10 @@ void offerSkulls() {
 
     uint8_t skullA = random(skullsBot[level - 2], skullsTop[level - 2]);
     uint8_t skullB = 0;
-    // SJH
-    // skullA = 19;
-// Serial.print("Level:");
-// Serial.print(level);
-// Serial.print(", Min:");
-// Serial.print(skullsBot[level - 2]);
-// Serial.print(", Max: ");
-// Serial.println(skullsTop[level - 2]);
+
     do {
         skullB = random(skullsBot[level - 2], skullsTop[level - 2]);
     } while (skullB == skullA);
-
-// Serial.print(skullA);
-// Serial.print(" ");
-// Serial.print(skullB);
-// Serial.print(" ");
-// Serial.print(SkullTypeOrder[skullA]);
-// Serial.print(" ");
-// Serial.print(SkullTypeOrder[skullB]);
-// Serial.print("\n");
 
     skullChoiceA = static_cast<SkullType>(SkullTypeOrder[skullA]);
     skullChoiceB = static_cast<SkullType>(SkullTypeOrder[skullB]);
