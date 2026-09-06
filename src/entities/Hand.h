@@ -11,7 +11,6 @@ class Hand {
     private:
 
         uint8_t dice[5];
-        uint8_t diceOld[5];
         uint8_t deckCount = 0;
         uint8_t rerollHighlight = Constants::RerollHighlight_None;
         uint8_t playHandHighlight = Constants::PlayHandHighlight_None;
@@ -27,7 +26,6 @@ class Hand {
     public:
         
         uint8_t getDice(uint8_t idx)                            { return this->dice[idx]; }
-        uint8_t getDiceOld(uint8_t idx)                         { return this->diceOld[idx]; }
         uint8_t getDeckCount()                                  { return this->deckCount; }
         bool getRerollUsedThisHand()                            { return this->rerollUsedThisHand; }
         bool isFirstHandOfLevel()                               { return this->firstHandOfLevel; }
@@ -40,7 +38,6 @@ class Hand {
         DisplayType getDisplayType(uint8_t idx)                 { return this->displayType[idx]; }
 
         void setDice(uint8_t idx, uint8_t val)                  { this->dice[idx] = val; }
-        void setDiceOld(uint8_t idx, uint8_t val)               { this->diceOld[idx] = val; }
         void setDeckCount(uint8_t val)                          { this->deckCount = val; }
         bool setRerollUsedThisHand(bool val)                    { this->rerollUsedThisHand = val; }
         bool setFirstHandOfLevel(bool val)                      { this->firstHandOfLevel = val; }
@@ -102,12 +99,6 @@ class Hand {
                 this->deck[i].setBones(0);
                 this->deck[i].setMultiplier(0);
             }
-
-        }
-
-        void copyDiceValues() {
-        
-            for (uint8_t i = 0; i < 5; i++) this->diceOld[i] = this->dice[i];
 
         }
 
@@ -279,7 +270,6 @@ class Hand {
 
         void rerollDice(uint8_t i) {
 
-            this->diceOld[i] = this->dice[i];
             this->dice[i] = random(1, 7);
 
         }
@@ -352,8 +342,8 @@ class Hand {
 
                 if (this->upgradeHand == HandType::Five_of_a_Kind) {
                 
-                    upgradeBones = 30;
-                    upgradeMultiplier = 14;
+                    upgradeBones = 5;
+                    upgradeMultiplier = 1;
                     
                 }
 
@@ -370,8 +360,8 @@ class Hand {
 
                 if (this->upgradeHand == HandType::Straight) {
                 
-                    upgradeBones = 25;
-                    upgradeMultiplier = 10;
+                    upgradeBones = 5;
+                    upgradeMultiplier = 1;
                     
                 }
                 
@@ -388,8 +378,8 @@ class Hand {
 
                 if (this->upgradeHand == HandType::Four_of_a_Kind) {
                 
-                    upgradeBones = 25;
-                    upgradeMultiplier = 8;
+                    upgradeBones = 5;
+                    upgradeMultiplier = 1;
                     
                 }
                 
@@ -406,8 +396,8 @@ class Hand {
                 
                 if (this->upgradeHand == HandType::Full_House) {
                 
-                    upgradeBones = 20;
-                    upgradeMultiplier = 6;
+                    upgradeBones = 5;
+                    upgradeMultiplier = 1;
                     
                 }
 
@@ -423,8 +413,8 @@ class Hand {
                 
                 if (this->upgradeHand == HandType::Three_of_a_Kind) {
                 
-                    upgradeBones = 15;
-                    upgradeMultiplier = 4;
+                    upgradeBones = 5;
+                    upgradeMultiplier = 1;
                     
                 }
 
@@ -441,8 +431,8 @@ class Hand {
                 
                 if (this->upgradeHand == HandType::Two_Pair) {
                 
-                    upgradeBones = 10;
-                    upgradeMultiplier = 3;
+                    upgradeBones = 5;
+                    upgradeMultiplier = 1;
                     
                 }
 
@@ -460,7 +450,7 @@ class Hand {
                 if (this->upgradeHand == HandType::Pair) {
                 
                     upgradeBones = 5;
-                    upgradeMultiplier = 2;
+                    upgradeMultiplier = 1;
                     
                 }
 
@@ -478,7 +468,7 @@ class Hand {
                 if (this->upgradeHand == HandType::High_Roll) {
                 
                     upgradeBones = 5;
-                    upgradeMultiplier = 2;
+                    upgradeMultiplier = 1;
                     
                 }
 

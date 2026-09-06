@@ -7,8 +7,13 @@ void title() {
 
     if (arduboy.justPressed(A_BUTTON)) {
 
+        #ifdef DEBUG_SKIP_INTRO
+            zoomIdx = 147; 
+        #else
+            zoomIdx = 0; 
+        #endif
+
         zoomOut = true;
-        zoomIdx = 147; //SJH
         startLevel(false);
         level = 1;
         arduboy.setFrameRate(60);
@@ -17,10 +22,7 @@ void title() {
 
     FX::drawBitmap(0, 0, Images::Fire, arduboy.getFrameCount(96) / 6, dbmNormal);
 
-
     if (zoomOut) {
-
-        // FX::drawBitmap(0, 0, Images::Fire, arduboy.getFrameCount(48) / 3, dbmNormal);
 
         if (zoomIdx > 50) {
 

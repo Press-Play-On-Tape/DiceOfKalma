@@ -8,10 +8,11 @@
 
 #define _DEBUG_HAND
 #define _DEBUG_ADD_SKULLS
-#define DEBUG_PRINT    Serial.print
-#define DEBUG_PRINTLN  Serial.println
+#define _DEBUG_PRINT    Serial.print
+#define _DEBUG_PRINTLN  Serial.println
 #define _DEBUG_PRINT    void
 #define _DEBUG_PRINTLN  void
+#define _DEBUG_SKIP_INTRO
 #define DEBUG_BREAK    asm volatile("break\n");
 
 // ---------------------------------------

@@ -18,7 +18,7 @@ void drawDice() {
 
             case DisplayType::RollAgain:
                 if (rollDice_Counter == 0) {
-                    FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.getDice(i) - 1) * 12) + (arduboy.frameCount / 2) % 11, dbmNormal);
+                    FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.getDice(i) - 1) * 11) + (arduboy.frameCount / 2) % 11, dbmNormal);
                 }
                 else {
                     FX::drawBitmap(27, i * 13, Images::Dice_Roll, rollDice_Counter - 1, dbmNormal);
@@ -26,7 +26,7 @@ void drawDice() {
                 break;
 
             case DisplayType::Display:
-                FX::drawBitmap(27, i * 13, Images::Dice_Reverse, ((hand.getDice(i) - 1) * 12) + 11, dbmNormal);
+                FX::drawBitmap(27, i * 13, Images::Dice_Reverse, ((hand.getDice(i) - 1) * 11) + 10, dbmNormal);
                 break;
 
             case DisplayType::Hide:

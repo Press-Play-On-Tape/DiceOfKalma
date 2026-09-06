@@ -89,8 +89,16 @@ void upgradeHand() {
     for (uint8_t i = upgradeTop; i < upgradeTop + 4; i++) {
 
         if (i < Constants::UpgradeHand_Count) {
-            FX::drawBitmap(x, 0, Images::UpgradeHands, i, dbmWhite);
+
+            if (i == upgradeCursor) {
+                FX::drawBitmap(x, 0, Images::UpgradeHands, i + 8, dbmWhite);
+            }
+            else {
+                FX::drawBitmap(x, 0, Images::UpgradeHands, i, dbmWhite);
+            }
+
             x = x - 28;
+
         }
 
     }

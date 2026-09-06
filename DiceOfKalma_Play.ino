@@ -170,7 +170,6 @@ void updateRoll() {
 
                 rerollsLeft--;
                 hand.setRerollUsedThisHand(true);
-                hand.copyDiceValues();
                 gameState = GameState::Game_Roll_Dice;
                 returnState = GameState::Game_Roll;
                 rollDice_Counter = 1;
