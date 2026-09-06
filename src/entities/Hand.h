@@ -22,33 +22,33 @@ class Hand {
         DeckEntry deck[MAX_DECK];
         HandType upgradeHand = HandType::None;
         HandScore lastHandScore;
-        Marked marked[5];
+        DisplayType displayType[5];
 
     public:
         
-        uint8_t getDice(uint8_t idx)                    { return this->dice[idx]; }
-        uint8_t getDiceOld(uint8_t idx)                 { return this->diceOld[idx]; }
-        uint8_t getDeckCount()                          { return this->deckCount; }
-        bool getRerollUsedThisHand()                    { return this->rerollUsedThisHand; }
-        bool isFirstHandOfLevel()                       { return this->firstHandOfLevel; }
-        bool getRerollHighlight()                       { return this->rerollHighlight; }
-        bool getPlayHandHighlight()                     { return this->playHandHighlight; }
+        uint8_t getDice(uint8_t idx)                            { return this->dice[idx]; }
+        uint8_t getDiceOld(uint8_t idx)                         { return this->diceOld[idx]; }
+        uint8_t getDeckCount()                                  { return this->deckCount; }
+        bool getRerollUsedThisHand()                            { return this->rerollUsedThisHand; }
+        bool isFirstHandOfLevel()                               { return this->firstHandOfLevel; }
+        bool getRerollHighlight()                               { return this->rerollHighlight; }
+        bool getPlayHandHighlight()                             { return this->playHandHighlight; }
 
-        DeckEntry &getDeckEntry(int8_t idx)             { return this->deck[idx]; }
-        HandType getUpgradeHand()                       { return this->upgradeHand; }
-        HandScore &getLastHandScore()                   { return this->lastHandScore; }
-        Marked getMarked(uint8_t idx)                   { return this->marked[idx]; }
+        DeckEntry &getDeckEntry(int8_t idx)                     { return this->deck[idx]; }
+        HandType getUpgradeHand()                               { return this->upgradeHand; }
+        HandScore &getLastHandScore()                           { return this->lastHandScore; }
+        DisplayType getDisplayType(uint8_t idx)                 { return this->displayType[idx]; }
 
-        void setDice(uint8_t idx, uint8_t val)          { this->dice[idx] = val; }
-        void setDiceOld(uint8_t idx, uint8_t val)       { this->diceOld[idx] = val; }
-        void setDeckCount(uint8_t val)                  { this->deckCount = val; }
-        bool setRerollUsedThisHand(bool val)            { this->rerollUsedThisHand = val; }
-        bool setFirstHandOfLevel(bool val)              { this->firstHandOfLevel = val; }
-        bool setRerollHighlight(bool val)               { this->rerollHighlight = val; }
-        bool setPlayHandHighlight(bool val)             { this->playHandHighlight = val; }
+        void setDice(uint8_t idx, uint8_t val)                  { this->dice[idx] = val; }
+        void setDiceOld(uint8_t idx, uint8_t val)               { this->diceOld[idx] = val; }
+        void setDeckCount(uint8_t val)                          { this->deckCount = val; }
+        bool setRerollUsedThisHand(bool val)                    { this->rerollUsedThisHand = val; }
+        bool setFirstHandOfLevel(bool val)                      { this->firstHandOfLevel = val; }
+        bool setRerollHighlight(bool val)                       { this->rerollHighlight = val; }
+        bool setPlayHandHighlight(bool val)                     { this->playHandHighlight = val; }
 
-        void setUpgradeHand(HandType val)               { this->upgradeHand = val; }
-        void setMarked(uint8_t idx, Marked val)         { this->marked[idx] = val; }
+        void setUpgradeHand(HandType val)                       { this->upgradeHand = val; }
+        void setDisplayType(uint8_t idx, DisplayType val)       { this->displayType[idx] = val; }
 
     private:
 
@@ -90,9 +90,9 @@ class Hand {
 
         }
 
-        void markAllCards(Marked markedVal){
+        void markAllCards(DisplayType DisplayTypeVal){
         
-            for (uint8_t i = 0; i < 5; i++) this->marked[i] = markedVal;
+            for (uint8_t i = 0; i < 5; i++) this->displayType[i] = DisplayTypeVal;
 
         }
 
@@ -119,7 +119,7 @@ class Hand {
                 case HandType::Full_House:
                 case HandType::Straight:
                 
-                    this->markAllCards(Marked::Display);
+                    this->markAllCards(DisplayType::Display);
                     break;
             
                 case HandType::Four_of_a_Kind:
@@ -127,7 +127,7 @@ class Hand {
                         uint8_t diceValue = this->getDice_OfaKind(4, 0);
                         for (uint8_t i = 0; i < 5; i++) {
                             if (this->dice[i] != diceValue) {
-                                this->marked[i] = Marked::Hide;
+                                this->displayType[i] = DisplayType::Hide;
                             }
                         }
                     }
@@ -138,7 +138,7 @@ class Hand {
                         uint8_t diceValue = this->getDice_OfaKind(3, 0);
                         for (uint8_t i = 0; i < 5; i++) {
                             if (this->dice[i] != diceValue) {
-                                this->marked[i] = Marked::Hide;
+                                this->displayType[i] = DisplayType::Hide;
                             }
                         }
 
@@ -149,20 +149,20 @@ class Hand {
                     {
 
                         for (uint8_t i = 0; i < 5; i++) {
-                            this->marked[i] = Marked::Hide;
+                            this->displayType[i] = DisplayType::Hide;
                         }
 
                         uint8_t diceValue = this->getDice_OfaKind(2, 0);
                         for (uint8_t i = 0; i < 5; i++) {
                             if (this->dice[i] == diceValue) {
-                                this->marked[i] = Marked::False;
+                                this->displayType[i] = DisplayType::False;
                             }
                         }
 
                         diceValue = this->getDice_OfaKind(2, diceValue);
                         for (uint8_t i = 0; i < 5; i++) {
                             if (this->dice[i] == diceValue) {
-                                this->marked[i] = Marked::False;
+                                this->displayType[i] = DisplayType::False;
                             }
                         }
 
@@ -174,7 +174,7 @@ class Hand {
                         uint8_t diceValue = this->getDice_OfaKind(2, 0);
                         for (uint8_t i = 0; i < 5; i++) {
                             if (this->dice[i] != diceValue) {
-                                this->marked[i] = Marked::Hide;
+                                this->displayType[i] = DisplayType::Hide;
                             }
                         }
 
@@ -185,14 +185,14 @@ class Hand {
                     {
 
                         for (uint8_t i = 0; i < 5; i++) {
-                            this->marked[i] = Marked::Hide;
+                            this->displayType[i] = DisplayType::Hide;
                         }
 
                         uint8_t i = this->getFirstDice(1);
-                        this->marked[i] = Marked::False;
+                        this->displayType[i] = DisplayType::False;
 
                         i = this->getFirstDice(6);
-                        this->marked[i] = Marked::False;
+                        this->displayType[i] = DisplayType::False;
 
                     }
                     break;
@@ -262,7 +262,7 @@ class Hand {
 
             for (uint8_t i = 0; i < 5; i++) {
                 this->dice[i] = 7;
-                this->marked[i] = Marked::False;
+                this->displayType[i] = DisplayType::False;
             }
 
         }
@@ -271,8 +271,7 @@ class Hand {
         
             for (uint8_t i = 0; i < 5; i++) {
 
-                // this->marked[i] = Marked::True_NoHighlight;
-                this->marked[i] = Marked::True;
+                this->displayType[i] = DisplayType::RollAgain;
 
             }
         

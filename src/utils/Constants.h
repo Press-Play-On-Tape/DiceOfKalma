@@ -99,11 +99,10 @@ enum class HandType : uint8_t {
 
 };
 
-enum class Marked : uint8_t {
+enum class DisplayType : uint8_t {
 
     False,
-    True,
-    True_NoHighlight,
+    RollAgain,
     Hide,
     Display,
     Fade,

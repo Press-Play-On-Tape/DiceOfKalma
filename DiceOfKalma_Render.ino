@@ -10,60 +10,36 @@ void drawDice() {
 
     for (uint8_t i = 0; i < 5; i++) {
 
-        // bool isMarked = (hand.getMarked(i) == Marked::True || hand.getMarked(i) == Marked::True_NoHighlight);
+        switch (hand.getDisplayType(i)) {
 
-        switch (hand.getMarked(i)) {
-
-            case Marked::Display:
+            case DisplayType::Display:
                 FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.getDice(i) - 1) * 12) + 11, dbmNormal);
                 break;
 
-            case Marked::True:
+            case DisplayType::RollAgain:
                 if (rollDice_Counter == 0) {
                     FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.getDice(i) - 1) * 12) + (arduboy.frameCount / 2) % 11, dbmNormal);
                 }
                 else {
-                    // FX::drawBitmap(27, i * 13, Images::Dice_Normal,((hand.getDice(i) - 1) * 12) + (rollDice_Counter == 0 ? 11 : rollDice_Counter - 1), dbmNormal);
-
-                    // if (rollDice_Counter < 10) {
-                        FX::drawBitmap(27, i * 13, Images::Dice_Roll, rollDice_Counter - 1, dbmNormal);
-                    // }
-                    // else {
-                    //     FX::drawBitmap(27, i * 13, Images::Dice_Normal, ((hand.getDice(i) - 1) * 24) + 22, dbmNormal);
-                    //     FX::drawBitmap(27 + 6, i * 13, Images::Dice_Normal, ((hand.getDice(i) - 1) * 24) + 23, dbmNormal);
-                    // }
-
+                    FX::drawBitmap(27, i * 13, Images::Dice_Roll, rollDice_Counter - 1, dbmNormal);
                 }
                 break;
 
-            // case Marked::True_NoHighlight:
-            //     FX::drawBitmap(27, i * 13, Images::Dice_Reverse, ((hand.getDice(i) - 1) * 12) + (rollDice_Counter == 0 ? 11 : rollDice_Counter - 1), dbmNormal);
-            //     break;
-
-            case Marked::False:
-                // FX::drawBitmap(27, i * 13, Images::Dice_Reverse, ((hand.getDice(i) - 1) * 24) + 22, dbmNormal);
+            case DisplayType::False:
                 FX::drawBitmap(27, i * 13, Images::Dice_Reverse, ((hand.getDice(i) - 1) * 12) + 11, dbmNormal);
-                // FX::drawBitmap(27 + 6, i * 13, Images::Dice_Reverse, ((hand.getDice(i) - 1) * 12) + 23, dbmNormal);
                 break;
 
-            case Marked::Hide:
+            case DisplayType::Hide:
                 FX::drawBitmap(27, i * 13, Images::Dice_Black, hand.getDice(i) - 1, dbmNormal);
                 break;
 
-            case Marked::Fade:
-            Serial.print(hand.getDice(i) - 1);
-            Serial.print(" ");
-            Serial.print(renderHandResult_Counter);
-            Serial.print(" ");
-            Serial.println(((hand.getDice(i) - 1) * 10) + renderHandResult_Counter - 1);
+            case DisplayType::Fade:
                 FX::drawBitmap(27, i * 13, Images::Dice_Fade, ((hand.getDice(i) - 1) * 10) + renderHandResult_Counter - 1, dbmNormal);
                 break;
                 
         }
 
-        // if (i == cursor && rollDice_Counter == 0 && hand.getDice(i) != 7) {//} && arduboy.frameCount % 16 < 4) {
         if (i == cursor && rollDice_Counter == 0 && hand.getDice(i) != 7 && arduboy.frameCount % 24 < 12) {
-            // arduboy.drawRect(27, i * 13, 12, 12, BLACK);
             FX::drawBitmap(33, (i * 13) - 2, Images::Skeleton_Hand, 0, dbmMasked);
         }
 

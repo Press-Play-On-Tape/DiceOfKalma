@@ -78,7 +78,7 @@ are met:
    software in a product, an acknowledgment in the product 
    documentation would be appreciated but is not required.
 
-3. Altered source versions must be plainly marked as such, and must
+3. Altered source versions must be plainly DisplayType as such, and must
    not be misrepresented as being the original software.
 
 4. The name of the author may not be used to endorse or promote 
@@ -355,7 +355,7 @@ subject to the following restrictions:
     use this software in a product, an acknowledgment in the product
     documentation would be appreciated, but is not required.
 
- 2. Altered source versions must be plainly marked as such, and must
+ 2. Altered source versions must be plainly DisplayType as such, and must
     not be misrepresented as being the original software.
 
  3. This Copyright notice may not be removed or altered from any
@@ -447,7 +447,7 @@ to the following restrictions:
 
  1. The origin of this source code must not be misrepresented.
 
- 2. Altered versions must be plainly marked as such and must not
+ 2. Altered versions must be plainly DisplayType as such and must not
     be misrepresented as being the original source.
 
  3. This Copyright notice may not be removed or altered from any
@@ -705,7 +705,7 @@ ZLIB
      claim that you wrote the original software. If you use this software
      in a product, an acknowledgment in the product documentation would be
      appreciated but is not required.
-  2. Altered source versions must be plainly marked as such, and must not be
+  2. Altered source versions must be plainly DisplayType as such, and must not be
      misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 
