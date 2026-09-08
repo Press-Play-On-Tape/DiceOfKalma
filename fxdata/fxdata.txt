@@ -7,12 +7,10 @@ namespace Images {
     image_t Skull_Large             = "../Assets/LargeSkull/Skull_52x40.png"
     image_t Skull_Eyes              = "../Assets/LargeSkull/SkullEyes_10x24.png"
     image_t LevelEntry              = "../Assets/LevelEntry.png"
-    image_t Dice_Normal             = "../Assets/Dice/Dice_Animated_12x16.png"
+
     image_t Dice_Roll               = "../Assets/Dice/Dice_Roll_12x16.png"
     image_t Dice_Black              = "../Assets/Dice/Dice_Black_12x16.png"
     image_t Dice_Fade               = "../Assets/Dice/Dice_Fade_12x16.png"
-
-    image_t Dice_Reverse            = "../Assets/Dice/Dice_Animated_12x16.png"
 
     image_t Background_00           = "../Assets/Play/Background_00.png"
     image_t Background_02           = "../Assets/Play/Background_02.png"
