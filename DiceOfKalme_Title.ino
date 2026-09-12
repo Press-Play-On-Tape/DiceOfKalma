@@ -51,8 +51,8 @@ void title() {
             FX::drawBitmap(0, 0, idx, 0, dbmMasked);
 
         }
-        zoomIdx++;
 
+        zoomIdx++;
 
     } 
     else {

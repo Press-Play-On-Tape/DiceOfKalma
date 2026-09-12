@@ -97,6 +97,7 @@ enum class HandType : uint8_t {
     Four_of_a_Kind,
     Straight,
     Five_of_a_Kind,
+    Count,
 
 };
 

@@ -19,9 +19,12 @@ class Hand {
         bool firstHandOfLevel = true;
 
         DeckEntry deck[MAX_DECK];
-        HandType upgradeHand = HandType::None;
         HandScore lastHandScore;
         DisplayType displayType[5];
+
+        bool upgradeHandsToShow[static_cast<uint8_t>(HandType::Count) - 2];                 // indicates which hands can be selected when upgrading, will never used HadType::None or HighRoll.
+        HandType upgradeHand = HandType::None;
+
 
     public:
         
@@ -689,11 +692,6 @@ class Hand {
                 #endif
 
             }
-// skullMultiplier = 5;
-// skullBones = 20;
-
-// upgradeMultiplier = 5;
-// upgradeBones = 20;
 
             this->lastHandScore.baseBones = this->diceSum();
             this->lastHandScore.handBones = handBones;
@@ -735,5 +733,69 @@ class Hand {
 
         }
 
+
+        uint8_t getUpgradeHand(uint8_t indexToReturn) {
+
+            uint8_t count = 0;
+
+            for (int8_t i = static_cast<uint8_t>(HandType::Count) - 2; i >= 0; i--) {
+            
+                if (upgradeHandsToShow[i] == true) {
+
+                    if (count == indexToReturn) {
+                    
+                        return i;
+
+                    }
+                
+                    count++;
+
+                }
+
+            }
+        
+        }
+
+        void selectUpgradeHands(uint8_t count) {
+        
+            for (uint8_t i = 0; i < 8; i++) {
+                this->upgradeHandsToShow[i] = false;           
+            }
+
+            for (uint8_t i = 0; i < count; i++) {
+            
+                do {
+
+                    uint8_t idx = random(0, static_cast<uint8_t>(HandType::Count) - 2);
+
+                    if (this->upgradeHandsToShow[idx] == false) {
+                        this->upgradeHandsToShow[idx] = true;
+                        break;
+                    }
+
+                } while (true);
+                
+            }
+
+        }
+
+        HandType getUpgradeHandType(uint8_t indexToReturn) {
+
+            uint8_t count = 0;
+            for (uint8_t i = 0; i < static_cast<uint8_t>(HandType::Count) - 2; i++) {
+
+                if (this->upgradeHandsToShow[i] == true) {
+
+                    if (count == indexToReturn) {
+                        return static_cast<HandType>(8 - i);
+                    }
+
+                    count++;
+
+                }
+
+            }
+
+        }
 
 };

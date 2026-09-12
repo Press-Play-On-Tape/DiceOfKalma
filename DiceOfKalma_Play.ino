@@ -227,7 +227,7 @@ void renderRollDice() {
 
     }
 
-    rollDice_Counter++;
+    if (arduboy.frameCount % 2 == 0) rollDice_Counter++;
 
     drawSkull();
     drawLevelAndTarget(hand.getLastHandScore(), level, threshold);
