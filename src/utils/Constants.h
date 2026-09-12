@@ -8,10 +8,11 @@
 
 #define _DEBUG_HAND
 #define _DEBUG_ADD_SKULLS
-#define DEBUG_PRINT    Serial.print
-#define DEBUG_PRINTLN  Serial.println
+#define _DEBUG_PRINT    Serial.print
+#define _DEBUG_PRINTLN  Serial.println
 #define _DEBUG_PRINT    void
 #define _DEBUG_PRINTLN  void
+#define _DEBUG_SKIP_INTRO
 #define DEBUG_BREAK    asm volatile("break\n");
 
 // ---------------------------------------
@@ -80,7 +81,7 @@ enum class SkullType : uint8_t {
     StraightUp = 16,                // 3 multiplier for 1,2,3,4,5 or 2,3,4,5,6 in seq
     Kind_345_Multiplier = 17,       // 3 multiplier for a 3,4,5 of a kind
     Sixes_45 = 18,                  // 3 multiplier for a 4 or 5 sixes
-    Them_Bones = 19,                  // +25 chips
+    Them_Bones = 19,                // +25 chips
     Skull_Count = 20,
     None
 };
@@ -96,14 +97,16 @@ enum class HandType : uint8_t {
     Four_of_a_Kind,
     Straight,
     Five_of_a_Kind,
+    Count,
 
 };
 
-enum class Marked : uint8_t {
+enum class DisplayType : uint8_t {
 
-    False,
-    True,
-    True_NoHighlight,
+    RollAgain,
+    Hide,
+    Display,
+    Fade,
 
 };
 

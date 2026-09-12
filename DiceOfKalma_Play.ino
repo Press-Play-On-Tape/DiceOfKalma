@@ -48,7 +48,6 @@ void newHand() {
 }
 
 
-
 void updateRoll() {
 
     takeTooLong++;
@@ -151,23 +150,23 @@ void updateRoll() {
 
         if (cursor < 5) {
 
-            if (hand.getMarked(cursor) == Marked::True) {
-                hand.setMarked(cursor, Marked::False);
+            if (hand.getDisplayType(cursor) == DisplayType::RollAgain) {
+                hand.setDisplayType(cursor, DisplayType::Display);
             }
             else {
-                hand.setMarked(cursor, Marked::True);
+                hand.setDisplayType(cursor, DisplayType::RollAgain);
             }
 
         } 
         else if (cursor == CURSOR_REROLL) {
 
-            bool anyMarked = false;
+            bool anyDisplayType = false;
             arduboy.frameCount = 0;
             hand.setRerollHighlight(Constants::RerollHighlight_Minimum);
             
-            for (uint8_t i = 0; i < 5; i++) if (hand.getMarked(i) == Marked::True) anyMarked = true;
+            for (uint8_t i = 0; i < 5; i++) if (hand.getDisplayType(i) == DisplayType::RollAgain) anyDisplayType = true;
 
-            if (rerollsLeft > 0 && anyMarked) {
+            if (rerollsLeft > 0 && anyDisplayType) {
 
                 rerollsLeft--;
                 hand.setRerollUsedThisHand(true);
@@ -207,10 +206,9 @@ void renderRollDice() {
 
         for (uint8_t i = 0; i < 5; i++) {
             
-            if (hand.getMarked(i) == Marked::True || hand.getMarked(i) == Marked::True_NoHighlight) {
+            if (hand.getDisplayType(i) == DisplayType::RollAgain) {
         
                 hand.rerollDice(i);
-                hand.setMarked(i, Marked::True_NoHighlight);
 
             }
 
@@ -218,13 +216,18 @@ void renderRollDice() {
 
         // SJH
 
-        for (uint8_t i = 0; i < 5; i++) {
-            hand.setDice(i, 1);
-        }
+        // for (uint8_t i = 0; i < 5; i++) {
+        //     if (i < 3){
+        //         hand.setDice(i, 6);
+        //     }
+        //     else {
+        //         hand.setDice(i, 1);
+        //     }
+        // }
 
     }
 
-    rollDice_Counter++;
+    if (arduboy.frameCount % 2 == 0) rollDice_Counter++;
 
     drawSkull();
     drawLevelAndTarget(hand.getLastHandScore(), level, threshold);
@@ -232,12 +235,12 @@ void renderRollDice() {
     drawDice();
     drawFooterRoll();
 
-    if (rollDice_Counter == 11) {
+    if (rollDice_Counter == 9) {
 
         gameState = returnState;
         rollDice_Counter = 0;
 
-        hand.markAllCards(Marked::False);
+        hand.markAllCards(DisplayType::Display);
         hand.setRerollHighlight(Constants::RerollHighlight_None);
 
     }
@@ -268,24 +271,26 @@ void renderHandResult_Base() {
     switch (renderHandResult_Counter) {
     
         case 0:
-            hand.markAllCards(Marked::False);
+
+            hand.markAllCards(DisplayType::Display);
             renderHandResult_Counter++;
             renderHandResult_Timer = 0;
             addLookLeft(true);
 
             [[fallthrough]]
 
-        case 1 ... 5:
-            {
-                renderHandResult_DrawFrame(tempHandScore);
-                renderHandResult_Counter++;
-            }
+        case 1 ... 10:
+            
+            hand.markAllCards(DisplayType::Fade);
+            renderHandResult_DrawFrame(tempHandScore);
+            renderHandResult_Counter++;
+
             break;
 
-        case 6:
+        case 11:
 
             renderHandResult_Timer++;
-            hand.markAllCards(Marked::True);
+            hand.markAllCards(DisplayType::Display);
 
             if (arduboy.isFrameCount(2) && tempHandScore.totalBones < hand.getLastHandScore().baseBones) {
                 tempHandScore.totalBones++;
@@ -299,15 +304,15 @@ void renderHandResult_Base() {
             if (renderHandResult_Timer > 48 && tempHandScore.totalBones == hand.getLastHandScore().baseBones) {
                 renderHandResult_Counter++;
             }
+
             break;
 
-        case 7 ... 10:
+        case 12 ... 15:
 
-            hand.markAllCards(Marked::False);
             renderHandResult_Counter++;
             renderHandResult_DrawFrame(tempHandScore);
 
-            if (renderHandResult_Counter == 10) {
+            if (renderHandResult_Counter == 15) {
                 renderHandResult_Counter = 0;
 
                 if (hand.getLastHandScore().handBones > 0) {
@@ -348,32 +353,34 @@ void renderHandResult_Hand() {
     
         case 0:
 
-            hand.markAllCards(Marked::False);
+            hand.markAllCards(DisplayType::Display);
             renderHandResult_Counter++;
             renderHandResult_Timer = 0;
             addLookDown(true);            
             [[fallthrough]]
 
-        case 1 ... 5:
-            {
-                renderHandResult_DrawFrame(tempHandScore);
-                renderHandResult_Counter++;
+        case 1 ... 10:
 
-                if (renderHandResult_Counter == 6) {
-                    
-                    renderHandResult_Timer = 0;
+            hand.markAllCards(DisplayType::Fade);
+            renderHandResult_DrawFrame(tempHandScore);
+            renderHandResult_Counter++;
 
-                    if (hand.getLastHandScore().handMultiplier > 0) {
+            if (renderHandResult_Counter == 11) {
+                
+                renderHandResult_Timer = 0;
+                hand.markAllCards(DisplayType::Display);
 
-                        tempHandScore.totalMultiplier++;
-                    
-                    }
+                if (hand.getLastHandScore().handMultiplier > 0) {
 
+                    tempHandScore.totalMultiplier++;
+                
                 }
+
             }
+
             break;
 
-        case 6:
+        case 11:
 
             renderHandResult_Timer++;
             hand.markWiningHand(hand.getLastHandScore());
@@ -408,15 +415,16 @@ void renderHandResult_Hand() {
             if (renderHandResult_Timer > 48 && tempHandScore.totalBones == hand.getLastHandScore().baseBones + hand.getLastHandScore().handBones) {
                 renderHandResult_Counter++;
             }
+
             break;
 
-        case 7 ... 10:
+        case 12 ... 15:
 
-            hand.markAllCards(Marked::False);
+            hand.markAllCards(DisplayType::Display);
             renderHandResult_Counter++;
             renderHandResult_DrawFrame(tempHandScore);
 
-            if (renderHandResult_Counter == 10) {
+            if (renderHandResult_Counter == 15) {
 
                 renderHandResult_Counter = 0;
 
@@ -449,16 +457,19 @@ void renderHandResult_SkullsPlayed() {
     switch (renderHandResult_Counter) {
 
         case 0:
-            hand.markAllCards(Marked::False);
+
+            hand.markAllCards(DisplayType::Display);
             renderHandResult_Counter++;
             addLookLeftThenRight(true);
             [[fallthrough]]
 
-        case 1 ... 5:
+        case 1 ... 10:
+
+            hand.markAllCards(DisplayType::Fade);
             renderHandResult_DrawFrame(tempHandScore);
             renderHandResult_Counter++;
 
-            if (renderHandResult_Counter == 6) {
+            if (renderHandResult_Counter == 11) {
                 renderHandResult_Timer = 0;
 
                 if (hand.getLastHandScore().skullBones > 0) {
@@ -467,14 +478,16 @@ void renderHandResult_SkullsPlayed() {
                     }
                 }
                 else {
-                    renderHandResult_Counter = 7; // No skull bones -> multiplier-only phase
+                    renderHandResult_Counter = 12; // No skull bones -> multiplier-only phase
                 }
 
             }
 
             break;
 
-        case 6: // Player has skull bones and maybe multipliers
+        case 11: // Player has skull bones and maybe multipliers
+
+            hand.markAllCards(DisplayType::Display);
             renderHandResult_Timer++;
 
             if (hand.getLastHandScore().skullBones >= 10 ||
@@ -502,12 +515,14 @@ void renderHandResult_SkullsPlayed() {
 
             if (renderHandResult_Timer > 48 &&
                 tempHandScore.totalBones == hand.getLastHandScore().baseBones + hand.getLastHandScore().handBones + hand.getLastHandScore().skullBones) {
-                renderHandResult_Counter = 8; // always skips case 7 from here
+                renderHandResult_Counter = 13; // always skips case 12 from here
             }
 
             break;
 
-        case 7: // Player only has skull multiplier (skullBones == 0)
+        case 12: // Player only has skull multiplier (skullBones == 0)
+
+            hand.markAllCards(DisplayType::Display);
             renderHandResult_Timer++;
 
             if (renderHandResult_Timer % 8 == 0 && tempHandScore.totalMultiplier < hand.getLastHandScore().handMultiplier + hand.getLastHandScore().skullMultiplier) {
@@ -525,15 +540,17 @@ void renderHandResult_SkullsPlayed() {
 
             break;
 
-        case 8:
-            hand.markAllCards(Marked::False);
+        case 13:
+
+            hand.markAllCards(DisplayType::Display);
             [[fallthrough]]
 
-        case 9 ... 11:
+        case 14 ... 16:
+
             renderHandResult_DrawFrame(tempHandScore);
             renderHandResult_Counter++;
 
-            if (renderHandResult_Counter == 10) {
+            if (renderHandResult_Counter == 15) {
 
                 renderHandResult_Counter = 0;
 
@@ -554,32 +571,34 @@ void renderHandResult_UpgradesPlayed() {
     switch (renderHandResult_Counter) {
     
         case 0:
-            hand.markAllCards(Marked::False);
+            hand.markAllCards(DisplayType::Display);
             renderHandResult_Counter++;
             addLookLeftThenRight(true);
             [[fallthrough]]
 
-        case 1 ... 5:
-            {
-                renderHandResult_DrawFrame(tempHandScore);
-                renderHandResult_Counter++;
+        case 1 ... 10:
 
-                if (renderHandResult_Counter == 6) {
-                                
-                    renderHandResult_Timer = 0;
+            hand.markAllCards(DisplayType::Fade);
+            renderHandResult_DrawFrame(tempHandScore);
+            renderHandResult_Counter++;
 
-                    if (hand.getLastHandScore().upgradeMultiplier > 0) {
+            if (renderHandResult_Counter == 11) {
+                            
+                renderHandResult_Timer = 0;
 
-                        tempHandScore.totalMultiplier++;
-                    
-                    }
+                if (hand.getLastHandScore().upgradeMultiplier > 0) {
 
+                    tempHandScore.totalMultiplier++;
+                
                 }
+
             }
+
             break;
 
-        case 6:
+        case 11:
 
+            hand.markAllCards(DisplayType::Display);
             renderHandResult_Timer++;
 
             if (hand.getLastHandScore().upgradeBones >= 10 || (hand.getLastHandScore().upgradeBones < 10 && arduboy.isFrameCount(4))) {
@@ -609,8 +628,7 @@ void renderHandResult_UpgradesPlayed() {
             if (renderHandResult_Timer > 48 && (tempHandScore.totalBones == hand.getLastHandScore().baseBones + hand.getLastHandScore().handBones + hand.getLastHandScore().skullBones + hand.getLastHandScore().upgradeBones)) {
 
                 if (tempHandScore.totalMultiplier < hand.getLastHandScore().handMultiplier + hand.getLastHandScore().skullMultiplier + hand.getLastHandScore().upgradeMultiplier) {
-                    tempHandScore.totalMultiplier++;
-                    
+                    tempHandScore.totalMultiplier++;                    
                 }
 
                 renderHandResult_Counter++;
@@ -622,12 +640,13 @@ void renderHandResult_UpgradesPlayed() {
 
             break;
 
-        case 7 ... 10:
-            hand.markAllCards(Marked::False);
+        case 12 ... 15:
+
+            hand.markAllCards(DisplayType::Display);
             renderHandResult_Counter++;
             renderHandResult_DrawFrame(tempHandScore);
 
-            if (renderHandResult_Counter == 10) {
+            if (renderHandResult_Counter == 15) {
                 renderHandResult_Counter = 0;
                 gameState = GameState::Game_Hand_Result_Countdown;
             }
@@ -636,7 +655,6 @@ void renderHandResult_UpgradesPlayed() {
 
     }
 
-
 }
 
 void renderHandResult_Countdown() {
@@ -644,9 +662,10 @@ void renderHandResult_Countdown() {
     switch (renderHandResult_Counter) {
     
         case 0:
+
             countdownDiv = min(tempHandScore.score, threshold) / 50;
             if (countdownDiv == 0) countdownDiv = 1;
-            hand.markAllCards(Marked::False);
+            hand.markAllCards(DisplayType::Display);
             renderHandResult_Counter++;
             addWideEyes();
 
@@ -658,19 +677,21 @@ void renderHandResult_Countdown() {
             }
             [[fallthrough]]
 
-        case 1 ... 5:
-            {
-                drawSkull();
-                drawLevelAndTarget(hand.getLastHandScore(), level, threshold);
-                drawBonesMultTotal(tempHandScore);
-                drawDice();
-                drawFooterRoll();
-                renderHandResult_Counter++;
+        case 1 ... 10:
 
-            }
+            hand.markAllCards(DisplayType::Fade);
+            drawSkull();
+            drawLevelAndTarget(hand.getLastHandScore(), level, threshold);
+            drawBonesMultTotal(tempHandScore);
+            drawDice();
+            drawFooterRoll();
+            renderHandResult_Counter++;
+
             break;
 
-        case 6:
+        case 11:
+
+            hand.markAllCards(DisplayType::Display);
 
             if (tempHandScore.score >= countdownDiv && threshold >= countdownDiv) {
 
@@ -724,16 +745,16 @@ void renderHandResult_Countdown() {
              
             break;
 
-        case 7 ... 10:
+        case 12 ... 15:
 
             threshold = thresholdMin;
-            hand.markAllCards(Marked::False);
+            hand.markAllCards(DisplayType::Display);
 
-            if (renderHandResult_Counter < 10) {
+            if (renderHandResult_Counter < 15) {
 
                 renderHandResult_Counter++;
 
-                if (renderHandResult_Counter == 10) {
+                if (renderHandResult_Counter == 15) {
                     addLongTalk();
                 }
 
@@ -745,13 +766,12 @@ void renderHandResult_Countdown() {
             drawDice();
             drawFooterRoll();
 
-            if (renderHandResult_Counter == 10) {
+            if (renderHandResult_Counter == 15) {
 
                 hand.setRerollHighlight(Constants::RerollHighlight_None);
                 hand.setPlayHandHighlight(Constants::PlayHandHighlight_None);
 
                 if (threshold == 0) {
-
                     
                     FX::drawBitmap(42, 0, Images::Speech_Lrg, messageIdx, dbmNormal);
 
@@ -785,7 +805,7 @@ void renderHandResult_Countdown() {
 
             break;
 
-        case 11:
+        case 16:
 
             drawSkull();
             drawBonesMultTotal(tempHandScore);
@@ -795,7 +815,7 @@ void renderHandResult_Countdown() {
 
             if (arduboy.justPressed(A_BUTTON)) {
 
-                hand.markAllCards(Marked::True_NoHighlight);
+                hand.markAllCards(DisplayType::RollAgain);
                 renderHandResult_Counter = 0;
                 rollDice_Counter = 0;
                 gameState = GameState::Game_Roll_Dice;
@@ -805,7 +825,7 @@ void renderHandResult_Countdown() {
 
             break;
 
-        case 12:
+        case 17:
 
             drawSkull();
             drawBonesMultTotal(tempHandScore);

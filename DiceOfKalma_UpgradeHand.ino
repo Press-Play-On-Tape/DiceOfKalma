@@ -1,48 +1,50 @@
 #include <ArduboyFX.h>  
 #include "src/utils/Constants.h" 
 
-void setUpgradeTop() {
+// void setUpgradeTop() {
 
-    switch (upgradeCursor) {
+//     switch (upgradeCursor) {
 
-        case 0 ... 1:
-            upgradeTop = 0;
-            break;
+//         case 0 ... 1:
+//             upgradeTop = 0;
+//             break;
 
-        case 2:
-            upgradeTop = 1;
-            break;
+//         case 2:
+//             upgradeTop = 1;
+//             break;
 
-        case 3:
-            upgradeTop = 2;
-            break;
+//         case 3:
+//             upgradeTop = 2;
+//             break;
 
-        case 4:
-            upgradeTop = 3;
-            break;
+//         case 4:
+//             upgradeTop = 3;
+//             break;
 
-        case 5:
-            upgradeTop = 4;
-            break;
+//         case 5:
+//             upgradeTop = 4;
+//             break;
 
-        default:
-            upgradeTop = 5;
-            break;
+//         default:
+//             upgradeTop = 5;
+//             break;
 
-    }
+//     }
 
 
-}
+// }
 
 void upgradeHand_Init() {
   
+    hand.selectUpgradeHands(3);
     gameState = GameState::Game_Upgrade_Choice;
 
 }
 
 void upgradeHand() {
 
-    uint8_t x = 86;
+    uint8_t x = 84;
+    uint8_t ugIdx = 0;
     UpgradeHand_BottomOptions botImage = UpgradeHand_BottomOptions::Both;
 
 
@@ -50,14 +52,14 @@ void upgradeHand() {
 
     if (arduboy.justPressed(RIGHT_BUTTON) && upgradeCursor > 0) {
         upgradeCursor = upgradeCursor - 1;
-        setUpgradeTop();
+        // setUpgradeTop();
     }
-    else if (arduboy.justPressed(LEFT_BUTTON) && upgradeCursor < Constants::UpgradeHand_Count - 1) {
+    else if (arduboy.justPressed(LEFT_BUTTON) && upgradeCursor < 2) {
         upgradeCursor = upgradeCursor + 1;
-        setUpgradeTop();
+        // setUpgradeTop();
     }
     else if (arduboy.justPressed(A_BUTTON)) {
-        hand.setUpgradeHand(static_cast<HandType>(Constants::UpgradeHand_Count - upgradeCursor));
+        hand.setUpgradeHand(hand.getUpgradeHandType(upgradeCursor));
         startLevel(true);
     }
 
@@ -66,7 +68,7 @@ void upgradeHand() {
 
     if (upgradeCursor > 0) { 
 
-        if (upgradeCursor == Constants::UpgradeHand_Count - 1) {
+        if (upgradeCursor == 2) {
             botImage = UpgradeHand_BottomOptions::UpOnly;
         }
         else {
@@ -76,9 +78,8 @@ void upgradeHand() {
     }
     else { 
 
-        if (upgradeCursor == Constants::UpgradeHand_Count - 1) {
+        if (upgradeCursor == 2) {
             botImage = UpgradeHand_BottomOptions::Both;
-
         }
         else {
             botImage = UpgradeHand_BottomOptions::DownOnly;
@@ -86,12 +87,18 @@ void upgradeHand() {
 
     }
     
-    for (uint8_t i = upgradeTop; i < upgradeTop + 4; i++) {
+    for (uint8_t i = 0; i < 3; i++) {
 
-        if (i < Constants::UpgradeHand_Count) {
-            FX::drawBitmap(x, 0, Images::UpgradeHands, i, dbmWhite);
-            x = x - 28;
+        uint8_t handToUpgrade = hand.getUpgradeHand(2 - i);
+
+        if (i == upgradeCursor) {
+            FX::drawBitmap(x, 0, Images::UpgradeHands, handToUpgrade + 8 + (arduboy.frameCount % 24 < 12 ? 0 : 8), dbmNormal);
         }
+        else {
+            FX::drawBitmap(x, 0, Images::UpgradeHands, handToUpgrade, dbmNormal);
+        }
+
+        x = x - 33;
 
     }
 
@@ -100,7 +107,7 @@ void upgradeHand() {
 
     if (arduboy.frameCount % 24 < 12) {
 
-        FX::drawBitmap(84 - ((upgradeCursor - upgradeTop) * 28), 0, Images::UpgradeHand_Cursor, 0, dbmWhite);
+        FX::drawBitmap(84 - 4 - ((upgradeCursor - upgradeTop) * 33), 0, Images::UpgradeHand_Cursor, 0, dbmWhite);
         
     }
     

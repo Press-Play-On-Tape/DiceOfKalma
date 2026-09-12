@@ -7,8 +7,11 @@ namespace Images {
     image_t Skull_Large             = "../Assets/LargeSkull/Skull_52x40.png"
     image_t Skull_Eyes              = "../Assets/LargeSkull/SkullEyes_10x24.png"
     image_t LevelEntry              = "../Assets/LevelEntry.png"
-    image_t Dice_Normal             = "../Assets/Dice/Dice_Animated_12x16.png"
-    image_t Dice_Reverse            = "../Assets/Dice/Dice_Animated_2_12x16.png"
+
+    image_t Dice_Roll               = "../Assets/Dice/Dice_Roll_12x16.png"
+    image_t Dice_Black              = "../Assets/Dice/Dice_Black_12x16.png"
+    image_t Dice_Fade               = "../Assets/Dice/Dice_Fade_12x16.png"
+
     image_t Background_00           = "../Assets/Play/Background_00.png"
     image_t Background_02           = "../Assets/Play/Background_02.png"
     image_t Button_PlayHand         = "../Assets/Play/Button_Play.png"
@@ -29,6 +32,7 @@ namespace Images {
     image_t HandScore_Top           = "../Assets/HandScore/HandScore_Top_48x64.png"
     image_t HandScore_Bot           = "../Assets/HandScore/HandScore_Bot_15x64.png"
 
+    image_t Skeleton_Hand           = "../Assets/Hand.png"
     image_t Inventory_Top           = "../Assets/Inventory_Top.png"
     image_t Inventory_Bot           = "../Assets/Inventory_Bottom_13x64.png"
 
